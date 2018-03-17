@@ -1,0 +1,14 @@
+---
+version: '3'
+
+services:
+  ccd-api-gateway:
+    build:
+      context: .
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    image: docker.artifactory.reform.hmcts.net/ccd/ccd-api-gateway
+    ports:
+      - 3453:3453
