@@ -1,0 +1,24 @@
+proxy:
+  aggregated: PROXY_AGGREGATED
+  data: PROXY_DATA
+  definition_import: PROXY_DEFINITION_IMPORT
+  document_management: PROXY_DOCUMENT_MANAGEMENT
+  print_service: PROXY_PRINT_SERVICE
+  case_activity: PROXY_CASE_ACTIVITY
+idam:
+  base_url: IDAM_BASE_URL
+  s2s_url: IDAM_S2S_URL
+  service_key: IDAM_SERVICE_KEY
+  service_name: IDAM_SERVICE_NAME
+  logout_url: IDAM_LOGOUT_URL
+  oauth2:
+    token_endpoint: IDAM_OAUTH2_TOKEN_ENDPOINT
+    client_id: IDAM_OAUTH2_CLIENT_ID
+    client_secret: IDAM_OAUTH2_CLIENT_SECRET
+address_lookup:
+  detect_proxy: ADDRESS_LOOKUP_DETECT_PROXY
+  url: ADDRESS_LOOKUP_URL
+  token: ADDRESS_LOOKUP_TOKEN
+security:
+  cors_origin_methods: CORS_ORIGIN_METHODS
+  cors_origin_whitelist: CORS_ORIGIN_WHITELIST
