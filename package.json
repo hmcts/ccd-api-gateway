@@ -3,14 +3,22 @@
   "version": "1.4.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "test": "mocha 'app/**/*.spec.js'",
-    "integration": "mvn clean verify -f ./integration_test/pom.xml",
-    "setup": "echo 'No setup required'",
-    "test:nsp": "nsp check"
+    "start": "cross-env NODE_PATH=. node server.js",
+    "setup": "cross-env NODE_PATH=. node --version",
+    "lint": "NODE_PATH=. eslint --ignore-pattern coverage .",
+    "test": "yarn test:unit",
+    "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
+    "test:coverage": "NODE_ENV=test NODE_PATH=. istanbul cover _mocha 'test/**/*.spec.js'",
+    "test:acceptance": "echo 'TODO - CALL JAVA INTEGRATION TEST'",
+    "test:nsp": "NODE_PATH=. nsp check",
+    "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
+    "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
+    "test:a11y": "NODE_PATH=.",
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-api-gateway-web' -Dsonar.sources=app/ -Dsonar.tests=test/ -Dsonar.exclusions=node_modules/**,coverage/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.4.5",
+    "applicationinsights": "^1.0.2",
     "body-parser": "^1.18.2",
     "config": "^1.29.4",
     "cookie-parser": "~1.4.3",
@@ -27,15 +35,25 @@
   },
   "devDependencies": {
     "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
+    "cross-env": "^5.0.5",
+    "eslint": "^3.17.1",
+    "eslint-plugin-mocha": "^4.8.0",
     "fetch-mock": "^6.0.0",
     "git-message": "^2.0.2",
+    "istanbul": "^0.4.5",
     "mocha": "^3.4.2",
     "mockery": "^2.1.0",
     "nock": "^9.1.4",
-    "nsp": "^2.6.3",
+    "nsp": "^2.8.1",
+    "pa11y": "^4.13.0",
     "proxyquire": "^1.8.0",
+    "should": "^11.2.1",
+    "should-http": "^0.1.0",
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0",
-    "sinon-express-mock": "^2.0.0"
+    "sinon-express-mock": "^2.0.0",
+    "sonar-scanner": "^3.0.3",
+    "supertest": "^3.0.0"
   }
 }

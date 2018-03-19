@@ -4,9 +4,11 @@ const sinon = require('sinon');
 const expect = chai.expect;
 const sinonChai = require('sinon-chai');
 chai.use(sinonChai);
-const userReqAuth = require('./user-request-authorizer');
-const COOKIE_ACCESS_TOKEN = require('../oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
+const userReqAuth = require('../../app/user/user-request-authorizer');
+const COOKIE_ACCESS_TOKEN = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 
+/* The line below turns off ESLints 'no-undef' for the chai 'fail' function */
+/*global fail */
 describe('UserRequestAuthorizer', () => {
   describe('authorize', () => {
 
@@ -33,7 +35,7 @@ describe('UserRequestAuthorizer', () => {
         url: 'http://caseworkers/:uid/more/stuff',
         originalUrl: 'http://caseworkers/:uid/more/stuff',
         get: sinon.stub().returns(AUTHZ_HEADER),
-        cookies: COOKIES,
+        cookies: COOKIES
       };
       userResolver = {
         getTokenDetails: sinon.stub().returns(Promise.resolve(DETAILS))
@@ -42,9 +44,9 @@ describe('UserRequestAuthorizer', () => {
         extract: sinon.stub()
       };
 
-      userRequestAuthorizer = proxyquire('./user-request-authorizer', {
+      userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
         './user-resolver': userResolver,
-        './authorised-roles-extractor': authorizedRolesExtractor,
+        './authorised-roles-extractor': authorizedRolesExtractor
       });
     });
 

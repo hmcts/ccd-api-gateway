@@ -1,6 +1,8 @@
 # Package lock (use Yarn lock instead)
 package-lock.json
 
+# Runtime data
+
 # Logs
 logs
 *.log

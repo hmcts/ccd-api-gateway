@@ -40,7 +40,7 @@ describe('Access Token Request', () => {
     };
     fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, RESPONSE);
 
-    accessTokenRequest = proxyquire('./access-token-request', {
+    accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': fetch
     });

@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-let app = require('../app');
+let app = require('./app');
 let debug = require('debug')('ccd-api-gateway-web:server');
 let http = require('http');
 let https = require('https');
@@ -16,6 +16,7 @@ let fs = require('fs');
  */
 
 let port = normalizePort(process.env.PORT || '3453');
+console.log('Starting on port ' + port);
 app.set('port', port);
 
 /**
@@ -26,10 +27,10 @@ let server = createServer(app);
 
 function createServer(app) {
   if (process.env.ENV === 'localdev') {
-    const sslDirectory = path.join(__dirname, "..", "app", "resources", "localhost-ssl");
+    const sslDirectory = path.join(__dirname, '..', 'app', 'resources', 'localhost-ssl');
     const sslOptions = {
-      cert: fs.readFileSync(path.join(sslDirectory, "localhost.crt")),
-      key: fs.readFileSync(path.join(sslDirectory, "localhost.key"))
+      cert: fs.readFileSync(path.join(sslDirectory, 'localhost.crt')),
+      key: fs.readFileSync(path.join(sslDirectory, 'localhost.key'))
     };
     return https.createServer(sslOptions, app);
   } else {

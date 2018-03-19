@@ -1,7 +1,7 @@
 const config = require('config');
 const extractAddress = require('./extract-address');
 const fetch = require('node-fetch');
-const HttpsProxyAgent = require('https-proxy-agent')
+const HttpsProxyAgent = require('https-proxy-agent');
 
 function addressLookup(postcode) {
 
@@ -15,7 +15,7 @@ function addressLookup(postcode) {
         console.error(e.logMessage + ', ErrorId=' + e.error);
       }
       throw e;
-    })
+    });
 }
 
 function getHttpConfig() {
@@ -39,7 +39,7 @@ function processBody(body) {
         function(address1,address2) {
           let address1Line1 = address1.AddressLine1 ?  address1.AddressLine1 : '';
           let address2Line1 = address2.AddressLine1 ?  address2.AddressLine1 : '';
-          return address1Line1.localeCompare(address2Line1, undefined, {numeric: true, sensitivity: 'base'})
+          return address1Line1.localeCompare(address2Line1, undefined, {numeric: true, sensitivity: 'base'});
         });
   }
   catch (err) {
@@ -48,8 +48,7 @@ function processBody(body) {
 }
 
 function uniqueId() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
 function s4() {

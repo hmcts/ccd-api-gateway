@@ -10,6 +10,7 @@ const corsHandler = require('./app/security/cors');
 const healthcheck = require('@hmcts/nodejs-healthcheck');
 const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
 const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
+const enableAppInsights = require('./app/app-insights/app-insights');
 
 let app = express();
 
@@ -53,6 +54,8 @@ app.use(authCheckerUserOnlyFilter);
 app.get('/logout', logoutRoute);
 
 app.use(serviceFilter);
+
+app.use(enableAppInsights);
 
 app.get('/addresses',(req, res, next) => {
   addressLookup(req.query.postcode)
@@ -98,7 +101,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

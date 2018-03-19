@@ -1,7 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-const authorisedRolesExtractor = require('./authorised-roles-extractor');
+const authorisedRolesExtractor = require('../../app/user/authorised-roles-extractor');
 const http = require('http');
 
 describe('Authorised roles extractor', () => {
