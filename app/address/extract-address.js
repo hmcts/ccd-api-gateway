@@ -12,7 +12,7 @@ function Address (serviceResponse) {
     + (serviceResponse.thoroughfare_name ? serviceResponse.thoroughfare_name : ''));
 
   this.AddressLine1 = poBox ? 'PO BOX ' + poBox : subBuilding ? subBuilding : building ? building : numberAndStreet;
-  this.AddressLine2 = subBuilding && building ? building : this.AddressLine1 == numberAndStreet ? '' : numberAndStreet;
+  this.AddressLine2 = subBuilding && building ? building : this.AddressLine1 === numberAndStreet ? '' : numberAndStreet;
   this.AddressLine3 = subBuilding && building ? numberAndStreet ? numberAndStreet : '' : dependantLocality ? dependantLocality : '';
   this.PostTown = titleCase(serviceResponse.post_town);
   this.County = '';

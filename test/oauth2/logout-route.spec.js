@@ -4,8 +4,7 @@ const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const sinonExpressMock = require('sinon-express-mock');
-const COOKIE_ACCESS_TOKEN = require('./oauth2-route').COOKIE_ACCESS_TOKEN;
-const url = require('url');
+const COOKIE_ACCESS_TOKEN = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 chai.use(sinonChai);
 
 describe('logoutRoute', () => {
@@ -33,8 +32,8 @@ describe('logoutRoute', () => {
     next = sinon.stub();
 
 
-    logoutRoute = proxyquire('./logout-route', {
-      'config': config,
+    logoutRoute = proxyquire('../../app/oauth2/logout-route', {
+      'config': config
     }).logoutRoute;
   });
 

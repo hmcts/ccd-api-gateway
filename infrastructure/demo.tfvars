@@ -1,0 +1,5 @@
+vault_section = "preprod"
+idam_authentication_web_url = "https://www.preprod.ccidam.reform.hmcts.net"
+idam_api_url = "https://preprod-idamapi.reform.hmcts.net:3511"
+s2s_url = "https://preprod-s2s-api.reform.hmcts.net:3511"
+cors_origin = "https://www.ccd.demo.platform.hmcts.net,https://ccd.demo.platform.hmcts.net"

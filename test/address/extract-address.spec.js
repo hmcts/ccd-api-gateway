@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const extractAddress = require('./extract-address');
+const extractAddress = require('../../app/address/extract-address');
 
 describe('Extract Address', () => {
 
@@ -8,7 +8,7 @@ describe('Extract Address', () => {
 
     const address = extractAddress(
       JSON.parse('{"uprn":"6184048","organisation_name":"","department_name":"","po_box_number":"","building_name":"MORLEY HOUSE","sub_building_name":"FLAT 13","building_number":63,"thoroughfare_name":"GLASSHOUSE FIELDS","dependent_thoroughfare_name":"","dependent_locality":"","double_dependent_locality":"","post_town":"LONDON","postcode":"E1W 3AX","postcode_type":"S","formatted_address":"Flat 13\\nMorley House\\n63 Glasshouse Fields\\nLondon\\nE1W 3AX","point":{"type":"Point","coordinates":[-0.0469181,51.5104457]}}')
-    )
+    );
 
     expect(address.AddressLine1).equals('Flat 13');
     expect(address.AddressLine2).equals('Morley House');
@@ -24,7 +24,7 @@ describe('Extract Address', () => {
 
     const address = extractAddress(
       JSON.parse('{"uprn":"100000083731","organisation_name":"","department_name":"","po_box_number":"","building_name":"","sub_building_name":"","building_number":14,"thoroughfare_name":"LAMBTON CLOSE","dependent_thoroughfare_name":"","dependent_locality":"","double_dependent_locality":"","post_town":"RYTON","postcode":"NE40 4UX","postcode_type":"S","formatted_address":"14 Lambton Close\\nRyton\\nNE40 4UX","point":{"type":"Point","coordinates":[-1.7847992,54.9658624]}}')
-    )
+    );
 
     expect(address.AddressLine1).equals('14 Lambton Close');
     expect(address.AddressLine2).equals('');
@@ -40,7 +40,7 @@ describe('Extract Address', () => {
 
     const address = extractAddress(
       JSON.parse('{"uprn":"100000085646","organisation_name":"","department_name":"","po_box_number":"","building_name":"","sub_building_name":"","building_number":1,"thoroughfare_name":"SOUTH VIEW","dependent_thoroughfare_name":"","dependent_locality":"CLARA VALE","double_dependent_locality":"","post_town":"RYTON","postcode":"NE40 3SY","postcode_type":"S","formatted_address":"1 South View\\nClara Vale\\nRyton\\nNE40 3SY","point":{"type":"Point","coordinates":[-1.7915689,54.9796949]}}')
-    )
+    );
 
     expect(address.AddressLine1).equals('1 South View');
     expect(address.AddressLine2).equals('');

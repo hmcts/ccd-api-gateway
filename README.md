@@ -29,6 +29,7 @@ The following environment variables are required:
 | IDAM_S2S_URL | Base URL for IdAM's S2S API service (service-auth-provider). `http://localhost:4502` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_SERVICE_KEY | API gateway's IDAM S2S micro-service secret key. This must match the IDAM instance it's being run against. |
 | CORS_ORIGIN_WHITELIST | Comma-separated list of authorised origins for Cross-Origin requests. `http://localhost:3401,http://localhost:3452` for the local instances of CCD |
+| APPINSIGHTS_INSTRUMENTATIONKEY | Secret for Microsoft Insights logging, can be a dummy string in local |
 
 ### Install dependencies
 

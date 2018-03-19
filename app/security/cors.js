@@ -39,6 +39,6 @@ const handleCors = (req, res, next) => {
     } else {
         next();
     }
-}
+};
 
 module.exports = handleCors;

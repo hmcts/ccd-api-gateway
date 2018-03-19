@@ -22,3 +22,5 @@ address_lookup:
 security:
   cors_origin_methods: CORS_ORIGIN_METHODS
   cors_origin_whitelist: CORS_ORIGIN_WHITELIST
+appInsights:
+  instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY

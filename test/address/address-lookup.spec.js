@@ -4,6 +4,8 @@ const mockery = require('mockery');
 const nock = require('nock');
 const sinon = require('sinon');
 
+/* The line below turns off ESLints 'no-undef' for the chai 'fail' function */
+/*global fail */
 describe('Address Lookup', () => {
 
   let addressLookup, extractAddressStub;
@@ -17,7 +19,7 @@ describe('Address Lookup', () => {
 
     extractAddressStub = sinon.stub();
     mockery.registerMock('./extract-address', extractAddressStub);
-    addressLookup = require('./address-lookup');
+    addressLookup = require('../../app/address/address-lookup');
 
   });
 
@@ -98,7 +100,7 @@ describe('Address Lookup', () => {
         .get('/addresses?postcode=' + postcode)
         .reply(500, 'ErrorBody');
 
-      addressLookup(postcode).then(() => fail("Should reject promise")).catch(
+      addressLookup(postcode).then(() => fail('Should reject promise')).catch(
         (error) => {
             try {
               expect(error.error).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
@@ -119,7 +121,7 @@ describe('Address Lookup', () => {
         .get('/addresses?postcode=' + postcode)
         .reply(200, 'NotJSONArray');
 
-      addressLookup(postcode).then(() => fail("Should reject promise")).catch(
+      addressLookup(postcode).then(() => fail('Should reject promise')).catch(
         (error) => {
           try {
             expect(error.error).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
@@ -128,7 +130,7 @@ describe('Address Lookup', () => {
             done();
           }
           catch (e) {
-            done(e)
+            done(e);
           }
       });
     });
