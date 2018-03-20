@@ -7,8 +7,6 @@ chai.use(sinonChai);
 const userReqAuth = require('../../app/user/user-request-authorizer');
 const COOKIE_ACCESS_TOKEN = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 
-/* The line below turns off ESLints 'no-undef' for the chai 'fail' function */
-/*global fail */
 describe('UserRequestAuthorizer', () => {
   describe('authorize', () => {
 
