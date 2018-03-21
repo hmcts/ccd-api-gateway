@@ -1,6 +1,6 @@
 const chai = require('chai');
-const enableAppInsights = require('../../app/app-insights/app-insights');
 const expect = chai.expect;
+const enableAppInsights = require('../../app/app-insights/app-insights');
 
 describe('Application insights', () => {
   it('should initialize properly', () => {
