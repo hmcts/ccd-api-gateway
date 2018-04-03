@@ -1,4 +1,4 @@
-# ccd-api-gateway
+# ccd-api-gateway [![Build Status](https://travis-ci.org/hmcts/ccd-api-gateway.svg?branch=master)](https://travis-ci.org/hmcts/ccd-api-gateway)
 Secured API Gateway integrating with IDAM
 
 ## Getting started
