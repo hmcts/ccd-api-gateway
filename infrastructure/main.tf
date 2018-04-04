@@ -19,7 +19,7 @@ data "vault_generic_secret" "idam_service_key" {
 }
 
 module "api-gateway-web" {
-  source   = "git@github.com:contino/moj-module-webapp?ref=master"
+  source   = "git@github.com:hmcts/moj-module-webapp?ref=master"
   product  = "${var.product}-api-gateway-web"
   location = "${var.location}"
   env      = "${var.env}"
@@ -42,6 +42,8 @@ module "api-gateway-web" {
     PROXY_AGGREGATED = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DATA = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DEFINITION_IMPORT = "http://ccd-definition-store-api-${local.env_ase_url}"
+    PROXY_DOCUMENT_MANAGEMENT = "${var.document_management_url}"
+    PROXY_PRINT_SERVICE = "${var.ccd_print_service_url}"
     WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
   }
 }

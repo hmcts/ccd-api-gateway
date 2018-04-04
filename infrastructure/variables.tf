@@ -37,3 +37,11 @@ variable "s2s_url" {
 variable "cors_origin" {
   default = "https://www-ccd.nonprod.platform.hmcts.net"
 }
+
+variable "document_management_url" {
+  default = "https://api-gateway.test.dm.reform.hmcts.net"
+}
+
+variable "ccd_print_service_url" {
+  default = "https://return-case-doc-ccd.nonprod.platform.hmcts.net"
+}
