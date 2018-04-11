@@ -22,6 +22,12 @@ describe('Access Token Request', () => {
       redirect_uri: REDIRECT_URN
     }
   });
+  const REQUEST_WITH_HTTPS = sinonExpressMock.mockReq({
+    query: {
+      code: AUTH_CODE,
+      redirect_uri: REDIRECT_URL
+    }
+  });
   const RESPONSE = {
     body: {
       'access_token': 'q1w2e3r4t5y6',
@@ -48,6 +54,23 @@ describe('Access Token Request', () => {
   });
 
   it('should call the IdAM OAuth 2 token endpoint with the correct headers and query string parameters', done => {
+    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
+    config.get.withArgs('idam.oauth2.client_secret').returns(CLIENT_SECRET);
+    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
+
+    accessTokenRequest(REQUEST_WITH_HTTPS)
+      .then(() => {
+        expect(fetch.called()).to.be.true;
+        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        let requestedUrl = url.parse(fetch.lastUrl(), true);
+        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
+        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        done();
+      })
+      .catch(error => done(new Error(error)));
+  });
+
+  it('should add `https://` prefix', done => {
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
     config.get.withArgs('idam.oauth2.client_secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
