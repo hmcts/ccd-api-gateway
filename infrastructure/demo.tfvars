@@ -1,4 +1,5 @@
 vault_section = "preprod"
+external_host_name = "gateway.ccd.demo.platform.hmcts.net"
 idam_authentication_web_url = "https://www.preprod.ccidam.reform.hmcts.net"
 idam_api_url = "https://preprod-idamapi.reform.hmcts.net:3511"
 s2s_url = "https://preprod-s2s-api.reform.hmcts.net:3511"

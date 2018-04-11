@@ -7,8 +7,8 @@ properties(
 @Library("Infrastructure")
 
 def product = "ccd"
-def app = "api-gateway-web"
+def component = "api-gateway-web"
 
-withPipeline("nodejs", product, app) {
+withPipeline("nodejs", product, component) {
 
 }
