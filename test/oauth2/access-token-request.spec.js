@@ -12,13 +12,14 @@ describe('Access Token Request', () => {
   const CLIENT_ID = 'ccd_gateway';
   const CLIENT_SECRET = 'abc123def456';
   const TOKEN_ENDPOINT = 'http://localhost:1234/oauth2/token';
-  const REDIRECT_URI = 'http://localhost/redirect/to';
+  const REDIRECT_URN = 'localhost/redirect/to';
+  const REDIRECT_URL = 'https://localhost/redirect/to';
   const AUTH_CODE = 'xyz789';
 
   const REQUEST = sinonExpressMock.mockReq({
     query: {
       code: AUTH_CODE,
-      redirect_uri: REDIRECT_URI
+      redirect_uri: REDIRECT_URN
     }
   });
   const RESPONSE = {
@@ -57,7 +58,7 @@ describe('Access Token Request', () => {
         expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         let requestedUrl = url.parse(fetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
-        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URI);
+        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         done();
       })
       .catch(error => done(new Error(error)));
