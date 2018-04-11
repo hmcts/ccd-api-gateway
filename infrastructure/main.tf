@@ -3,6 +3,7 @@ provider "vault" {
 }
 
 locals {
+  app_full_name = "${var.product}-${var.component}"
   env_ase_url = "${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
 }
 
@@ -19,12 +20,14 @@ data "vault_generic_secret" "idam_service_key" {
 }
 
 module "api-gateway-web" {
-  source   = "git@github.com:hmcts/moj-module-webapp?ref=master"
-  product  = "${var.product}-api-gateway-web"
+  source = "git@github.com:hmcts/moj-module-webapp?ref=master"
+  product = "${local.app_full_name}"
   location = "${var.location}"
-  env      = "${var.env}"
-  ilbIp    = "${var.ilbIp}"
+  env = "${var.env}"
+  ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
+  is_frontend = true
+  additional_host_name = ${var.external_host_name}
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
