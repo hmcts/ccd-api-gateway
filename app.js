@@ -44,9 +44,11 @@ const applyProxy = (app, config) => {
   app.use(config.source, proxy(options));
 };
 
-app.get('/health', healthcheck.configure({
+const health = healthcheck.configure({
   checks: {}
-}));
+});
+app.get('/', health);
+app.get('/health', health);
 
 app.use(corsHandler);
 
