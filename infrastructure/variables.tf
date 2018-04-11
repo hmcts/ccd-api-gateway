@@ -1,7 +1,9 @@
 variable "product" {
-  type                  = "string"
-  default               = "ccd"
-  description           = "The name of your application"
+  type = "string"
+}
+
+variable "component" {
+  type = "string"
 }
 
 variable "location" {
@@ -20,6 +22,10 @@ variable "subscription" {}
 
 variable "vault_section" {
   default = "test"
+}
+
+variable "external_host_name" {
+  default = "gateway-ccd.nonprod.platform.hmcts.net"
 }
 
 variable "idam_api_url" {
