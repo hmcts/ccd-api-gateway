@@ -2,6 +2,13 @@ const config = require('config');
 const fetch = require('node-fetch');
 const url = require('url');
 
+const completeRedirectURI = (uri) => {
+  if (!uri.startsWith('http')) {
+    return `https://${uri}`;
+  }
+  return uri;
+};
+
 function accessTokenRequest(request) {
   const options = {
     method: 'POST',
@@ -14,7 +21,7 @@ function accessTokenRequest(request) {
   };
   const params = {
     code: request.query.code,
-    redirect_uri: request.query.redirect_uri,
+    redirect_uri: completeRedirectURI(request.query.redirect_uri),
     grant_type: 'authorization_code'
   };
   return fetch(config.get('idam.oauth2.token_endpoint') + url.format({ query: params }), options)
