@@ -3,7 +3,6 @@ const expect = chai.expect;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const sinonExpressMock = require('sinon-express-mock');
 
 chai.use(sinonChai);
 
@@ -20,8 +19,10 @@ describe('authCheckerUserOnlyFilter', () => {
   let filter;
 
   beforeEach(() => {
-    req = sinonExpressMock.mockReq({});
-    res = sinonExpressMock.mockRes({});
+    req = {
+      headers: {}
+    };
+    res = {};
 
     userRequestAuthorizer = {
       authorise: sinon.stub()
@@ -47,6 +48,20 @@ describe('authCheckerUserOnlyFilter', () => {
     it('should set authenticated user in request', done => {
       filter(req, res, () => {
         expect(req.authentication.user).to.equal(user);
+        done();
+      });
+    });
+
+    it('should add user ID as a request header', done => {
+      filter(req, res, () => {
+        expect(req.headers['user-id']).to.equal(user.id);
+        done();
+      });
+    });
+
+    it('should add comma separated roles as a request header', done => {
+      filter(req, res, () => {
+        expect(req.headers['user-roles']).to.equal(user.roles.join(','));
         done();
       });
     });

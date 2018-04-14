@@ -6,7 +6,11 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
 
   userRequestAuthorizer
     .authorise(req)
-    .then(user => req.authentication.user = user)
+    .then(user => {
+      req.authentication.user = user;
+      req.headers['user-id'] = user.id;
+      req.headers['user-roles'] = user.roles.join(',');
+    })
     .then(() => next())
     .catch(error => {
       console.warn('Unsuccessful user authentication', error);
