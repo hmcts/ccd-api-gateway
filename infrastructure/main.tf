@@ -8,8 +8,14 @@ locals {
 
   default_app_env_ase_url = "https://${local.app_full_name}-${local.env_ase_url}"
 
-  ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_app_env_ase_url}"
-  cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_app_env_ase_url}"
+  app_full_name = "${var.product}-${var.component}"
+  default_app_env_ase_url = "https://${local.app_full_name}-${local.env_ase_url}"
+  external_host_name = "${var.external_host_name != "" ? var.external_host_name : local.default_app_env_ase_url}"
+  default_ccd_print_service_url = "https://ccd-case-print-service-${env_ase_url}"
+  default_cors_origin = "https://ccd-case-management-web-${env_ase_url}"
+
+  ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
+  cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : local.default_app_env_ase_url}"
 }
 
@@ -43,7 +49,7 @@ module "api-gateway-web" {
     ADDRESS_LOOKUP_TOKEN = "${data.vault_generic_secret.address_lookup_token.data["value"]}"
     CORS_ORIGIN_METHODS = "GET,POST,OPTIONS"
     /* TODO Need to change the below to the external hostnames once set up */
-    CORS_ORIGIN_WHITELIST = "https://ccd-case-management-web-${local.env_ase_url},${var.cors_origin}"
+    CORS_ORIGIN_WHITELIST = "https://ccd-case-management-web-${local.env_ase_url},${local.cors_origin}"
     IDAM_BASE_URL = "${var.idam_api_url}"
     IDAM_S2S_URL = "${var.s2s_url}"
     IDAM_SERVICE_KEY = "${data.vault_generic_secret.idam_service_key.data["value"]}"
