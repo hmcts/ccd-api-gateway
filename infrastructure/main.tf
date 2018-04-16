@@ -5,6 +5,16 @@ provider "vault" {
 locals {
   app_full_name = "${var.product}-${var.component}"
   env_ase_url = "${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
+
+  default_document_management_url = "https://api-gateway.${local.env_ase_url}.dm.reform.hmcts.net"
+  default_external_host_name = "gateway-ccd.${local.env_ase_url}.platform.hmcts.net"
+  default_cors_origin = "https://www-ccd.${local.env_ase_url}.platform.hmcts.net"
+  default_ccd_print_service_url = "https://return-case-doc-ccd.${local.env_ase_url}.platform.hmcts.net"
+
+  document_management_url = "${var.document_management_url != "" ? var.document_management_url : local.default_document_management_url}"
+  ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
+  cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
+  external_host_name = "${var.external_host_name != "" ? var.external_host_name : local.default_external_host_name}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
