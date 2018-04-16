@@ -16,7 +16,6 @@ locals {
 
   ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
-  external_host_name = "${var.external_host_name != "" ? var.external_host_name : local.default_app_env_ase_url}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
