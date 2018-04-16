@@ -37,7 +37,7 @@ module "api-gateway-web" {
   ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
   is_frontend = true
-  additional_host_name = "${var.external_host_name}"
+  additional_host_name = "${local.external_host_name}"
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
