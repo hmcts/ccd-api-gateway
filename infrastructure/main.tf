@@ -9,7 +9,6 @@ locals {
   default_app_env_ase_url = "https://${local.app_full_name}-${local.env_ase_url}"
 
   app_full_name = "${var.product}-${var.component}"
-  default_app_env_ase_url = "https://${local.app_full_name}-${local.env_ase_url}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : local.default_app_env_ase_url}"
   default_ccd_print_service_url = "https://ccd-case-print-service-${env_ase_url}"
   default_cors_origin = "https://ccd-case-management-web-${env_ase_url}"
