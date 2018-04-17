@@ -45,7 +45,6 @@ module "api-gateway-web" {
     IDAM_LOGOUT_URL = "${var.idam_authentication_web_url}/login/logout"
     ADDRESS_LOOKUP_TOKEN = "${data.vault_generic_secret.address_lookup_token.data["value"]}"
     CORS_ORIGIN_METHODS = "GET,POST,OPTIONS"
-    /* TODO Need to change the below to the external hostnames once set up */
     CORS_ORIGIN_WHITELIST = "https://ccd-case-management-web-${local.env_ase_url},${local.cors_origin}"
     IDAM_BASE_URL = "${var.idam_api_url}"
     IDAM_S2S_URL = "${var.s2s_url}"
