@@ -6,11 +6,11 @@ locals {
   app_full_name = "${var.product}-${var.component}"
   env_ase_url = "${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
 
-  default_app_env_ase_url = "${local.app_full_name}-${local.env_ase_url}"
   default_ccd_print_service_url = "https://ccd-case-print-service-${local.env_ase_url}"
   default_cors_origin = "https://ccd-case-management-web-${local.env_ase_url}"
 
-  external_host_name = "${var.external_host_name != "" ? var.external_host_name : local.default_app_env_ase_url}"
+  is_frontend = "${var.external_host_name != "" ? "true" : "false"}"
+  external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
 
   ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
@@ -35,7 +35,7 @@ module "api-gateway-web" {
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
-  is_frontend = true
+  is_frontend = "${local.is_frontend}"
   additional_host_name = "${local.external_host_name}"
 
   app_settings = {
