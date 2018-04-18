@@ -9,7 +9,7 @@ locals {
   default_ccd_print_service_url = "https://ccd-case-print-service-${local.env_ase_url}"
   default_cors_origin = "https://ccd-case-management-web-${local.env_ase_url}"
 
-  is_frontend = "${var.external_host_name != "" ? "true" : "false"}"
+  is_frontend = "${var.external_host_name != "" ? true : false}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
 
   ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
