@@ -25,7 +25,8 @@ variable "vault_section" {
 }
 
 variable "external_host_name" {
-  default = "gateway-ccd.nonprod.platform.hmcts.net"
+  type = "string"
+  default = ""
 }
 
 variable "idam_api_url" {
@@ -41,7 +42,8 @@ variable "s2s_url" {
 }
 
 variable "cors_origin" {
-  default = "https://www-ccd.nonprod.platform.hmcts.net"
+  type = "string"
+  default = ""
 }
 
 variable "document_management_url" {
@@ -49,5 +51,6 @@ variable "document_management_url" {
 }
 
 variable "ccd_print_service_url" {
-  default = "https://return-case-doc-ccd.nonprod.platform.hmcts.net"
+  type = "string"
+  default = ""
 }
