@@ -5,6 +5,15 @@ provider "vault" {
 locals {
   app_full_name = "${var.product}-${var.component}"
   env_ase_url = "${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
+
+  default_app_env_ase_url = "${local.app_full_name}-${local.env_ase_url}"
+  default_ccd_print_service_url = "https://ccd-case-print-service-${local.env_ase_url}"
+  default_cors_origin = "https://ccd-case-management-web-${local.env_ase_url}"
+
+  external_host_name = "${var.external_host_name != "" ? var.external_host_name : local.default_app_env_ase_url}"
+
+  ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
+  cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
@@ -27,7 +36,7 @@ module "api-gateway-web" {
   ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
   is_frontend = true
-  additional_host_name = "${var.external_host_name}"
+  additional_host_name = "${local.external_host_name}"
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
@@ -36,7 +45,7 @@ module "api-gateway-web" {
     IDAM_LOGOUT_URL = "${var.idam_authentication_web_url}/login/logout"
     ADDRESS_LOOKUP_TOKEN = "${data.vault_generic_secret.address_lookup_token.data["value"]}"
     CORS_ORIGIN_METHODS = "GET,POST,OPTIONS"
-    CORS_ORIGIN_WHITELIST = "https://ccd-case-management-web-${local.env_ase_url},${var.cors_origin}"
+    CORS_ORIGIN_WHITELIST = "https://ccd-case-management-web-${local.env_ase_url},${local.cors_origin}"
     IDAM_BASE_URL = "${var.idam_api_url}"
     IDAM_S2S_URL = "${var.s2s_url}"
     IDAM_SERVICE_KEY = "${data.vault_generic_secret.idam_service_key.data["value"]}"
@@ -45,7 +54,7 @@ module "api-gateway-web" {
     PROXY_DATA = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DEFINITION_IMPORT = "http://ccd-definition-store-api-${local.env_ase_url}"
     PROXY_DOCUMENT_MANAGEMENT = "${var.document_management_url}"
-    PROXY_PRINT_SERVICE = "${var.ccd_print_service_url}"
+    PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
   }
 }
