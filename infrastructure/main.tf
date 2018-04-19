@@ -6,14 +6,13 @@ locals {
   app_full_name = "${var.product}-${var.component}"
   env_ase_url = "${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
 
-  default_ccd_print_service_url = "https://ccd-case-print-service-${local.env_ase_url}"
   default_cors_origin = "https://ccd-case-management-web-${local.env_ase_url}"
 
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
 
-  ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
+  ccd_print_service_url = "http://ccd-case-print-service-${local.env_ase_url}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
