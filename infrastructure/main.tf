@@ -8,12 +8,14 @@ locals {
 
   default_ccd_print_service_url = "https://ccd-case-print-service-${local.env_ase_url}"
   default_cors_origin = "https://ccd-case-management-web-${local.env_ase_url}"
+  default_document_management_url = "http://dm-store-${local.env_ase_url}"
 
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
 
   ccd_print_service_url = "${var.ccd_print_service_url != "" ? var.ccd_print_service_url : local.default_ccd_print_service_url}"
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
+  document_management_url = "${var.document_management_url != "" ? var.document_management_url : local.default_document_management_url}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
@@ -53,7 +55,7 @@ module "api-gateway-web" {
     PROXY_AGGREGATED = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DATA = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DEFINITION_IMPORT = "http://ccd-definition-store-api-${local.env_ase_url}"
-    PROXY_DOCUMENT_MANAGEMENT = "${var.document_management_url}"
+    PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
   }
