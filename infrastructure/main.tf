@@ -6,7 +6,7 @@ locals {
   app_full_name = "${var.product}-${var.component}"
   env_ase_url = "${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
 
-  default_ccd_print_service_url = "https://ccd-case-print-service-${local.env_ase_url}"
+  default_ccd_print_service_url = "http://ccd-case-print-service-${local.env_ase_url}"
   default_cors_origin = "https://ccd-case-management-web-${local.env_ase_url}"
   default_document_management_url = "http://dm-store-${local.env_ase_url}"
 
