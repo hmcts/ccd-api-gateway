@@ -49,8 +49,3 @@ variable "cors_origin" {
 variable "document_management_url" {
   default = ""
 }
-
-variable "ccd_print_service_url" {
-  type = "string"
-  default = ""
-}
