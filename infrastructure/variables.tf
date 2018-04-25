@@ -47,5 +47,5 @@ variable "cors_origin" {
 }
 
 variable "document_management_url" {
-  default = "https://api-gateway.test.dm.reform.hmcts.net"
+  default = ""
 }
