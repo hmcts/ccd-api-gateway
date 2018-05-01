@@ -8,7 +8,6 @@ RUN yarn install
 
 COPY app.js /usr/src/app/
 COPY app /usr/src/app/app
-COPY bin /usr/src/app/bin
 COPY config /usr/src/app/config
 
 ENV PORT 3453
