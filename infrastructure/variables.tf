@@ -47,10 +47,5 @@ variable "cors_origin" {
 }
 
 variable "document_management_url" {
-  default = "https://api-gateway.test.dm.reform.hmcts.net"
-}
-
-variable "ccd_print_service_url" {
-  type = "string"
   default = ""
 }
