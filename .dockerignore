@@ -8,6 +8,7 @@
 !yarn.lock
 
 !app.js
+!server.js
 
 !app/**
 !bin/**
