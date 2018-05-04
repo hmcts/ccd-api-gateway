@@ -19,7 +19,7 @@ const serviceTokenGenerator = () => {
     } else {
       const oneTimePassword = otp({secret: secret}).totp();
       const form = {
-        'microservice': serviceName,
+        microservice: serviceName,
         oneTimePassword
       };
       const headers = {

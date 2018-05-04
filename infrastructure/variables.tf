@@ -37,10 +37,6 @@ variable "idam_authentication_web_url" {
   default = "https://idam-test.dev.ccidam.reform.hmcts.net"
 }
 
-variable "s2s_url" {
-  default = "http://betaDevBccidamS2SLB.reform.hmcts.net"
-}
-
 variable "cors_origin" {
   type = "string"
   default = ""
