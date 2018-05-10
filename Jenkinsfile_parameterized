@@ -8,6 +8,6 @@ properties([
   pipelineTriggers([[$class: 'GitHubPushTrigger']])
 ])
 
-withParameterizedPipeline('java', 'ccd', 'api-gateway-web', params.ENVIRONMENT, 'sandbox') {
+withParameterizedPipeline('nodejs', 'ccd', 'api-gateway-web', params.ENVIRONMENT, 'sandbox') {
 
 }
