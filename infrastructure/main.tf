@@ -15,6 +15,9 @@ locals {
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
   ccd_print_service_url = "http://ccd-case-print-service-${local.env_ase_url}"
   document_management_url = "${var.document_management_url != "" ? var.document_management_url : local.default_document_management_url}"
+
+  // S2S
+  s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
@@ -48,7 +51,7 @@ module "api-gateway-web" {
     CORS_ORIGIN_METHODS = "GET,POST,OPTIONS"
     CORS_ORIGIN_WHITELIST = "https://ccd-case-management-web-${local.env_ase_url},${local.cors_origin}"
     IDAM_BASE_URL = "${var.idam_api_url}"
-    IDAM_S2S_URL = "${var.s2s_url}"
+    IDAM_S2S_URL = "${local.s2s_url}"
     IDAM_SERVICE_KEY = "${data.vault_generic_secret.idam_service_key.data["value"]}"
     IDAM_SERVICE_NAME = "ccd_gw"
     PROXY_AGGREGATED = "http://ccd-data-store-api-${local.env_ase_url}"
