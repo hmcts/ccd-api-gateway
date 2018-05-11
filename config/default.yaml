@@ -23,3 +23,4 @@ security:
   cors_origin_whitelist: "http://localhost:3451,http://localhost:3452"
 appInsights:
   instrumentationKey: "some-key"
+  enabled: true
