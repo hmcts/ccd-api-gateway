@@ -12,9 +12,7 @@ locals {
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
 
-  non_preview_cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
-  cors_origin = "${var.env == "preview" ? "*" : local.non_preview_cors_origin}"
-
+  cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
   ccd_print_service_url = "http://ccd-case-print-service-${local.env_ase_url}"
   document_management_url = "${var.document_management_url != "" ? var.document_management_url : local.default_document_management_url}"
 
