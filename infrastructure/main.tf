@@ -55,6 +55,7 @@ module "api-gateway-web" {
     IDAM_SERVICE_KEY = "${data.vault_generic_secret.idam_service_key.data["value"]}"
     IDAM_SERVICE_NAME = "ccd_gw"
     PROXY_AGGREGATED = "http://ccd-data-store-api-${local.env_ase_url}"
+    PROXY_CASE_ACTIVITY = "http://ccd-case-activity-api-${local.env_ase_url}"
     PROXY_DATA = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DEFINITION_IMPORT = "http://ccd-definition-store-api-${local.env_ase_url}"
     PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
