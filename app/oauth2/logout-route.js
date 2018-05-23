@@ -7,7 +7,7 @@ const logoutRoute = (req, res, next) => {
 
   if (accessToken) {
     fetch(config.get('idam.oauth2.logout_endpoint').replace('${token}', accessToken), {method: 'DELETE'})
-      .then(result => {
+      .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         res.status(204).send();
       })
