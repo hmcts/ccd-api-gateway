@@ -10,7 +10,7 @@ chai.use(sinonChai);
 
 describe('logoutRoute', () => {
   const ACCESS_TOKEN = 'eycdjc7hf3478g4f37';
-  const LOGOUT_URL = 'http://localhost/session/${token}';
+  const LOGOUT_END_POINT = 'http://localhost/session/${token}';
 
   let request;
   let response;
@@ -23,7 +23,7 @@ describe('logoutRoute', () => {
     config = {
       get: sinon.stub()
     };
-    config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_URL);
+    config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_END_POINT);
 
     request = sinonExpressMock.mockReq({
       cookies: {
@@ -33,7 +33,7 @@ describe('logoutRoute', () => {
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
 
-    fetch = fetchMock.sandbox().delete(LOGOUT_URL.replace('${token}', ACCESS_TOKEN), {});
+    fetch = fetchMock.sandbox().delete(LOGOUT_END_POINT.replace('${token}', ACCESS_TOKEN), {});
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
@@ -44,7 +44,7 @@ describe('logoutRoute', () => {
   it('should call IDAM OAuth 2 logout endpoint with JWT token', done => {
     response.status.callsFake(() => {
       try {
-        expect(fetch.called(LOGOUT_URL.replace('${token}', ACCESS_TOKEN))).to.be.true;
+        expect(fetch.called(LOGOUT_END_POINT.replace('${token}', ACCESS_TOKEN))).to.be.true;
         expect(next).not.to.be.called;
         expect(response.clearCookie).to.be.calledWith(COOKIE_ACCESS_TOKEN);
         expect(response.status).to.be.calledWith(204);
