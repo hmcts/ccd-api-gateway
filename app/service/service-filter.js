@@ -7,20 +7,20 @@ const serviceFilter = (req, res, next) => {
             next();
         })
         .catch(error => {
-          if(error.errno === 'ENOTFOUND') {
-            console.error('Unknown S2S host', error);
-            next({
-              status: 500,
-              error: 'Internal Server Error',
-              message: 'Something went wrong when calling S2S token service'
-            });
+          if (error.name === 'FetchError') {
+              console.error(error);
+              next({
+                status: 500,
+                error: 'Internal Server Error',
+                message: 'Something went wrong when calling S2S token service'
+              });
           } else {
-            console.warn('Unsuccessful S2S authentication', error);
-            next({
-                status: error.status || 401
-            });
+              console.warn('Unsuccessful S2S authentication', error);
+              next({
+                  status: error.status || 401
+              });
           }
-        });
+    });
 };
 
 module.exports = serviceFilter;

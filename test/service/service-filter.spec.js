@@ -7,11 +7,10 @@ describe('service filter', () => {
   const request = {};
   const reply = {};
 
-  it('should return a 500 error when problems connecting to s2s service', done => {
-
+  it('should return a 500 error in case of FetchError', done => {
     const EnotFoundError = () => {
       return Promise.reject({
-        errno: 'ENOTFOUND'
+        name: 'FetchError'
       });
     };
 
