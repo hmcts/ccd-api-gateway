@@ -23,7 +23,7 @@ describe('service filter', () => {
       serviceFilter(request, reply, (error) => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal('Some error happened while calling S2S token generation');
+        expect(error.message).to.equal('Something went wrong when calling S2S token service');
         done();
       });
   });
