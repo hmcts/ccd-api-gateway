@@ -46,7 +46,7 @@ module "api-gateway-web" {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
     IDAM_OAUTH2_CLIENT_ID = "ccd_gateway"
     IDAM_OAUTH2_CLIENT_SECRET = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
-    IDAM_LOGOUT_URL = "${var.idam_authentication_web_url}/login/logout"
+    IDAM_OAUTH2_LOGOUT_ENDPOINT = "${var.idam_api_url}/session/:token"
     ADDRESS_LOOKUP_TOKEN = "${data.vault_generic_secret.address_lookup_token.data["value"]}"
     CORS_ORIGIN_METHODS = "GET,POST,OPTIONS"
     CORS_ORIGIN_WHITELIST = "https://ccd-case-management-web-${local.env_ase_url},${local.cors_origin}"
