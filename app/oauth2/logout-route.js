@@ -1,12 +1,13 @@
 const config = require('config');
 const fetch = require('node-fetch');
 const COOKIE_ACCESS_TOKEN = require('./oauth2-route').COOKIE_ACCESS_TOKEN;
+const TOKEN_PLACEHOLDER = ':token';
 
 const logoutRoute = (req, res, next) => {
   const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
 
   if (accessToken) {
-    fetch(config.get('idam.oauth2.logout_endpoint').replace('${token}', accessToken), {method: 'DELETE'})
+    fetch(config.get('idam.oauth2.logout_endpoint').replace(TOKEN_PLACEHOLDER, accessToken), {method: 'DELETE'})
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         res.status(204).send();
