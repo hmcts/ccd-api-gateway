@@ -31,7 +31,7 @@ The following environment variables are required:
 | IDAM_USER_URL | Base URL for IdAM's User API service (idam-app). `http://localhost:4501` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_S2S_URL | Base URL for IdAM's S2S API service (service-auth-provider). `http://localhost:4502` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_SERVICE_KEY | API Gateway's IDAM S2S micro-service secret key. This must match the IDAM instance it's being run against. |
-| IDAM_LOGOUT_URL | URL of the IdAM Authentication Web `logout` endpoint. `https://localhost:3501/login/logout` for the dockerised local instance. |
+| IDAM_OAUTH2_LOGOUT_ENDPOINT | URL of the IdAM OAuth2 API `logout` endpoint. `http://localhost:4501/session/:token` for the dockerised local instance. |
 | IDAM_OAUTH2_TOKEN_ENDPOINT | URL of the IdAM OAuth2 API endpoint for obtaining an OAuth2 token. `http://localhost:4501/oauth2/token` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_OAUTH2_CLIENT_SECRET | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against. |
 | ADDRESS_LOOKUP_TOKEN | Token for use with the MoJ Address Lookup service. |
