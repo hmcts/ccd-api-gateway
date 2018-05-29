@@ -12,7 +12,7 @@ idam:
   service_name: ccd_gw
   oauth2:
     token_endpoint: http://localhost:4501/oauth2/token
-    logout_endpoint: http://localhost:4501/session/${token}
+    logout_endpoint: http://localhost:4501/session/:token
     client_id: ccd_gateway
 address_lookup:
   detect_proxy: false
