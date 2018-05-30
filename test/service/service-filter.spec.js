@@ -10,7 +10,8 @@ describe('service filter', () => {
   it('should return a 500 error in case of FetchError', done => {
     const EnotFoundError = () => {
       return Promise.reject({
-        name: 'FetchError'
+        name: 'FetchError',
+        message: 'some error'
       });
     };
 
@@ -22,7 +23,7 @@ describe('service filter', () => {
       serviceFilter(request, reply, (error) => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal('Something went wrong when calling S2S token service');
+        expect(error.message).to.equal('some error');
         done();
       });
   });

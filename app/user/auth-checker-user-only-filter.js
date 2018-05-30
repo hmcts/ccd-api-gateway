@@ -18,7 +18,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
         next({
           status: 500,
           error: 'Internal Server Error',
-          message: 'Something went wrong when calling IDAM'
+          message: error.message
         });
       } else {
         console.warn('Unsuccessful user authentication', error);
