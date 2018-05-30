@@ -7,7 +7,16 @@ const logoutRoute = (req, res, next) => {
   const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
 
   if (accessToken) {
-    fetch(config.get('idam.oauth2.logout_endpoint').replace(TOKEN_PLACEHOLDER, accessToken), {method: 'DELETE'})
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Basic '
+        + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('idam.oauth2.client_secret'))
+          .toString('base64'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    };
+    fetch(config.get('idam.oauth2.logout_endpoint').replace(TOKEN_PLACEHOLDER, accessToken), options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         res.status(204).send();
