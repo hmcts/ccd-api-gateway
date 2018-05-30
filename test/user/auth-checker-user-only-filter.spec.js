@@ -86,6 +86,7 @@ describe('authCheckerUserOnlyFilter', () => {
     it('should return 500 status code in case of FetchError', done => {
       error = {
         name: 'FetchError',
+        message: 'some message',
         status: 403
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
@@ -93,7 +94,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter(req, res, error => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal('Something went wrong when calling IDAM');
+        expect(error.message).to.equal('some message');
         done();
       });
     });

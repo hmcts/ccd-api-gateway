@@ -12,7 +12,7 @@ const serviceFilter = (req, res, next) => {
               next({
                 status: 500,
                 error: 'Internal Server Error',
-                message: 'Something went wrong when calling S2S token service'
+                message: error.message
               });
           } else {
               console.warn('Unsuccessful S2S authentication', error);
