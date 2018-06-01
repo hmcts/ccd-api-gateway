@@ -20,6 +20,10 @@ variable "ilbIp" {}
 
 variable "subscription" {}
 
+variable "capacity" {
+  default = "1"
+}
+
 variable "vault_section" {
   default = "test"
 }
