@@ -8,6 +8,5 @@ script:
   - yarn install
   - yarn test
   - yarn test:coverage
-  - yarn test:codecov
   - codecov
 after_success:
