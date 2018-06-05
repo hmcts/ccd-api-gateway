@@ -8,6 +8,7 @@
     "lint": "NODE_PATH=. eslint --ignore-pattern coverage .",
     "test": "yarn test:unit",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
+    "test:codecov": "istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec",
     "test:coverage": "NODE_ENV=test NODE_PATH=. istanbul cover _mocha 'test/**/*.spec.js'",
     "test:acceptance": "echo 'TODO - CALL JAVA INTEGRATION TEST'",
     "test:nsp": "NODE_PATH=. nsp check",
