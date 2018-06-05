@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/hmcts/ccd-api-gateway/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/ccd-api-gateway)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f3ab7a7b6b784e76bc23a020628729e5)](https://www.codacy.com/app/adr1ancho/ccd-api-gateway?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hmcts/ccd-api-gateway&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/github/hmcts/ccd-api-gateway/badge.svg)](https://snyk.io/test/github/hmcts/ccd-api-gateway)
-[![HitCount](http://hits.dwyl.io/hmcts/ccd-api-gateway.svg)](http://hits.dwyl.io/hmcts/ccd-api-gateway)
+[![HitCount](http://hits.dwyl.io/hmcts/ccd-api-gateway.svg)]()
 [![Issue Stats](http://issuestats.com/github/hmcts/ccd-api-gateway/badge/pr)](http://issuestats.com/github/hmcts/ccd-api-gateway)
 
 Secured API Gateway integrating with IDAM
