@@ -1,8 +1,12 @@
 language: node_js
+install:
+  - npm install -g codecov
 cache: yarn
 script:
   - yarn --version
   - yarn lint
   - yarn test
   - yarn test:coverage
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
 after_success:
