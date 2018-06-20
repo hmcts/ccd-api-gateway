@@ -70,17 +70,53 @@ describe('authCheckerUserOnlyFilter', () => {
   describe('when authorisation failed', () => {
     let error;
 
-    beforeEach(() => {
+    it('should call next middleware with error', done => {
       error = {
+        name: 'FetchError',
         status: 403
       };
-
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
-    });
 
-    it('should call next middleware with error', done => {
       filter(req, res, error => {
         expect(error).to.equal(error);
+        done();
+      });
+    });
+
+    it('should return 500 status code in case of FetchError', done => {
+      error = {
+        name: 'FetchError',
+        message: 'some message',
+        status: 403
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(500);
+        expect(error.error).to.equal('Internal Server Error');
+        expect(error.message).to.equal('some message');
+        done();
+      });
+    });
+
+    it('should return 401 status code when idam call fails with no error status', done => {
+      error = {};
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(401);
+        done();
+      });
+    });
+
+    it('should return the error status when idam call fails with an error status', done => {
+      error = {
+        status: 502
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(502);
         done();
       });
     });
