@@ -1,47 +1,69 @@
 const chai = require('chai');
 const expect = chai.expect;
+const fetchMock = require('fetch-mock');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const sinonExpressMock = require('sinon-express-mock');
-const COOKIE_ACCESS_TOKEN = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
+const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 chai.use(sinonChai);
 
 describe('logoutRoute', () => {
+  const CLIENT_ID = 'ccd_gateway';
+  const CLIENT_SECRET = 'abc123def456';
   const ACCESS_TOKEN = 'eycdjc7hf3478g4f37';
-  const LOGOUT_URL = 'http://idam.reform.hmcts.net/login/logout';
+  const LOGOUT_END_POINT = 'http://localhost/session/:token';
 
   let request;
   let response;
   let next;
   let config;
   let logoutRoute;
+  let fetch;
 
   beforeEach(() => {
     config = {
       get: sinon.stub()
     };
-    config.get.withArgs('idam.logout_url').returns(LOGOUT_URL);
+    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
+    config.get.withArgs('idam.oauth2.client_secret').returns(CLIENT_SECRET);
+    config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_END_POINT);
 
     request = sinonExpressMock.mockReq({
       cookies: {
-        [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN
+        [ACCESS_TOKEN_COOKIE_NAME]: ACCESS_TOKEN
       }
     });
-    response = sinonExpressMock.mockRes({});
+    response = sinonExpressMock.mockRes();
     next = sinon.stub();
 
+    fetch = fetchMock.sandbox().delete(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN), {});
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
-      'config': config
+      'config': config,
+      'node-fetch': fetch
     }).logoutRoute;
   });
 
-  it('should redirect to logout URL with JWT token', () => {
+  it('should call IDAM OAuth 2 logout endpoint with JWT token', done => {
+    response.status.callsFake(() => {
+      try {
+        expect(fetch.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
+        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        expect(next).not.to.be.called;
+        expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
+        expect(response.status).to.be.calledWith(204);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
     logoutRoute(request, response, next);
 
-    expect(response.redirect).to.be.calledWith(`${LOGOUT_URL}?jwt=${ACCESS_TOKEN}`);
-    expect(next).not.to.be.called;
+    expect(config.get).to.be.calledWith('idam.oauth2.client_id');
+    expect(config.get).to.be.calledWith('idam.oauth2.client_secret');
+    expect(config.get).to.be.calledWith('idam.oauth2.logout_endpoint');
   });
 
   it('should return 400 error when cookies missing', () => {
