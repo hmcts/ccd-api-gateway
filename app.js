@@ -96,6 +96,12 @@ applyProxy(app, {
   target: config.get('proxy.case_activity')
 });
 
+applyProxy(app, {
+  source: '/payments',
+  target: config.get('proxy.payments'),
+  rewrite: false
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   let err = new Error('Not Found');
