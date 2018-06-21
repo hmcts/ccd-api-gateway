@@ -5,10 +5,11 @@ proxy:
   document_management: https://api-gateway.dev.dm.reform.hmcts.net
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
+  payments: http://localhost:8080
 idam:
   base_url: http://localhost:4501
   s2s_url: http://localhost:4502
-  service_key:
+  service_key: AAAAAAAAAAAAAAAC
   service_name: ccd_gw
   oauth2:
     token_endpoint: http://localhost:4501/oauth2/token
