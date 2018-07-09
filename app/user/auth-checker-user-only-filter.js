@@ -13,9 +13,18 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     })
     .then(() => next())
     .catch(error => {
-      console.warn('Unsuccessful user authentication', error);
-      error.status = error.status || 401;
-      next(error);
+      if (error.name === 'FetchError') {
+        console.error(error);
+        next({
+          status: 500,
+          error: 'Internal Server Error',
+          message: error.message
+        });
+      } else {
+        console.warn('Unsuccessful user authentication', error);
+        error.status = error.status || 401;
+        next(error);
+      }
     });
 };
 

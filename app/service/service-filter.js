@@ -7,11 +7,20 @@ const serviceFilter = (req, res, next) => {
             next();
         })
         .catch(error => {
-            console.warn('Unsuccessful S2S authentication', error);
-            next({
-                status: error.status || 401
-            });
-        });
+          if (error.name === 'FetchError') {
+              console.error(error);
+              next({
+                status: 500,
+                error: 'Internal Server Error',
+                message: error.message
+              });
+          } else {
+              console.warn('Unsuccessful S2S authentication', error);
+              next({
+                  status: error.status || 401
+              });
+          }
+    });
 };
 
 module.exports = serviceFilter;
