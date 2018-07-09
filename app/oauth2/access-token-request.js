@@ -28,7 +28,7 @@ function accessTokenRequest(request) {
     .then(response => response.status === 200 ? response : response.text().then(text => Promise.reject(new Error(text))))
     .then(response => response.json())
     .catch(error => {
-      console.error('Failed to obtain access token:', error);
+      // console.error('Failed to obtain access token:', error);
       throw error;
     });
 }
