@@ -8,14 +8,14 @@ const serviceFilter = (req, res, next) => {
         })
         .catch(error => {
           if (error.name === 'FetchError') {
-              console.error(error);
+              // console.error(error);
               next({
                 status: 500,
                 error: 'Internal Server Error',
                 message: error.message
               });
           } else {
-              console.warn('Unsuccessful S2S authentication', error);
+              // console.warn('Unsuccessful S2S authentication', error);
               next({
                   status: error.status || 401
               });
