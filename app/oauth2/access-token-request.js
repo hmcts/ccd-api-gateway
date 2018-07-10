@@ -1,9 +1,9 @@
-import { Logger } from '@hmcts/nodejs-logging';
-
+const { Logger } = require('@hmcts/nodejs-logging');
+const LOGGER = Logger.getLogger(__filename);
 const config = require('config');
 const fetch = require('node-fetch');
+
 const url = require('url');
-const LOGGER = Logger.getLogger(__filename);
 
 const completeRedirectURI = (uri) => {
   if (!uri.startsWith('http')) {

@@ -1,7 +1,6 @@
-import { Logger } from '@hmcts/nodejs-logging';
-
-const serviceTokenGenerator = require('./service-token-generator');
+const { Logger } = require('@hmcts/nodejs-logging');
 const LOGGER = Logger.getLogger(__filename);
+const serviceTokenGenerator = require('./service-token-generator');
 
 const serviceFilter = (req, res, next) => {
   serviceTokenGenerator()

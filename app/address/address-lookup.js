@@ -1,10 +1,9 @@
-import { Logger } from '@hmcts/nodejs-logging';
-
+const { Logger } = require('@hmcts/nodejs-logging');
+const LOGGER = Logger.getLogger(__filename);
 const config = require('config');
 const extractAddress = require('./extract-address');
 const fetch = require('node-fetch');
 const HttpsProxyAgent = require('https-proxy-agent');
-const LOGGER = Logger.getLogger(__filename);
 
 function addressLookup(postcode) {
 
