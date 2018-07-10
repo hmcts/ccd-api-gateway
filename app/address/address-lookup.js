@@ -1,3 +1,5 @@
+const { Logger } = require('@hmcts/nodejs-logging');
+const LOGGER = Logger.getLogger(__filename);
 const config = require('config');
 const extractAddress = require('./extract-address');
 const fetch = require('node-fetch');
@@ -12,7 +14,8 @@ function addressLookup(postcode) {
     .then(processBody)
     .catch((e) => {
       if (e.logMessage) {
-        console.error(e.logMessage + ', ErrorId=' + e.error);
+        // console.error(e.logMessage + ', ErrorId=' + e.error);
+        LOGGER.error(e.logMessage + ', ErrorId=' + e.error);
       }
       throw e;
     });
@@ -37,8 +40,8 @@ function processBody(body) {
       .map((element) => extractAddress(element))
       .sort(
         function(address1,address2) {
-          let address1Line1 = address1.AddressLine1 ?  address1.AddressLine1 : '';
-          let address2Line1 = address2.AddressLine1 ?  address2.AddressLine1 : '';
+          const address1Line1 = address1.AddressLine1 ?  address1.AddressLine1 : '';
+          const address2Line1 = address2.AddressLine1 ?  address2.AddressLine1 : '';
           return address1Line1.localeCompare(address2Line1, undefined, {numeric: true, sensitivity: 'base'});
         });
   }
