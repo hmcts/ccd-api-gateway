@@ -1,7 +1,10 @@
+import { Logger } from '@hmcts/nodejs-logging';
+
 const config = require('config');
 const extractAddress = require('./extract-address');
 const fetch = require('node-fetch');
 const HttpsProxyAgent = require('https-proxy-agent');
+const LOGGER = Logger.getLogger(__filename);
 
 function addressLookup(postcode) {
 
@@ -13,6 +16,7 @@ function addressLookup(postcode) {
     .catch((e) => {
       if (e.logMessage) {
         // console.error(e.logMessage + ', ErrorId=' + e.error);
+        LOGGER.error(e.logMessage + ', ErrorId=' + e.error);
       }
       throw e;
     });

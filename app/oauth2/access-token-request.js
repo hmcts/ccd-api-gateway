@@ -1,6 +1,9 @@
+import { Logger } from '@hmcts/nodejs-logging';
+
 const config = require('config');
 const fetch = require('node-fetch');
 const url = require('url');
+const LOGGER = Logger.getLogger(__filename);
 
 const completeRedirectURI = (uri) => {
   if (!uri.startsWith('http')) {
@@ -29,6 +32,7 @@ function accessTokenRequest(request) {
     .then(response => response.json())
     .catch(error => {
       // console.error('Failed to obtain access token:', error);
+      LOGGER.error('Failed to obtain access token:', error);
       throw error;
     });
 }
