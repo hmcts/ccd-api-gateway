@@ -10,9 +10,9 @@ idam:
   s2s_url: IDAM_S2S_URL
   service_key: IDAM_SERVICE_KEY
   service_name: IDAM_SERVICE_NAME
-  logout_url: IDAM_LOGOUT_URL
   oauth2:
     token_endpoint: IDAM_OAUTH2_TOKEN_ENDPOINT
+    logout_endpoint: IDAM_OAUTH2_LOGOUT_ENDPOINT
     client_id: IDAM_OAUTH2_CLIENT_ID
     client_secret: IDAM_OAUTH2_CLIENT_SECRET
 address_lookup:

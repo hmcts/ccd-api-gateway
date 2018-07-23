@@ -36,7 +36,7 @@ describe('UserRequestAuthorizer', () => {
         cookies: COOKIES
       };
       userResolver = {
-        getTokenDetails: sinon.stub().returns(Promise.resolve(DETAILS))
+        getUserDetails: sinon.stub().returns(Promise.resolve(DETAILS))
       };
       authorizedRolesExtractor = {
         extract: sinon.stub()
@@ -62,7 +62,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should reject when user cannot be resolved', done => {
       const ERROR = { error: 'oops', status: 401 };
-      userResolver.getTokenDetails.returns(Promise.reject(ERROR));
+      userResolver.getUserDetails.returns(Promise.reject(ERROR));
 
       userRequestAuthorizer.authorise(request)
         .then(() => done(new Error('Promise should have been rejected')))
@@ -133,7 +133,7 @@ describe('UserRequestAuthorizer', () => {
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
-          expect(userResolver.getTokenDetails).to.have.been.calledWith(COOKIES[COOKIE_ACCESS_TOKEN]);
+          expect(userResolver.getUserDetails).to.have.been.calledWith(COOKIES[COOKIE_ACCESS_TOKEN]);
           done();
         })
         .catch(() => done(new Error('Promise should have been resolved')));
