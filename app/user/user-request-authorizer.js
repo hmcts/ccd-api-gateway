@@ -38,8 +38,8 @@ const authorise = (request) => {
   }
 
   return userResolver
-    .getTokenDetails(bearerToken)
-    .then(tokenDetails => user = tokenDetails)
+    .getUserDetails(bearerToken)
+    .then(userDetails => user = userDetails)
     .then(() => fillInUserId(request, user))
     .then(() => authorizeRoles(request, user))
     .then(() => user);

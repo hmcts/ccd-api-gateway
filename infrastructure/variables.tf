@@ -20,6 +20,10 @@ variable "ilbIp" {}
 
 variable "subscription" {}
 
+variable "capacity" {
+  default = "1"
+}
+
 variable "vault_section" {
   default = "test"
 }
@@ -44,4 +48,12 @@ variable "cors_origin" {
 
 variable "document_management_url" {
   default = ""
+}
+
+variable "https_only" {
+  default = "true"
+}
+
+variable "common_tags" {
+  type = "map"
 }
