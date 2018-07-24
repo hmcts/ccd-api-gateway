@@ -4,9 +4,9 @@ enableAppInsights();
 
 let express = require('express');
 let cookieParser = require('cookie-parser');
-let logger = require('morgan');
 let proxy = require('http-proxy-middleware');
 const config = require('config');
+const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const authCheckerUserOnlyFilter = require('./app/user/auth-checker-user-only-filter');
 const addressLookup = require('./app/address/address-lookup');
 const serviceFilter = require('./app/service/service-filter');
@@ -16,8 +16,9 @@ const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
 const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
 
 let app = express();
+const logger = Logger.getLogger('app');
 
-app.use(logger('dev'));
+app.use(ExpressLogger.accessLogger());
 app.use(cookieParser());
 
 const applyProxy = (app, config) => {
@@ -105,6 +106,8 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
+  logger.error(err);
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
