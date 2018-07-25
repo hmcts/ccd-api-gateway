@@ -1,4 +1,7 @@
 const serviceTokenGenerator = require('./service-token-generator');
+const { Logger } = require('@hmcts/nodejs-logging');
+
+const logger = Logger.getLogger('serviceFilter');
 
 const serviceFilter = (req, res, next) => {
     serviceTokenGenerator()
@@ -8,14 +11,14 @@ const serviceFilter = (req, res, next) => {
         })
         .catch(error => {
           if (error.name === 'FetchError') {
-              console.error(error);
+              logger.error(error);
               next({
                 status: 500,
                 error: 'Internal Server Error',
                 message: error.message
               });
           } else {
-              console.warn('Unsuccessful S2S authentication', error);
+              logger.warn('Unsuccessful S2S authentication', error);
               next({
                   status: error.status || 401
               });
