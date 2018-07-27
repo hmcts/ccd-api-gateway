@@ -1,5 +1,6 @@
 # ccd-api-gateway
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Greenkeeper badge](https://badges.greenkeeper.io/hmcts/ccd-api-gateway.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/hmcts/ccd-api-gateway.svg?branch=master)](https://travis-ci.org/hmcts/ccd-api-gateway)
 [![codecov](https://codecov.io/gh/hmcts/ccd-api-gateway/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/ccd-api-gateway)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f3ab7a7b6b784e76bc23a020628729e5)](https://www.codacy.com/app/adr1ancho/ccd-api-gateway?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hmcts/ccd-api-gateway&amp;utm_campaign=Badge_Grade)
