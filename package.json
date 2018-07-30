@@ -39,7 +39,7 @@
     "cross-env": "^5.0.5",
     "eslint": "^3.17.1",
     "eslint-plugin-mocha": "^4.8.0",
-    "fetch-mock": "^6.0.0",
+    "fetch-mock": "^6.5.2",
     "git-message": "^2.0.2",
     "istanbul": "^0.4.5",
     "jsonwebtoken": "^8.2.1",
