@@ -2,10 +2,10 @@ language: node_js
 node_js:
   - "8.4"
 cache: yarn
+before_install: yarn global add greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
 install:
   - npm install -g codecov
-  - yarn install
-cache: yarn
 script:
   - yarn --version
   - yarn lint
@@ -14,3 +14,4 @@ script:
   - codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - greenkeeper-lockfile-upload
