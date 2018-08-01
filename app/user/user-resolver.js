@@ -1,7 +1,7 @@
 const config = require('config');
 const fetch = require('../util/fetch');
 
-const getTokenDetails = (jwt) => {
+const getUserDetails = (jwt) => {
   let bearerJwt = jwt.startsWith('Bearer ') ? jwt : 'Bearer ' + jwt;
 
   return fetch(`${config.get('idam.base_url')}/details`, {
@@ -12,4 +12,4 @@ const getTokenDetails = (jwt) => {
   .then(res => res.json());
 };
 
-exports.getTokenDetails = getTokenDetails;
+exports.getUserDetails = getUserDetails;

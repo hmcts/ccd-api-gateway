@@ -1,4 +1,7 @@
 const userRequestAuthorizer = require('./user-request-authorizer');
+const { Logger } = require('@hmcts/nodejs-logging');
+
+const logger = Logger.getLogger('authCheckerUserOnlyFilter');
 
 const authCheckerUserOnlyFilter = (req, res, next) => {
 
@@ -13,9 +16,18 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     })
     .then(() => next())
     .catch(error => {
-      console.warn('Unsuccessful user authentication', error);
-      error.status = error.status || 401;
-      next(error);
+      if (error.name === 'FetchError') {
+        logger.error(error);
+        next({
+          status: 500,
+          error: 'Internal Server Error',
+          message: error.message
+        });
+      } else {
+        logger.warn('Unsuccessful user authentication', error);
+        error.status = error.status || 401;
+        next(error);
+      }
     });
 };
 
