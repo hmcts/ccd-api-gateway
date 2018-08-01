@@ -1,9 +1,11 @@
 const config = require('config');
 
+const WILDCARD = '*';
+
 const createWhitelistValidator = (val) => {
     const whitelist = config.get('security.cors_origin_whitelist').split(',');
     for (var i = 0; i < whitelist.length; i++) {
-        if (val === whitelist[i]) {
+        if (val === whitelist[i] || WILDCARD === whitelist[i]) {
             return true;
         }
     }
