@@ -22,6 +22,16 @@ locals {
 
   // S2S
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
+
+  // Vault name
+  previewVaultName = "${var.raw_product}-shared-aat"
+  nonPreviewVaultName = "${var.raw_product}-shared-${var.env}"
+  vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+}
+
+data "azurerm_key_vault" "ccd_shared_key_vault" {
+  name = "${local.vaultName}"
+  resource_group_name = "${local.vaultName}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
