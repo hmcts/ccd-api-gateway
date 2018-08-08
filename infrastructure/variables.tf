@@ -49,3 +49,11 @@ variable "cors_origin" {
 variable "document_management_url" {
   default = ""
 }
+
+variable "https_only" {
+  default = "true"
+}
+
+variable "common_tags" {
+  type = "map"
+}

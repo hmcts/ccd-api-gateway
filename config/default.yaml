@@ -15,6 +15,7 @@ idam:
     token_endpoint: http://localhost:4501/oauth2/token
     logout_endpoint: http://localhost:4501/session/:token
     client_id: ccd_gateway
+    client_secret: OOOOOOOOOOOOOOOO
 address_lookup:
   detect_proxy: false
   url: https://postcodeinfo.service.justice.gov.uk/addresses?postcode=${postcode}

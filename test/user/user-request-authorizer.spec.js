@@ -11,7 +11,7 @@ describe('UserRequestAuthorizer', () => {
   describe('authorize', () => {
 
     const AUTHZ_HEADER = 'Bearer cincwuewncew.cewnuceuncwe.cewucwbeu';
-    const USER_ID = 1;
+    const USER_ID = '1';
     const ROLE_1 = 'role1';
     const DETAILS = {
       id: USER_ID,

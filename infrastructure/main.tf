@@ -45,6 +45,8 @@ module "api-gateway-web" {
   subscription = "${var.subscription}"
   is_frontend = "${local.is_frontend}"
   additional_host_name = "${local.external_host_name}"
+  https_only = "${var.https_only}"
+  common_tags  = "${var.common_tags}"
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
