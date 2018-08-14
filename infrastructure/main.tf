@@ -25,6 +25,16 @@ locals {
 
   // Payments API
   payments_url = "http://payment-api-${local.env_ase_url}"
+
+  // Vault name
+  previewVaultName = "${var.raw_product}-shared-aat"
+  nonPreviewVaultName = "${var.raw_product}-shared-${var.env}"
+  vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+}
+
+data "azurerm_key_vault" "ccd_shared_key_vault" {
+  name = "${local.vaultName}"
+  resource_group_name = "${local.vaultName}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
@@ -72,4 +82,24 @@ module "api-gateway-web" {
     PROXY_PAYMENTS = "${local.payments_url}"
     WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
   }
+}
+
+// Copy into Azure Key Vault
+
+resource "azurerm_key_vault_secret" "address_lookup_token" {
+  name = "postcode-info-address-lookup-token"
+  value = "${data.vault_generic_secret.address_lookup_token.data["value"]}"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "oauth2_client_secret" {
+  name = "ccd-api-gateway-oauth2-client-secret"
+  value = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "idam_service_key" {
+  name = "ccd-api-gateway-idam-service-key"
+  value = "${data.vault_generic_secret.idam_service_key.data["value"]}"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
