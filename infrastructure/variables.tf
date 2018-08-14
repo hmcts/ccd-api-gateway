@@ -2,6 +2,10 @@ variable "product" {
   type = "string"
 }
 
+variable "raw_product" {
+  default = "ccd" // jenkins-library overrides product for PRs and adds e.g. pr-118-ccd
+}
+
 variable "component" {
   type = "string"
 }
@@ -35,10 +39,6 @@ variable "external_host_name" {
 
 variable "idam_api_url" {
   default = "http://betaDevBccidamAppLB.reform.hmcts.net"
-}
-
-variable "idam_authentication_web_url" {
-  default = "https://idam-test.dev.ccidam.reform.hmcts.net"
 }
 
 variable "cors_origin" {
