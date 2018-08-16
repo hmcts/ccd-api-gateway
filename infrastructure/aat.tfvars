@@ -1,7 +1,7 @@
 vault_section = "preprod"
 external_host_name = "gateway-ccd.nonprod.platform.hmcts.net"
-idam_authentication_web_url = "https://www.preprod.ccidam.reform.hmcts.net"
 idam_api_url = "https://preprod-idamapi.reform.hmcts.net:3511"
+#idam_api_url = "https://idam-api.aat.platform.hmcts.net"
 cors_origin = "https://www-ccd.nonprod.platform.hmcts.net,http://localhost:3451,*"
 document_management_url = "http://dm-store-aat.service.core-compute-aat.internal"
 capacity = "2"
