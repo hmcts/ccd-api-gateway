@@ -2,7 +2,7 @@ proxy:
   aggregated: http://localhost:4452
   data: http://localhost:4452
   definition_import: http://localhost:4451
-  document_management: https://api-gateway.dev.dm.reform.hmcts.net
+  document_management: http://localhost:4603
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
 idam:
