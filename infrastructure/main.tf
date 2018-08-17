@@ -67,7 +67,7 @@ module "api-gateway-web" {
     IDAM_OAUTH2_CLIENT_SECRET = "${data.vault_generic_secret.oauth2_client_secret.data["value"]}"
     IDAM_OAUTH2_LOGOUT_ENDPOINT = "${var.idam_api_url}/session/:token"
     ADDRESS_LOOKUP_TOKEN = "${data.vault_generic_secret.address_lookup_token.data["value"]}"
-    CORS_ORIGIN_METHODS = "GET,POST,OPTIONS"
+    CORS_ORIGIN_METHODS = "GET,POST,OPTIONS,PUT"
     CORS_ORIGIN_WHITELIST = "${local.default_cors_origin},${local.cors_origin}"
     IDAM_BASE_URL = "${var.idam_api_url}"
     IDAM_S2S_URL = "${local.s2s_url}"
