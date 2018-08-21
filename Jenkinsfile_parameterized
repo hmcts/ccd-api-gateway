@@ -10,4 +10,8 @@ properties([
 
 withParameterizedPipeline('nodejs', 'ccd', 'api-gateway-web', params.ENVIRONMENT, 'sandbox') {
 
+    afterCheckout {
+        sh "yarn cache clean"
+    }
+
 }
