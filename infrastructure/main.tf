@@ -23,6 +23,9 @@ locals {
   // S2S
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
 
+  // Payments API
+  payments_url = "http://payment-api-${local.env_ase_url}"
+
   // Vault name
   previewVaultName = "${var.raw_product}-shared-aat"
   nonPreviewVaultName = "${var.raw_product}-shared-${var.env}"
@@ -76,6 +79,7 @@ module "api-gateway-web" {
     PROXY_DEFINITION_IMPORT = "http://ccd-definition-store-api-${local.env_ase_url}"
     PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
+    PROXY_PAYMENTS = "${local.payments_url}"
     WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
   }
 }

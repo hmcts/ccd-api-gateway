@@ -5,6 +5,7 @@ proxy:
   document_management: PROXY_DOCUMENT_MANAGEMENT
   print_service: PROXY_PRINT_SERVICE
   case_activity: PROXY_CASE_ACTIVITY
+  payments: PROXY_PAYMENTS
 idam:
   base_url: IDAM_BASE_URL
   s2s_url: IDAM_S2S_URL
