@@ -42,7 +42,11 @@ const applyProxy = (app, config) => {
     };
   }
 
-  app.use(config.source, proxy(options));
+  if (config.filter) {
+    app.use(config.source, proxy(config.filter, options));
+  } else {
+    app.use(config.source, proxy(options));
+  }
 };
 
 const health = healthcheck.configure({
@@ -95,6 +99,15 @@ applyProxy(app, {
 applyProxy(app, {
   source: '/activity',
   target: config.get('proxy.case_activity')
+});
+
+applyProxy(app, {
+  source: '/payments',
+  target: config.get('proxy.payments'),
+  filter: [
+    '/payments/cases/**/payments',
+    '/payments/card-payments/**'
+  ]
 });
 
 // catch 404 and forward to error handler
