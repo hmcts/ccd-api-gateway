@@ -11,4 +11,8 @@ def component = "api-gateway-web"
 
 withPipeline("nodejs", product, component) {
 
+    afterCheckout {
+        sh "yarn cache clean"
+    }
+
 }
