@@ -30,11 +30,16 @@ locals {
   previewVaultName = "${var.raw_product}-aat"
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+
+  // Shared Resource Group
+  previewResourceGroup = "${var.raw_product}-shared-aat"
+  nonPreviewResourceGroup = "${var.raw_product}-shared-${var.env}"
+  sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
 }
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
   name = "${local.vaultName}"
-  resource_group_name = "${local.vaultName}"
+  resource_group_name = "${local.sharedResourceGroup}"
 }
 
 data "vault_generic_secret" "address_lookup_token" {
