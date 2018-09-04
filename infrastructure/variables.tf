@@ -28,10 +28,6 @@ variable "capacity" {
   default = "1"
 }
 
-variable "vault_section" {
-  default = "test"
-}
-
 variable "external_host_name" {
   type = "string"
   default = ""
