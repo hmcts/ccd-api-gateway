@@ -42,16 +42,19 @@ data "azurerm_key_vault" "ccd_shared_key_vault" {
   resource_group_name = "${local.sharedResourceGroup}"
 }
 
-data "vault_generic_secret" "address_lookup_token" {
-  path = "secret/${var.vault_section}/ccd/postcode-info/token"
+data "azurerm_key_vault_secret" "address_lookup_token" {
+  name = "postcode-info-address-lookup-token"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
 
-data "vault_generic_secret" "oauth2_client_secret" {
-  path = "secret/${var.vault_section}/ccidam/idam-api/oauth2/client-secrets/ccd-gateway"
+data "azurerm_key_vault_secret" "oauth2_client_secret" {
+  name = "ccd-api-gateway-oauth2-client-secret"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
 
-data "vault_generic_secret" "idam_service_key" {
-  path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/ccd-gw"
+data "azurerm_key_vault_secret" "idam_service_key" {
+  name = "ccd-api-gateway-s2s-secret"
+  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
 }
 
 module "api-gateway-web" {
