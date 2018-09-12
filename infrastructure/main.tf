@@ -1,7 +1,3 @@
-provider "vault" {
-  address = "https://vault.reform.hmcts.net:6200"
-}
-
 locals {
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
