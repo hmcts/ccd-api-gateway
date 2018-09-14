@@ -54,7 +54,7 @@ data "azurerm_key_vault_secret" "idam_service_key" {
 }
 
 module "api-gateway-web" {
-  source = "git@github.com:hmcts/moj-module-webapp?ref=master"
+  source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
   product = "${var.product}-${var.component}"
   location = "${var.location}"
   env = "${var.env}"
