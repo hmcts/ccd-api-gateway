@@ -55,7 +55,7 @@
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0",
     "sinon-express-mock": "^2.0.0",
-    "sonar-scanner": "^3.0.3",
+    "sonar-scanner": "^3.1.0",
     "supertest": "^3.0.0"
   }
 }
