@@ -42,7 +42,7 @@
     "fetch-mock": "^6.5.2",
     "git-message": "^2.0.2",
     "istanbul": "^0.4.5",
-    "jsonwebtoken": "^8.2.1",
+    "jsonwebtoken": "^8.3.0",
     "mocha": "^3.4.2",
     "mockery": "^2.1.0",
     "moment": "^2.22.1",
