@@ -23,5 +23,6 @@ address_lookup:
 security:
   cors_origin_methods: CORS_ORIGIN_METHODS
   cors_origin_whitelist: CORS_ORIGIN_WHITELIST
+  secure_auth_cookie_enabled: SECURE_AUTH_COOKIE_ENABLED
 appInsights:
   instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
