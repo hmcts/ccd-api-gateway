@@ -33,7 +33,7 @@ describe('oauth2Route', () => {
 
     oauth2Route = proxyquire('../../app/oauth2/oauth2-route', {
       './access-token-request': accessTokenRequest,
-      'config': config,
+      'config': config
     }).oauth2Route;
   });
 
