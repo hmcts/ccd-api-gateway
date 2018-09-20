@@ -23,6 +23,7 @@ address_lookup:
 security:
   cors_origin_methods: "GET,POST,OPTIONS,PUT"
   cors_origin_whitelist: "http://localhost:3451,http://localhost:3452"
+  secure_auth_cookie_enabled: false
 appInsights:
   instrumentationKey: "some-key"
   enabled: true

@@ -85,5 +85,6 @@ module "api-gateway-web" {
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
     WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
+    SECURE_AUTH_COOKIE_ENABLED = "true"
   }
 }
