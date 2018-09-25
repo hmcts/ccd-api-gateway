@@ -9,6 +9,7 @@ properties([
 ])
 
 withParameterizedPipeline('nodejs', 'ccd', 'api-gateway-web', params.ENVIRONMENT, 'sandbox') {
+    enableSlackNotifications('#ccd-param-builds')
 
     afterCheckout {
         sh "yarn cache clean"
