@@ -10,6 +10,15 @@ def product = "ccd"
 def component = "api-gateway-web"
 
 withPipeline("nodejs", product, component) {
+    onMaster {
+        enableSlackNotifications('#ccd-master-builds')
+    }
+    onDemo {
+        enableSlackNotifications('#ccd-demo-builds')
+    }
+    onPR {
+        enableSlackNotifications('#ccd-pr-builds')
+    }
 
     afterCheckout {
         sh "yarn cache clean"
