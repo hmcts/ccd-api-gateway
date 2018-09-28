@@ -2,6 +2,9 @@
   "name": "ccd-api-gateway-web",
   "version": "1.4.0",
   "private": true,
+  "engines": {
+    "node": "^8.9.4"
+  },
   "scripts": {
     "start": "cross-env NODE_PATH=. node server.js",
     "setup": "cross-env NODE_PATH=. node --version",
