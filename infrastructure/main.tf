@@ -31,6 +31,9 @@ locals {
   previewResourceGroup = "${var.raw_product}-shared-aat"
   nonPreviewResourceGroup = "${var.raw_product}-shared-${var.env}"
   sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
+
+  sharedAppServicePlan = "${var.raw_product}-${var.env}"
+  sharedASPResourceGroup = "${var.raw_product}-shared-${var.env}"
 }
 
 data "azurerm_key_vault" "ccd_shared_key_vault" {
@@ -54,7 +57,7 @@ data "azurerm_key_vault_secret" "idam_service_key" {
 }
 
 module "api-gateway-web" {
-  source = "git@github.com:hmcts/moj-module-webapp?ref=master"
+  source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
   product = "${var.product}-${var.component}"
   location = "${var.location}"
   env = "${var.env}"
@@ -64,6 +67,9 @@ module "api-gateway-web" {
   additional_host_name = "${local.external_host_name}"
   https_only = "${var.https_only}"
   common_tags  = "${var.common_tags}"
+  asp_name = "${(var.asp_name == "use_shared") ? local.sharedAppServicePlan : var.asp_name}"
+  asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedASPResourceGroup : var.asp_rg}"
+  website_local_cache_sizeinmb = 800
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
@@ -84,7 +90,6 @@ module "api-gateway-web" {
     PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
-    WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
     SECURE_AUTH_COOKIE_ENABLED = "true"
   }
 }
