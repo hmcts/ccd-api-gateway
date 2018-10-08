@@ -78,7 +78,7 @@ module "api-gateway-web" {
     IDAM_OAUTH2_CLIENT_SECRET = "${data.azurerm_key_vault_secret.oauth2_client_secret.value}"
     IDAM_OAUTH2_LOGOUT_ENDPOINT = "${var.idam_api_url}/session/:token"
     ADDRESS_LOOKUP_TOKEN = "${data.azurerm_key_vault_secret.address_lookup_token.value}"
-    CORS_ORIGIN_METHODS = "GET,POST,OPTIONS,PUT"
+    CORS_ORIGIN_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
     CORS_ORIGIN_WHITELIST = "${local.default_cors_origin},${local.cors_origin}"
     IDAM_BASE_URL = "${var.idam_api_url}"
     IDAM_S2S_URL = "${local.s2s_url}"
