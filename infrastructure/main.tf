@@ -69,6 +69,8 @@ module "api-gateway-web" {
   common_tags  = "${var.common_tags}"
   asp_name = "${(var.asp_name == "use_shared") ? local.sharedAppServicePlan : var.asp_name}"
   asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedASPResourceGroup : var.asp_rg}"
+  website_local_cache_sizeinmb = 800
+  capacity = "${var.capacity}"
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
@@ -89,6 +91,6 @@ module "api-gateway-web" {
     PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
-    WEBSITE_NODE_DEFAULT_VERSION = "8.9.4"
+    SECURE_AUTH_COOKIE_ENABLED = "true"
   }
 }
