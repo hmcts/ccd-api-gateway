@@ -4,7 +4,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock /usr/src/app/
-RUN yarn install
+RUN yarn install --production
 
 COPY app.js server.js /usr/src/app/
 COPY app /usr/src/app/app
