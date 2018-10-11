@@ -21,6 +21,7 @@ withPipeline("nodejs", product, component) {
     }
 
     enableDockerBuild()
+    installCharts()
 
     afterCheckout {
         sh "yarn cache clean"
