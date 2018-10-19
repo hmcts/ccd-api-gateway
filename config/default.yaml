@@ -27,3 +27,4 @@ security:
 appInsights:
   instrumentationKey: "some-key"
   enabled: true
+  roleName: "ccd-api-gateway"
