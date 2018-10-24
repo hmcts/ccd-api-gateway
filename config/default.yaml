@@ -2,9 +2,10 @@ proxy:
   aggregated: http://localhost:4452
   data: http://localhost:4452
   definition_import: http://localhost:4451
-  document_management: https://api-gateway.dev.dm.reform.hmcts.net
+  document_management: http://localhost:4603
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
+  payments: http://localhost:8080
 idam:
   base_url: http://localhost:4501
   s2s_url: http://localhost:4502
@@ -20,8 +21,10 @@ address_lookup:
   url: https://postcodeinfo.service.justice.gov.uk/addresses?postcode=${postcode}
   token:
 security:
-  cors_origin_methods: "GET,POST,OPTIONS"
+  cors_origin_methods: "GET,POST,OPTIONS,PUT,DELETE"
   cors_origin_whitelist: "http://localhost:3451,http://localhost:3452"
+  secure_auth_cookie_enabled: false
 appInsights:
   instrumentationKey: "some-key"
   enabled: true
+  roleName: "ccd-api-gateway"

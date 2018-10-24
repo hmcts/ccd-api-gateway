@@ -10,7 +10,7 @@ describe('CORS', () => {
 
   const ORIGIN = 'http://localhost:3451';
   const ORIGIN_2 = 'http://ccd-aat.platform.hmcts.net';
-  const METHODS = 'GET,POST,OPTIONS';
+  const METHODS = 'GET,POST,OPTIONS,PUT,DELETE';
   const HEADERS = 'Authorization';
 
   let config, req, res, next, handleCors;
