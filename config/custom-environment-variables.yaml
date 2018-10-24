@@ -5,6 +5,7 @@ proxy:
   document_management: PROXY_DOCUMENT_MANAGEMENT
   print_service: PROXY_PRINT_SERVICE
   case_activity: PROXY_CASE_ACTIVITY
+  payments: PROXY_PAYMENTS
 idam:
   base_url: IDAM_BASE_URL
   s2s_url: IDAM_S2S_URL
@@ -22,5 +23,6 @@ address_lookup:
 security:
   cors_origin_methods: CORS_ORIGIN_METHODS
   cors_origin_whitelist: CORS_ORIGIN_WHITELIST
+  secure_auth_cookie_enabled: SECURE_AUTH_COOKIE_ENABLED
 appInsights:
   instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
