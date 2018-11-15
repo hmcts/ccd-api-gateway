@@ -9,7 +9,7 @@ locals {
 
   env_ase_url = "${local.local_env}.service.${local.local_ase}.internal"
 
-  default_cors_origin = "https://ccd-case-management-web-${var.env}.service.${local.ase_name}.internal"
+  default_cors_origin = "https://ccd-case-management-web-${var.env}.service.${local.ase_name}.internal,https://ccd-case-management-web-${var.env}-staging.service.${local.ase_name}.internal"
   default_document_management_url = "http://dm-store-${local.env_ase_url}"
 
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
