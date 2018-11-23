@@ -106,7 +106,8 @@ applyProxy(app, {
   target: config.get('proxy.payments'),
   filter: [
     '/payments/cases/**/payments',
-    '/payments/card-payments/**'
+    '/payments/card-payments/**',
+    '/payments/credit-account-payments/**'
   ]
 });
 

@@ -47,3 +47,6 @@ integration_test/target
 # IntelliJ IDEA files
 .idea/
 *.iml
+
+# Visual Studio Code files
+.history/
