@@ -1,3 +1,7 @@
+provider "azurerm" {
+  version = "1.19.0"
+}
+
 locals {
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
