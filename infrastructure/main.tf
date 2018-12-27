@@ -1,3 +1,7 @@
+provider "azurerm" {
+  version = "1.19.0"
+}
+
 locals {
   is_frontend = "${var.external_host_name != "" ? "1" : "0"}"
   external_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
@@ -9,7 +13,7 @@ locals {
 
   env_ase_url = "${local.local_env}.service.${local.local_ase}.internal"
 
-  default_cors_origin = "https://ccd-case-management-web-${var.env}.service.${local.ase_name}.internal"
+  default_cors_origin = "https://ccd-case-management-web-${var.env}.service.${local.ase_name}.internal,https://ccd-case-management-web-${var.env}-staging.service.${local.ase_name}.internal"
   default_document_management_url = "http://dm-store-${local.env_ase_url}"
 
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
