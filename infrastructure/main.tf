@@ -22,6 +22,7 @@ locals {
 
   // S2S
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
+  s2s_vault_url = "https://s2s-${local.local_env}.vault.azure.net/"
 
   // Payments API
   payments_url = "http://payment-api-${local.env_ase_url}"
@@ -56,8 +57,8 @@ data "azurerm_key_vault_secret" "oauth2_client_secret" {
 }
 
 data "azurerm_key_vault_secret" "idam_service_key" {
-  name = "ccd-api-gateway-s2s-secret"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  name = "microservicekey-ccd-gw"
+  vault_uri = "${local.s2s_vault_url}"
 }
 
 module "api-gateway-web" {
