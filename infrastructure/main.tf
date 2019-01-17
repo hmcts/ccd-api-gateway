@@ -77,7 +77,7 @@ module "api-gateway-web" {
   asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedASPResourceGroup : var.asp_rg}"
   website_local_cache_sizeinmb = 800
   capacity = "${var.capacity}"
-  appinsights_instrumentation_key = "${(var.use_shared_appinsight == "true") ? var.appinsights_instrumentation_key : ""}"
+  appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
