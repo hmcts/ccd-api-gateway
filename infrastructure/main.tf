@@ -65,6 +65,7 @@ module "api-gateway-web" {
   source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
   product = "${var.product}-${var.component}"
   location = "${var.location}"
+  appinsights_location = "${var.location}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
