@@ -1,18 +1,21 @@
 FROM node:8.12.0-slim
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock /usr/src/app/
-RUN yarn install --production
+COPY package.json yarn.lock ./
+RUN yarn install --production \
+    && yarn cache clean
 
-COPY app.js server.js /usr/src/app/
-COPY app /usr/src/app/app
-COPY config /usr/src/app/config
+COPY app.js server.js ./
+COPY app ./app
+COPY config ./config
 
 ENV PORT 3453
 
-HEALTHCHECK --interval=10s --timeout=10s --retries=10 CMD http_proxy="" curl --silent --fail http://localhost:3453/health
+HEALTHCHECK --interval=10s \
+    --timeout=10s \
+    --retries=10 \
+    CMD http_proxy="" curl --silent --fail http://localhost:3453/health
 
 EXPOSE 3453
 CMD [ "yarn", "start" ]

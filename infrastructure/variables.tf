@@ -47,7 +47,7 @@ variable "document_management_url" {
 }
 
 variable "https_only" {
-  default = "true"
+  default = "false"
 }
 
 variable "common_tags" {
@@ -69,9 +69,4 @@ variable "asp_rg" {
 variable "appinsights_instrumentation_key" {
   description = "Instrumentation key of the App Insights instance this webapp should use. Module will create own App Insights resource if this is not provided"
   default = ""
-}
-
-variable "use_shared_appinsight" {
-  description = "Use the ENV shared Application Insight instance (vs creating a standalone instance)"
-  default = "false"
 }
