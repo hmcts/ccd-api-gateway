@@ -9,6 +9,7 @@ install:
 cache: yarn
 script:
   - yarn --version
+  - yarn check
   - yarn lint
   - yarn test
   - yarn test:coverage
