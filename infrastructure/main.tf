@@ -22,6 +22,7 @@ locals {
 
   // S2S
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
+  s2s_vault_url = "https://s2s-${local.local_env}.vault.azure.net/"
 
   // Payments API
   payments_url = "http://payment-api-${local.env_ase_url}"
@@ -56,14 +57,15 @@ data "azurerm_key_vault_secret" "oauth2_client_secret" {
 }
 
 data "azurerm_key_vault_secret" "idam_service_key" {
-  name = "ccd-api-gateway-s2s-secret"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  name = "microservicekey-ccd-gw"
+  vault_uri = "${local.s2s_vault_url}"
 }
 
 module "api-gateway-web" {
   source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
   product = "${var.product}-${var.component}"
   location = "${var.location}"
+  appinsights_location = "${var.location}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
@@ -75,7 +77,7 @@ module "api-gateway-web" {
   asp_rg = "${(var.asp_rg == "use_shared") ? local.sharedASPResourceGroup : var.asp_rg}"
   website_local_cache_sizeinmb = 800
   capacity = "${var.capacity}"
-  appinsights_instrumentation_key = "${(var.use_shared_appinsight == "true") ? var.appinsights_instrumentation_key : ""}"
+  appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
 
   app_settings = {
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"

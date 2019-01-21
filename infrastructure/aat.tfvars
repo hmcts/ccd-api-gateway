@@ -6,4 +6,3 @@ document_management_url = "http://dm-store-aat.service.core-compute-aat.internal
 capacity = "2"
 asp_name = "ccd-api-gateway-web-aat"
 asp_rg = "ccd-api-gateway-web-aat"
-use_shared_appinsight = "true"
