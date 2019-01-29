@@ -31,7 +31,7 @@
     "debug": "~2.6.3",
     "express": "^4.15.5",
     "form-data": "^2.1.4",
-    "http-proxy-middleware": "^0.17.4",
+    "http-proxy-middleware": "^0.18.0",
     "https-proxy-agent": "^2.2.1",
     "js-yaml": "^3.8.4",
     "jwt-decode": "^2.2.0",
