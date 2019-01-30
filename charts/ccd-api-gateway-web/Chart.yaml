@@ -1,7 +1,7 @@
 description: Helm chart for the HMCTS CCD API Gateway
 name: ccd-api-gateway
 home: https://github.com/hmcts/ccd-api-gateway
-version: 1.4.0.1
+version: 0.0.1
 maintainers:
   - name: HMCTS CCD Dev Team
     email: ccd-devops@HMCTS.NET
