@@ -1,4 +1,4 @@
-external_host_name = "gateway-ccd.nonprod.platform.hmcts.net"
+external_host_name = "gateway-ccd.aat.platform.hmcts.net"
 idam_api_url = "https://preprod-idamapi.reform.hmcts.net:3511"
 #idam_api_url = "https://idam-api.aat.platform.hmcts.net"
 cors_origin = "https://www-ccd.nonprod.platform.hmcts.net,http://localhost:3451,*"
