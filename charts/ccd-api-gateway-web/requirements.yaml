@@ -2,4 +2,3 @@ dependencies:
   - name: nodejs
     version: 0.0.12
     repository: '@hmcts'
-    alias: ccd-api-gateway
