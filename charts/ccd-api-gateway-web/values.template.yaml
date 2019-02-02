@@ -1,0 +1,20 @@
+nodejs:
+  releaseNameOverride: ${SERVICE_NAME}-nodejs
+  ingressHost: ${SERVICE_FQDN}
+  image: ${IMAGE_NAME}
+  applicationPort: 3453
+  memoryRequests: 256Mi
+  cpuRequests: 0.2
+  memoryLimits: 512Mi
+  cpuLimits: 1
+  environment:
+    IDAM_OAUTH2_TOKEN_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/oauth2/token
+    IDAM_OAUTH2_CLIENT_ID: ccd_gateway
+    IDAM_OAUTH2_CLIENT_SECRET: ${OAUTH2_CLIENT_SECRET}
+    IDAM_OAUTH2_LOGOUT_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/session/:token
+    ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
+    CORS_ORIGIN_METHODS: GET,POST,OPTIONS,PUT,DELETE
+    IDAM_BASE_URL: http://betaDevBccidamAppLB.reform.hmcts.net
+    IDAM_SERVICE_KEY: ${CCD_GW_SERVICE_SECRET}
+    IDAM_SERVICE_NAME: ccd_gw
+    SECURE_AUTH_COOKIE_ENABLED: true
