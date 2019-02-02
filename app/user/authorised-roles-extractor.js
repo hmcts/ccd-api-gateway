@@ -1,5 +1,5 @@
 const extract = (request) => {
-  let pattern = /^\/[^\/]+\/([^\/]+)\/[^\/]+\/(?:jurisdictions?\/([^\/]+)\/)?.+$/;
+  let pattern = /^\/[^/]+\/([^/]+)\/[^/]+\/(?:jurisdictions?\/([^/]+)\/)?.+$/;
   let match = request.originalUrl.match(pattern) || [];
 
   if (match[1]) {
