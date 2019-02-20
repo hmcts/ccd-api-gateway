@@ -19,4 +19,3 @@ HEALTHCHECK --interval=10s \
     --retries=10 \
     CMD http_proxy="" curl --silent --fail http://localhost:3453/health
 EXPOSE 3453
-USER hmcts
