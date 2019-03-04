@@ -47,7 +47,7 @@ variable "document_management_url" {
 }
 
 variable "https_only" {
-  default = "false"
+  default = "true"
 }
 
 variable "common_tags" {
