@@ -5,7 +5,7 @@ const fetch = require('../util/fetch');
 
 const idamS2SUrl = config.get('idam.s2s_url');
 const serviceName = config.get('idam.service_name');
-const secret = config.get('idam.service_key');
+const secret = config.get('secrets.s2s.microservicekey-ccd-gw');
 
 // TODO Caching should be handled by a singleton service
 const cache = {};
