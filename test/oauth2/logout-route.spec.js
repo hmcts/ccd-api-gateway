@@ -26,7 +26,7 @@ describe('logoutRoute', () => {
       get: sinon.stub()
     };
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('idam.oauth2.client_secret').returns(CLIENT_SECRET);
+    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_END_POINT);
 
     request = sinonExpressMock.mockReq({
@@ -62,7 +62,7 @@ describe('logoutRoute', () => {
     logoutRoute(request, response, next);
 
     expect(config.get).to.be.calledWith('idam.oauth2.client_id');
-    expect(config.get).to.be.calledWith('idam.oauth2.client_secret');
+    expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
     expect(config.get).to.be.calledWith('idam.oauth2.logout_endpoint');
   });
 
