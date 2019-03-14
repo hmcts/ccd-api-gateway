@@ -1,5 +1,4 @@
 nodejs:
-  releaseNameOverride: ${SERVICE_NAME}-nodejs
   ingressHost: ${SERVICE_FQDN}
   image: ${IMAGE_NAME}
   applicationPort: 3453
