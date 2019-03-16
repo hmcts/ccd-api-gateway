@@ -42,7 +42,7 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "chai-http": "^4.2.1",
-    "eslint": "^5.12.1",
+    "eslint": "^5.15.2",
     "eslint-plugin-mocha": "^5.2.1",
     "fetch-mock": "^6.5.2",
     "git-message": "^2.0.2",
