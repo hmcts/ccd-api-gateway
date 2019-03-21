@@ -48,12 +48,12 @@ data "azurerm_key_vault" "ccd_shared_key_vault" {
 
 data "azurerm_key_vault_secret" "address_lookup_token" {
   name = "postcode-info-address-lookup-token"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "oauth2_client_secret" {
   name = "ccd-api-gateway-oauth2-client-secret"
-  vault_uri = "${data.azurerm_key_vault.ccd_shared_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "idam_service_key" {
