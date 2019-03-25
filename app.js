@@ -54,6 +54,7 @@ const health = healthcheck.configure({
 });
 app.get('/', health);
 app.get('/health', health);
+app.get('/health/liveness', health);
 
 app.use(corsHandler);
 
