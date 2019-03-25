@@ -7,11 +7,14 @@ nodejs:
   memoryLimits: 512Mi
   cpuLimits: 1
   environment:
-    IDAM_OAUTH2_TOKEN_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/oauth2/token
+    IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
+   # IDAM_OAUTH2_TOKEN_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/oauth2/token
     IDAM_OAUTH2_CLIENT_ID: ccd_gateway
-    IDAM_OAUTH2_LOGOUT_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/session/:token
+    #IDAM_OAUTH2_LOGOUT_ENDPOINT: http://betaDevBccidamAppLB.reform.hmcts.net/session/:token
+    IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
     CORS_ORIGIN_METHODS: GET,POST,OPTIONS,PUT,DELETE
-    IDAM_BASE_URL: http://betaDevBccidamAppLB.reform.hmcts.net
+    #IDAM_BASE_URL: http://betaDevBccidamAppLB.reform.hmcts.net
+    IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
     IDAM_SERVICE_NAME: ccd_gw
     SECURE_AUTH_COOKIE_ENABLED: true
   keyVaults:
