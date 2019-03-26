@@ -6,6 +6,7 @@ const { Logger } = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('addressLookup');
 
+
 function addressLookup(postcode) {
 
   return fetch(
@@ -25,7 +26,7 @@ function getHttpConfig() {
   const httpConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Token ' + config.address_lookup.token
+      'Authorization': 'Token ' + config.get('secrets.ccd.postcode-info-address-lookup-token')
     }
   };
   if (config.address_lookup.detect_proxy && process.env.https_proxy) {

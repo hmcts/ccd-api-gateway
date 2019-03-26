@@ -1,11 +1,14 @@
-# Keep hub.Dockerfile aligned to this file as far as possible
-
 # Base image
-FROM hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-8 as base
+FROM node:8.12.0-slim as base
+
+WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
-RUN yarn install --production \
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash -s \
+    && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" \
+    && yarn install --production \
     && yarn cache clean
+
 
 COPY app.js server.js ./
 COPY app ./app
@@ -19,3 +22,4 @@ HEALTHCHECK --interval=10s \
     --retries=10 \
     CMD http_proxy="" curl --silent --fail http://localhost:3453/health
 EXPOSE 3453
+CMD [ "yarn", "start" ]
