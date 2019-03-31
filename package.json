@@ -34,7 +34,7 @@
     "form-data": "^2.1.4",
     "http-proxy-middleware": "^0.17.4",
     "https-proxy-agent": "^2.2.1",
-    "js-yaml": "^3.8.4",
+    "js-yaml": "^3.13.0",
     "jwt-decode": "^2.2.0",
     "node-fetch": "^1.7.0",
     "otp": "^0.1.3"
