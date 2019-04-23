@@ -48,6 +48,9 @@ The following environment variables are required:
 | CORS_ORIGIN_WHITELIST | Comma-separated list of authorised origins for Cross-Origin requests. `http://localhost:3451,http://localhost:3452` for the local instances of CCD |
 | APPINSIGHTS_INSTRUMENTATIONKEY | Secret for Microsoft Insights logging, can be a dummy string in local. |
 
+**Note:** To support large document uploads via the api gateway, the maximum allowed length for request content is 
+configured via *maxAllowedContentLength* property for request filter in **web.config** (config file within source repository). 
+
 ### Install dependencies
 
 The project uses [yarn](https://yarnpkg.com/).
