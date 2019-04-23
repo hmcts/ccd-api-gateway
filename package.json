@@ -44,7 +44,7 @@
     "chai-http": "^4.2.1",
     "eslint": "^5.12.1",
     "eslint-plugin-mocha": "^5.2.1",
-    "fetch-mock": "^6.5.2",
+    "fetch-mock": "^7.3.3",
     "git-message": "^2.0.2",
     "istanbul": "^0.4.5",
     "jsonwebtoken": "^8.3.0",
