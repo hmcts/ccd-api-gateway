@@ -50,12 +50,11 @@ const applyProxy = (app, config) => {
   }
 };
 
-const healthConfig = healthcheck.configure({
+let healthConfig = {
   checks: {}
-});
+};
 healthcheck.addTo(appHealth, healthConfig);
 app.use(appHealth);
-app.use('/', appHealth);
 
 app.use(corsHandler);
 
