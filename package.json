@@ -30,7 +30,7 @@
     "cookie-parser": "~1.4.3",
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
-    "express": "^4.15.5",
+    "express": "^4.17.0",
     "form-data": "^2.1.4",
     "http-proxy-middleware": "^0.17.4",
     "https-proxy-agent": "^2.2.1",
