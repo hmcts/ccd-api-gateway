@@ -1,6 +1,6 @@
 external_host_name = "gateway-ccd.perftest.platform.hmcts.net"
 cors_origin = "*"
-idam_api_url = "http://idam-api-idam-perftest.service.core-compute-idam-perftest.internal"
+idam_api_url = "https://idam-api.perftest.platform.hmcts.net"
 
 
 capacity = "4"
