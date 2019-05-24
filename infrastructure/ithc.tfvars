@@ -1,6 +1,6 @@
 external_host_name = "gateway-ccd.ithc.platform.hmcts.net"
 cors_origin = "*"
-idam_api_url = "http://idam-api-idam-ithc.service.core-compute-idam-ithc.internal"
+idam_api_url = "https://idam-api.ithc.platform.hmcts.net"
 
 
 capacity = "4"
