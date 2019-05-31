@@ -107,7 +107,8 @@ applyProxy(app, {
   filter: [
     '/payments/cases/**/payments',
     '/payments/card-payments/**',
-    '/payments/credit-account-payments/**'
+    '/payments/credit-account-payments/**',
+    '/payment-groups/**'
   ]
 });
 
