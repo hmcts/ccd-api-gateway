@@ -4,6 +4,16 @@ const request = require('supertest');
 const app = require('app');
 
 describe('health check', () => {
+
+  it('should return health check status with 200 OK for default domain URL', async () => {
+    await request(app)
+      .get('/')
+      .expect(res => {
+        expect(res.status).equal(200);
+        expect(res.body.status).equal('UP');
+      });
+  });
+
   it('should return 200 OK for health check', async () => {
     await request(app)
       .get('/health')
