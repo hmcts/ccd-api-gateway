@@ -18,11 +18,11 @@ describe('Address Lookup', () => {
     addressLookup = require('../../app/address/address-lookup');
   });
 
-  it('Should expect key to replaced and not the postcode', (done) => {
+  it('Should expect key and postcode placed holders to be substituted', (done) => {
 
     let postcode = 'P5TCDE';
     nock('https://api.ordnancesurvey.co.uk')
-      .get('/places/v1/addresses/postcode?postcode=$%7Bpostcode%7D&key=AAA')
+      .get('/places/v1/addresses/postcode?postcode=P5TCDE&key=AAA')
       .reply(200, '{results:[]}');
     addressLookup(postcode).then((body) => {
       expect(body).to.be.equals('{results:[]}');
@@ -31,9 +31,7 @@ describe('Address Lookup', () => {
   });
 
     it('Should error when Postcode Service returns non-200 response', (done) => {
-
       let postcode = 'P5TCDE';
-      // https://api.ordnancesurvey.co.uk/places/v1/addresses/postcode?postcode=${postcode}&key=${key}
       nock('https://api.ordnancesurvey.co.uk')
         .get(uri => uri.includes('key=AAA'))
         .reply(401, 'ErrorBody');
@@ -51,8 +49,7 @@ describe('Address Lookup', () => {
         });
     });
 
-    it('Should return the response without transformation to the client', (done) => {
-
+    it('Should return the response without modification to the client', (done) => {
       let postcode = 'P5TCDE';
       nock('https://api.ordnancesurvey.co.uk')
         .get(uri => uri.includes('key=AAA'))
