@@ -6,6 +6,7 @@ proxy:
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
   payments: http://localhost:9999/payments
+  refdata: http://localhost:8090/refdata
 idam:
   base_url: http://localhost:4501
   s2s_url: http://localhost:4502
