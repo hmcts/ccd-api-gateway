@@ -28,6 +28,6 @@ appInsights:
 secrets:
   ccd:
     ccd-api-gateway-oauth2-client-secret: OOOOOOOOOOOOOOOO
-    postcode-info-address-lookup-token:
+    postcode-info-address-lookup-token: AA
   s2s:
     microservicekey-ccd-gw: AAAAAAAAAAAAAAAC
