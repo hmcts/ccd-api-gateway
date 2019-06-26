@@ -26,6 +26,9 @@ locals {
   // Payments API
   payments_url = "http://payment-api-${local.env_ase_url}"
 
+  // Reference Data API
+  refdata_url = "http://rd-professional-api-${local.env_ase_url}"
+
   // Vault name
   previewVaultName = "${var.raw_product}-aat"
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
@@ -102,6 +105,7 @@ module "api-gateway-web" {
     PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
+    PROXY_REFDATA = "${local.refdata_url}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
   }
 }
