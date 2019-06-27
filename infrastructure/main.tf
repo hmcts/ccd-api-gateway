@@ -103,5 +103,6 @@ module "api-gateway-web" {
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
+    DUMMY_VAR = "true"
   }
 }
