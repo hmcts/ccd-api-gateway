@@ -55,6 +55,11 @@ data "azurerm_key_vault_secret" "address_lookup_token" {
   key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
 
+data "azurerm_key_vault_secret" "dummy1" {
+  name = "dumy1"
+  key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
+}
+
 data "azurerm_key_vault_secret" "oauth2_client_secret" {
   name = "ccd-api-gateway-oauth2-client-secret"
   key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
