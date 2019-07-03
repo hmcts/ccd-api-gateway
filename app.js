@@ -116,9 +116,9 @@ applyProxy(app, {
 });
 
 applyProxy(app, {
-  source: '/refdata/**'
+  source: '/refdata/**',
   target: config.get('proxy.refdata')
-})
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
