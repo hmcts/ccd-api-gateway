@@ -116,7 +116,7 @@ applyProxy(app, {
 });
 
 applyProxy(app, {
-  source: '/refdata/**',
+  source: '/refdata',
   target: config.get('proxy.refdata')
 });
 
