@@ -6,6 +6,7 @@ proxy:
   print_service: PROXY_PRINT_SERVICE
   case_activity: PROXY_CASE_ACTIVITY
   payments: PROXY_PAYMENTS
+  refdata: PROXY_REFDATA
 idam:
   base_url: IDAM_BASE_URL
   s2s_url: IDAM_S2S_URL
