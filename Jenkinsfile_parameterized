@@ -15,4 +15,6 @@ withParameterizedPipeline('nodejs', 'ccd', 'api-gateway-web', params.ENVIRONMENT
         sh "yarn cache clean"
     }
 
+    before('securitychecks') {sh 'yarn test:audit'}
+
 }

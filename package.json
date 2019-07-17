@@ -15,6 +15,7 @@
     "test:coverage": "NODE_ENV=test NODE_PATH=. istanbul cover _mocha 'test/**/*.spec.js'",
     "test:acceptance": "echo 'TODO - CALL JAVA INTEGRATION TEST'",
     "test:nsp": "NODE_PATH=. nsp check",
+    "test:audit": "./bin/run-yarn-audit.sh -f yarn-audit-known-issues",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "test:a11y": "NODE_PATH=.",
