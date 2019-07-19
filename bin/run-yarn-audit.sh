@@ -9,10 +9,7 @@ if [[ "$result" != 0 ]]; then
     set +e
     yarn audit --json | grep auditAdvisory > yarn-audit-issues
     set -e
-    diff yarn-audit-known-issues yarn-audit-issues
-
     echo printing audit issues:
-
     cat yarn-audit-issues
 
     if diff -aq yarn-audit-known-issues yarn-audit-issues > /dev/null 2>&1; then
