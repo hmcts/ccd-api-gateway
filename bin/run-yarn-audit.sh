@@ -4,10 +4,12 @@ yarn audit
 result=$?
 set -e
 
-if [ "$result" != 0 ]; then
-  if [ -f yarn-audit-known-issues ]; then
+if [[ "$result" != 0 ]]; then
+  if [[ -f yarn-audit-known-issues ]]; then
     set +e
+    echo 'before yarn-audit-issues file'
     yarn audit --json | grep auditAdvisory > yarn-audit-issues
+    echo 'after yarn-audit-issues file'
     set -e
 
     if diff -q yarn-audit-known-issues yarn-audit-issues > /dev/null 2>&1; then
