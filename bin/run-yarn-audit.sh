@@ -11,7 +11,7 @@ if [[ "$result" != 0 ]]; then
     set -e
     new_vulnerabilities=false
     while read -r line; do
-        url=$(jq -r '.data.advisory.url' <<< "$line")
+        url=$(node -pe 'JSON.parse(process.argv[1]).data.advisory.url' "$line")
         if ! grep -q "$url" yarn-audit-known-issues; then
           echo "unknown vulnerability:$url"
           new_vulnerabilities=true
