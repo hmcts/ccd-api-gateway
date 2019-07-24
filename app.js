@@ -111,7 +111,8 @@ applyProxy(app, {
     '/payments/cases/**/payments',
     '/payments/card-payments/**',
     '/payments/credit-account-payments/**',
-    '/payments/payment-groups/**'
+    '/payments/payment-groups/**',
+    '/payments/cases/**/paymentgroups'
   ]
 });
 
