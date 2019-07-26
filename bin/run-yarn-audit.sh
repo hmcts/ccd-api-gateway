@@ -26,9 +26,10 @@ if [[ "$result" != 0 ]]; then
       echo and/or if they have fixes available. If they do not have
       echo fixes and they do not apply to production, you may ignore them
       echo
-      echo To ignore these vulnerabilities, please add advisories urls to yarn-audit-known-issues
+      echo To ignore these vulnerabilities, please add advisories urls
+      echo "to yarn-audit-known-issues (eg: https://npmjs.com/advisories/755)"
       echo
-      echo and commit the yarn-audit-known-issues file
+      echo and commit the yarn-audit-known-issues file.
 
       exit "$result"
     fi
