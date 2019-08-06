@@ -111,8 +111,14 @@ applyProxy(app, {
     '/payments/cases/**/payments',
     '/payments/card-payments/**',
     '/payments/credit-account-payments/**',
-    '/payment-groups/**'
+    '/payments/payment-groups/**',
+    '/payments/cases/**/paymentgroups'
   ]
+});
+
+applyProxy(app, {
+  source: '/refdata',
+  target: config.get('proxy.refdata')
 });
 
 // catch 404 and forward to error handler
