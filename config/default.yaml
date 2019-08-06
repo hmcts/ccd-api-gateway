@@ -6,6 +6,7 @@ proxy:
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
   payments: http://localhost:9999/payments
+  refdata: http://localhost:8090/refdata
 idam:
   base_url: http://localhost:4501
   s2s_url: http://localhost:4502
@@ -16,7 +17,7 @@ idam:
     client_id: ccd_gateway
 address_lookup:
   detect_proxy: false
-  url: https://postcodeinfo.service.justice.gov.uk/addresses?postcode=${postcode}
+  url:  https://api.ordnancesurvey.co.uk/places/v1/addresses/postcode?postcode=${postcode}&key=${key}
 security:
   cors_origin_methods: "GET,POST,OPTIONS,PUT,DELETE"
   cors_origin_whitelist: "http://localhost:3451,http://localhost:3452"
@@ -28,6 +29,6 @@ appInsights:
 secrets:
   ccd:
     ccd-api-gateway-oauth2-client-secret: OOOOOOOOOOOOOOOO
-    postcode-info-address-lookup-token:
+    postcode-info-address-lookup-token: AA
   s2s:
     microservicekey-ccd-gw: AAAAAAAAAAAAAAAC
