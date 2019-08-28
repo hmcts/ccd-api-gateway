@@ -1,5 +1,6 @@
 nodejs:
   image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
+  applicationPort: 3453
   cpuLimits: 1
   environment:
     IDAM_OAUTH2_CLIENT_ID: ccd_gateway
