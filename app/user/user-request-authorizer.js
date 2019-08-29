@@ -1,3 +1,5 @@
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('user-request-authorizer');
 const userResolver = require('./user-resolver');
 const authorizedRolesExtractor = require('./authorised-roles-extractor');
 const COOKIE_ACCESS_TOKEN = require('../oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
@@ -23,6 +25,15 @@ const USER_ID_PLACEHOLDER = ':uid';
 const authorise = (request) => {
   let user;
   let bearerToken = request.get(AUTHORIZATION) || (request.cookies ? request.cookies[COOKIE_ACCESS_TOKEN] : null);
+
+  logger.info('*****************************');
+  logger.info('AUTHORIZATION=', AUTHORIZATION);
+  logger.info('COOKIE_ACCESS_TOKEN=', COOKIE_ACCESS_TOKEN);
+  logger.info('*****************************');
+  logger.info('request=', request);
+  logger.info('*****************************');
+  logger.info('bearerToken=', bearerToken);
+  logger.info('*****************************');
 
   if (!bearerToken) {
     return Promise.reject(ERROR_TOKEN_MISSING);
