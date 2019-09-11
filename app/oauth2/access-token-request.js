@@ -28,21 +28,21 @@ function accessTokenRequest(request) {
     grant_type: 'authorization_code'
   };
   return fetch(config.get('idam.oauth2.token_endpoint') + url.format({ query: params }), options)
-    .then(response => response.status === 200 ? response : treatErrors(response))
-    .then(response => response)
+    .then(response => produceResponse(response))
     .catch(error => {
-      logger.error('Failed to obtain access token:', error);
+      logger.error('Failed to obtain access token due an error:', error);
       throw error;
     });
 }
 
-function treatErrors(response){
+function produceResponse(response){
 
-  response.text().then(text =>  {
-
-    let errorDescription = { status: response.status, error: 'Unauthorized' ,  message: text};
-    Promise.reject(new Error(errorDescription));}
-    );
-  return response;
+  switch(response.status) {
+    case 200:
+      return response.json();
+    default:
+      return response;
+  }
 }
+
 module.exports = accessTokenRequest;
