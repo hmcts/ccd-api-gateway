@@ -74,4 +74,33 @@ describe('oauth2Route', () => {
 
     oauth2Route(request, response, next);
   });
+
+  it('should fail to obation an accessToken dude to unauthorized request.', done => {
+
+    let expectedError = {
+      status: 401,
+      message: 'Message comming from IDAM.'
+    };
+
+    let  unauthorizedAccessTokenRequest = sinon.stub();
+    unauthorizedAccessTokenRequest.withArgs(request).returns(Promise.resolve(expectedError));
+
+    let unauthorizedOauth2Route = proxyquire('../../app/oauth2/oauth2-route', {
+      './access-token-request': unauthorizedAccessTokenRequest,
+      'config': config
+    }).oauth2Route;
+
+    next.callsFake((result) => {
+      try {
+        expect(unauthorizedAccessTokenRequest).to.be.calledWith(request);
+
+        expect(result).to.eql(expectedError);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    unauthorizedOauth2Route(request, response, next);
+  });
 });
