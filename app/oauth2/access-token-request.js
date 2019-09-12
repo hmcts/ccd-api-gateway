@@ -37,12 +37,10 @@ function accessTokenRequest(request) {
 
 function produceResponse(response){
 
-  switch(response.status) {
-    case 200:
-      return response.json();
-    default:
-      return response;
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    return response;
   }
 }
-
 module.exports = accessTokenRequest;
