@@ -79,7 +79,7 @@ describe('oauth2Route', () => {
 
     let expectedError = {
       status: 401,
-      message: 'Message comming from IDAM.'
+      message: 'Fail to obtain a token from access-token-request. Not successful response.'
     };
 
     let  unauthorizedAccessTokenRequest = sinon.stub();
