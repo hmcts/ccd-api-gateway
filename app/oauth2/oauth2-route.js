@@ -18,7 +18,7 @@ const oauth2Route = (req, res, next) => {
       } else {
         next({
           status: result.status || 500,
-          message: 'Fail to obtain a token from access-token-request. Not successful response.'
+          message: result.statusText || 'no provided.'
         });
       }
 
