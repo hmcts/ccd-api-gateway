@@ -79,7 +79,7 @@ describe('oauth2Route', () => {
 
     let expectedError = {
       status: 401,
-      message: 'Fail to obtain a token from access-token-request. Not successful response.'
+      message: 'no provided.'
     };
 
     let  unauthorizedAccessTokenRequest = sinon.stub();
@@ -92,8 +92,8 @@ describe('oauth2Route', () => {
 
     next.callsFake((result) => {
       try {
-        expect(unauthorizedAccessTokenRequest).to.be.calledWith(request);
 
+        expect(unauthorizedAccessTokenRequest).to.be.calledWith(request);
         expect(result).to.eql(expectedError);
         done();
       } catch (e) {

@@ -52,6 +52,7 @@ describe('Access Token Request', () => {
     config = {
       get: sinon.stub()
     };
+
     fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, STRESSFUL_RESPONSE);
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
