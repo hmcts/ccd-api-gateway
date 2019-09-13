@@ -78,8 +78,8 @@ describe('oauth2Route', () => {
   it('should fail to obation an accessToken dude to unauthorized request.', done => {
 
     let expectedError = {
-      status: 401,
-      message: 'no provided.'
+      status: 500,
+      message: 'Internal Server Error'
     };
 
     let  unauthorizedAccessTokenRequest = sinon.stub();

@@ -17,8 +17,8 @@ const oauth2Route = (req, res, next) => {
         res.status(204).send();
       } else {
         next({
-          status: result.status || 500,
-          message: result.statusText || 'no provided.'
+          status:  500,
+          message: 'Internal Server Error'
         });
       }
 
