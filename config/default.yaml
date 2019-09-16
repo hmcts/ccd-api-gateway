@@ -7,6 +7,7 @@ proxy:
   case_activity: http://localhost:3460
   payments: http://localhost:9999/payments
   refdata: http://localhost:8090/refdata
+  mv_annotations: http://localhost:4623/api
 idam:
   base_url: http://localhost:4501
   s2s_url: http://localhost:4502
