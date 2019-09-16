@@ -1,5 +1,5 @@
 
-function hasAnAttribute(object,attributeName){
+function hasAnAttribute(object, attributeName){
 
   if('undefined' !== typeof(object[attributeName])){
     return true;
