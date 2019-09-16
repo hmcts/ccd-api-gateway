@@ -29,11 +29,12 @@ describe('Access Token Request', () => {
       redirect_uri: REDIRECT_URL
     }
   });
-  const STRESSFUL_RESPONSE = {
+  const SUCCESSFUL_RESPONSE = {
     body: {
       'access_token': 'q1w2e3r4t5y6',
       'token_type': 'Bearer',
-      'expires_in': 3600
+      'expires_in'
+        : 3600
     },
     status: 200
   };
@@ -53,7 +54,7 @@ describe('Access Token Request', () => {
       get: sinon.stub()
     };
 
-    fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, STRESSFUL_RESPONSE);
+    fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': fetch

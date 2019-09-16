@@ -30,7 +30,7 @@ function accessTokenRequest(request) {
   return fetch(config.get('idam.oauth2.token_endpoint') + url.format({ query: params }), options)
     .then(response => produceResponse(response))
     .catch(error => {
-      logger.error('Failed to obtain access token due an error:', error);
+      logger.error('Failed to obtain access token due to an error:', error);
       throw error;
     });
 }
