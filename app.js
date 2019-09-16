@@ -79,10 +79,12 @@ applyProxy(app, {
   target: config.get('proxy.aggregated'),
   rewrite: false
 });
+
 applyProxy(app, {
   source: '/data',
   target: config.get('proxy.data')
 });
+
 applyProxy(app, {
   source: '/definition_import',
   target: config.get('proxy.definition_import')
@@ -93,6 +95,13 @@ applyProxy(app, {
   target: config.get('proxy.document_management'),
   rewrite: false
 });
+
+app.use('/em-anno', proxy({
+  target: config.get('proxy.mv_annotations'),
+  pathRewrite: {
+    "^/em-anno": "/api"
+  },
+}));
 
 applyProxy(app, {
   source: '/print',
