@@ -40,6 +40,7 @@ function produceResponse(response){
   if (response.status === 200) {
     return response.json();
   } else {
+    logger.error('Failed to obtain access token due to an expected response:', response);
     return response;
   }
 }
