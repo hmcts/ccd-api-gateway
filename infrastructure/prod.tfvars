@@ -2,7 +2,7 @@ external_host_name = "gateway.ccd.platform.hmcts.net"
 idam_api_url = "https://idam-api.platform.hmcts.net"
 cors_origin = "https://www.ccd.platform.hmcts.net,https://ccd.platform.hmcts.net"
 document_management_url = "http://dm-store-prod.service.core-compute-prod.internal"
-mv_annotations_api_url = ""
+mv_annotations_api_url = "http://em-anno-prod.service.core-compute-prod.internal"
 
 capacity = "4"
 asp_name = "ccd-api-gateway-web-prod"
