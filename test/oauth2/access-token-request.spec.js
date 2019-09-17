@@ -45,9 +45,9 @@ describe('Access Token Request', () => {
 
   let config;
   let fetch;
-  let unsessfulFetch;
+  let unsuccessfulFetch;
   let accessTokenRequest;
-  let unsessfulAccessTokenRequest;
+  let unsuccessfulAccessTokenRequest;
 
   beforeEach(() => {
     config = {
@@ -60,10 +60,10 @@ describe('Access Token Request', () => {
       'node-fetch': fetch
     });
 
-    unsessfulFetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
-    unsessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
+    unsuccessfulFetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
+    unsuccessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
-      'node-fetch': unsessfulFetch
+      'node-fetch': unsuccessfulFetch
     });
   });
 
@@ -108,11 +108,11 @@ describe('Access Token Request', () => {
     config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
-    unsessfulAccessTokenRequest(REQUEST)
+    unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
-        expect(unsessfulFetch.called()).to.be.true;
-        expect(unsessfulFetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(unsessfulFetch.lastUrl(), true);
+        expect(unsuccessfulFetch.called()).to.be.true;
+        expect(unsuccessfulFetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        let requestedUrl = url.parse(unsuccessfulFetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         expect(response).to.have.property('status', 401);
