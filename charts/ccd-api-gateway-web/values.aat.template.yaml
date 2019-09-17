@@ -15,3 +15,4 @@ nodejs:
     PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
     PROXY_PAYMENTS: http://payment-api-aat.service.core-compute-aat.internal
     PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
+    PROXY_MV_ANNOTATIONS_API_URL: http://annotation-api-aat.service.core-compute-aat.internal

@@ -19,6 +19,7 @@ locals {
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
   ccd_print_service_url = "http://ccd-case-print-service-${local.env_ase_url}"
   document_management_url = "${var.document_management_url != "" ? var.document_management_url : local.default_document_management_url}"
+  mv_annotations_api_url = "${var.mv_annotations_api_url}"
 
   // S2S
   s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
@@ -103,6 +104,7 @@ module "api-gateway-web" {
     PROXY_DATA = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DEFINITION_IMPORT = "http://ccd-definition-store-api-${local.env_ase_url}"
     PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
+    PROXY_MV_ANNOTATIONS_API_URL = "${local.mv_annotations_api_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
     PROXY_REFDATA = "${local.refdata_url}"
