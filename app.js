@@ -100,7 +100,7 @@ app.use('/em-anno', proxy({
   target: config.get('proxy.mv_annotations'),
   pathRewrite: {
     '^/em-anno': '/api'
-  },
+  }
 }));
 
 applyProxy(app, {
