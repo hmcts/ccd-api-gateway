@@ -44,12 +44,6 @@ const applyProxy = (app, config) => {
     };
   }
 
-  if ('/em-anno' === config.source) {
-    options.pathRewrite = {
-      [`^${config.source}`]: '/api'
-    };
-  }
-
   if (config.filter) {
     app.use(config.source, proxy(config.filter, options));
   } else {
@@ -102,11 +96,12 @@ applyProxy(app, {
   rewrite: false
 });
 
-applyProxy(app, {
-  source: '/em-anno',
+app.use('/em-anno', proxy({
   target: config.get('proxy.mv_annotations'),
-  rewrite: false
-});
+  pathRewrite: {
+    '^/em-anno': '/api'
+  }
+}));
 
 applyProxy(app, {
   source: '/print',
