@@ -2,19 +2,19 @@ proxy:
   aggregated: http://localhost:4452
   data: http://localhost:4452
   definition_import: http://localhost:4451
-  document_management: http://localhost:4603
+  document_management: http://localhost:4506
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
   payments: http://localhost:9999/payments
   refdata: http://localhost:8090/refdata
   mv_annotations: http://localhost:4623
 idam:
-  base_url: http://localhost:4501
+  base_url: http://localhost:5000
   s2s_url: http://localhost:4502
-  service_name: ccd_gw
+  service_name:
   oauth2:
-    token_endpoint: http://localhost:4501/oauth2/token
-    logout_endpoint: http://localhost:4501/session/:token
+    token_endpoint: http://localhost:5000/oauth2/token
+    logout_endpoint: http://localhost:5000/session/:token
     client_id: ccd_gateway
 address_lookup:
   detect_proxy: false
@@ -29,7 +29,7 @@ appInsights:
   roleName: "ccd-api-gateway"
 secrets:
   ccd:
-    ccd-api-gateway-oauth2-client-secret: OOOOOOOOOOOOOOOO
+    ccd-api-gateway-oauth2-client-secret: ccd_gateway_secret
     postcode-info-address-lookup-token: AA
   s2s:
     microservicekey-ccd-gw: AAAAAAAAAAAAAAAC
