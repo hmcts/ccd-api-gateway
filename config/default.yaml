@@ -11,7 +11,7 @@ proxy:
 idam:
   base_url: http://localhost:5000
   s2s_url: http://localhost:4502
-  service_name:
+  service_name: ccd_gw
   oauth2:
     token_endpoint: http://localhost:5000/oauth2/token
     logout_endpoint: http://localhost:5000/session/:token
