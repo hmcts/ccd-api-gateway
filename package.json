@@ -44,8 +44,8 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "chai-http": "^4.2.1",
-    "eslint": "^5.12.1",
-    "eslint-plugin-mocha": "^5.2.1",
+    "eslint": "^6.5.1",
+    "eslint-plugin-mocha": "^6.1.1",
     "fetch-mock": "^6.5.2",
     "git-message": "^2.0.2",
     "istanbul": "^0.4.5",
@@ -70,6 +70,6 @@
     "braces": "^2.3.2",
     "js-yaml": "3.13.1",
     "lodash": "^4.17.4",
-    "handlebars": "^4.1.2"
+    "handlebars": "^4.3.0"
   }
 }
