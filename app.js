@@ -12,10 +12,12 @@ const addressLookup = require('./app/address/address-lookup');
 const serviceFilter = require('./app/service/service-filter');
 const corsHandler = require('./app/security/cors');
 const healthcheck = require('@hmcts/nodejs-healthcheck');
+const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
 const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
 const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
 
 let app = express();
+const appHealth = express();
 const logger = Logger.getLogger('app');
 
 app.use(ExpressLogger.accessLogger());
@@ -38,10 +40,10 @@ const applyProxy = (app, config) => {
 
   if (false !== config.rewrite) {
     options.pathRewrite = {
-        [`^${config.source}`]: ''
+      [`^${config.source}`]: config.rewriteUrl || ''
     };
   }
-
+  
   if (config.filter) {
     app.use(config.source, proxy(config.filter, options));
   } else {
@@ -49,11 +51,12 @@ const applyProxy = (app, config) => {
   }
 };
 
-const health = healthcheck.configure({
+let healthConfig = {
   checks: {}
-});
-app.get('/', health);
-app.get('/health', health);
+};
+healthcheck.addTo(appHealth, healthConfig);
+appHealth.get('/', routes.configure(healthConfig));
+app.use(appHealth);
 
 app.use(corsHandler);
 
@@ -76,10 +79,12 @@ applyProxy(app, {
   target: config.get('proxy.aggregated'),
   rewrite: false
 });
+
 applyProxy(app, {
   source: '/data',
   target: config.get('proxy.data')
 });
+
 applyProxy(app, {
   source: '/definition_import',
   target: config.get('proxy.definition_import')
@@ -89,6 +94,13 @@ applyProxy(app, {
   source: '/documents',
   target: config.get('proxy.document_management'),
   rewrite: false
+});
+
+applyProxy(app, {
+  source: '/em-anno',
+  target: config.get('proxy.mv_annotations'),
+  rewrite: true,
+  rewriteUrl: '/api'
 });
 
 applyProxy(app, {
@@ -107,8 +119,15 @@ applyProxy(app, {
   filter: [
     '/payments/cases/**/payments',
     '/payments/card-payments/**',
-    '/payments/credit-account-payments/**'
+    '/payments/credit-account-payments/**',
+    '/payments/payment-groups/**',
+    '/payments/cases/**/paymentgroups'
   ]
+});
+
+applyProxy(app, {
+  source: '/refdata',
+  target: config.get('proxy.refdata')
 });
 
 // catch 404 and forward to error handler
