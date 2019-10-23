@@ -29,9 +29,9 @@ function accessTokenRequest(request) {
   };
   return fetch(config.get('idam.oauth2.token_endpoint') + url.format({ query: params }), options)
     .then(response => {
-
       if (response.status !== 200) {
-        logger.error('Failed to obtain access token due to an expected response:', response);
+        logger.error('Failed to obtain access token. response status:', response.status);
+        logger.error('Failed to obtain access token. message:', response.statusText);
       }
       return response;
     })
