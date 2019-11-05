@@ -40,10 +40,10 @@ const applyProxy = (app, config) => {
 
   if (false !== config.rewrite) {
     options.pathRewrite = {
-      [`^${config.source}`]: config.rewriteUrl || ''
+        [`^${config.source}`]: ''
     };
   }
-  
+
   if (config.filter) {
     app.use(config.source, proxy(config.filter, options));
   } else {
@@ -79,12 +79,10 @@ applyProxy(app, {
   target: config.get('proxy.aggregated'),
   rewrite: false
 });
-
 applyProxy(app, {
   source: '/data',
   target: config.get('proxy.data')
 });
-
 applyProxy(app, {
   source: '/definition_import',
   target: config.get('proxy.definition_import')
@@ -94,13 +92,6 @@ applyProxy(app, {
   source: '/documents',
   target: config.get('proxy.document_management'),
   rewrite: false
-});
-
-applyProxy(app, {
-  source: '/em-anno',
-  target: config.get('proxy.mv_annotations'),
-  rewrite: true,
-  rewriteUrl: '/api'
 });
 
 applyProxy(app, {

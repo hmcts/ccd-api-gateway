@@ -103,7 +103,6 @@ module "api-gateway-web" {
     PROXY_DATA = "http://ccd-data-store-api-${local.env_ase_url}"
     PROXY_DEFINITION_IMPORT = "http://ccd-definition-store-api-${local.env_ase_url}"
     PROXY_DOCUMENT_MANAGEMENT = "${local.document_management_url}"
-    PROXY_MV_ANNOTATIONS_API_URL = "${var.mv_annotations_api_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
     PROXY_REFDATA = "${local.refdata_url}"
