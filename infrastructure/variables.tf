@@ -46,6 +46,10 @@ variable "document_management_url" {
   default = ""
 }
 
+variable "mv_annotations_api_url" {
+  default = ""
+}
+
 variable "https_only" {
   default = "false"
 }
