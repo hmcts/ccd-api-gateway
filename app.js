@@ -43,7 +43,7 @@ const applyProxy = (app, config) => {
       [`^${config.source}`]: config.rewriteUrl || ''
     };
   }
-  
+
   if (config.filter) {
     app.use(config.source, proxy(config.filter, options));
   } else {
@@ -121,7 +121,8 @@ applyProxy(app, {
     '/payments/card-payments/**',
     '/payments/credit-account-payments/**',
     '/payments/payment-groups/**',
-    '/payments/cases/**/paymentgroups'
+    '/payments/cases/**/paymentgroups',
+    '/payments/api/bulk-scan/cases/**'
   ]
 });
 
