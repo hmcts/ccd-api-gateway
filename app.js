@@ -121,8 +121,15 @@ applyProxy(app, {
     '/payments/card-payments/**',
     '/payments/credit-account-payments/**',
     '/payments/payment-groups/**',
-    '/payments/cases/**/paymentgroups',
-    '/payments/api/bulk-scan/cases/**'
+    '/payments/cases/**/paymentgroups'
+  ]
+});
+
+applyProxy(app, {
+  source: '/pay-bulkscan',
+  target: config.get('proxy.pay_bulkscan'),
+  filter: [
+    '/pay-bulkscan/cases/**'
   ]
 });
 
