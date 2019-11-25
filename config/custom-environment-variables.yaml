@@ -27,8 +27,7 @@ security:
 appInsights:
   instrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
 secrets:
-  ccd:
+  ccd-demo:
     ccd-api-gateway-oauth2-client-secret: IDAM_OAUTH2_CLIENT_SECRET
     postcode-info-address-lookup-token: ADDRESS_LOOKUP_TOKEN
-  s2s:
-    microservicekey-ccd-gw: IDAM_SERVICE_KEY
+    ccd-gw-s2s-secret: IDAM_SERVICE_KEY
