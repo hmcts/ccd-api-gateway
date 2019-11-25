@@ -29,7 +29,8 @@ appInsights:
   enabled: true
   roleName: "ccd-api-gateway"
 secrets:
-  ccd-demo:
+  ccd:
     ccd-api-gateway-oauth2-client-secret: ccd_gateway_secret
     postcode-info-address-lookup-token: AA
-    ccd-gw-s2s-secret: aa
+  s2s:
+    microservicekey-ccd-gw: AAAAAAAAAAAAAAAC
