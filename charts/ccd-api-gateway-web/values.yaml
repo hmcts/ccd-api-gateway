@@ -23,7 +23,8 @@ nodejs:
     PROXY_PRINT_SERVICE: http://ccd-case-print-service-demo.service.core-compute-demo.internal
     PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-demo.service.core-compute-demo.internal
   keyVaults:
-    ccd:
+    ccd-demo:
+      excludeEnvironmentSuffix: true
       secrets:
         - ccd-api-gateway-oauth2-client-secret
         - ccd-gw-s2s-secret
