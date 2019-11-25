@@ -14,7 +14,7 @@ describe('service token generator', () => {
     let config = {
       get: sinon.stub()
     };
-    config.get.withArgs('secrets.s2s.microservicekey-ccd-gw').returns('AAAA');
+    config.get.withArgs('secrets.ccd.ccd-gw-s2s-secret').returns('AAAA');
     config.get.withArgs('idam.s2s_url').returns('http://localhost:9999');
     config.get.withArgs('appInsights.enabled').returns(false);
 

@@ -32,5 +32,4 @@ secrets:
   ccd:
     ccd-api-gateway-oauth2-client-secret: ccd_gateway_secret
     postcode-info-address-lookup-token: AA
-  s2s:
-    microservicekey-ccd-gw: AAAAAAAAAAAAAAAC
+    ccd-gw-s2s-secret: aa
