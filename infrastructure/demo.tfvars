@@ -1,6 +1,5 @@
 external_host_name = "gateway-ccd.demo.platform.hmcts.net"
 idam_api_url = "https://idam-api.demo.platform.hmcts.net/"
-cors_origin = "https://www.ccd.demo.platform.hmcts.net"
 document_management_url = "http://dm-store-demo.service.core-compute-demo.internal"
 mv_annotations_api_url = "http://em-anno-demo.service.core-compute-demo.internal"
 capacity = "4"
