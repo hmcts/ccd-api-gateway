@@ -25,6 +25,10 @@ const logger = Logger.getLogger('app');
 app.use(ExpressLogger.accessLogger());
 app.use(cookieParser());
 
+const poweredByHeader = 'x-powered-by';
+app.disable(poweredByHeader);
+appHealth.disable(poweredByHeader);
+
 const applyProxy = (app, config) => {
   let options = {
       target: config.target,
