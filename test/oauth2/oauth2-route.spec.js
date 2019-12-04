@@ -19,23 +19,17 @@ describe('oauth2Route', () => {
   let config;
   let accessTokenRequest;
   let oauth2Route;
-  let responseFromPromiseMock;
 
   beforeEach(() => {
-
     config = {
       get: sinon.stub()
-    };
-    responseFromPromiseMock = {
-      status: 200,
-      json: sinon.stub()
     };
 
     request = sinonExpressMock.mockReq();
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
     accessTokenRequest = sinon.stub();
-    accessTokenRequest.withArgs(request).returns(Promise.resolve(responseFromPromiseMock));
+    accessTokenRequest.withArgs(request).returns(Promise.resolve(TOKEN));
 
     oauth2Route = proxyquire('../../app/oauth2/oauth2-route', {
       './access-token-request': accessTokenRequest,
@@ -44,13 +38,10 @@ describe('oauth2Route', () => {
   });
 
   it('should set an accessToken cookie with the "secure" flag enabled', done => {
-
     config.get.withArgs('security.secure_auth_cookie_enabled').returns(true);
-    responseFromPromiseMock.json.withArgs().returns(Promise.resolve(TOKEN));
 
-    response.send.callsFake( () => {
+    response.send.callsFake(() => {
       try {
-
         expect(accessTokenRequest).to.be.calledWith(request);
         expect(config.get).to.be.calledWith('security.secure_auth_cookie_enabled');
         expect(response.cookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
@@ -66,9 +57,7 @@ describe('oauth2Route', () => {
   });
 
   it('should set an accessToken cookie with the "secure" flag disabled', done => {
-
     config.get.withArgs('security.secure_auth_cookie_enabled').returns(false);
-    responseFromPromiseMock.json.withArgs().returns(Promise.resolve(TOKEN));
 
     response.send.callsFake(() => {
       try {
@@ -84,34 +73,5 @@ describe('oauth2Route', () => {
     });
 
     oauth2Route(request, response, next);
-  });
-
-  it('should fail to obation an accessToken dude to unauthorized request.', done => {
-
-    let expectedError = {
-      status: 502,
-      message: 'Internal Server Error'
-    };
-
-    let  unauthorizedAccessTokenRequest = sinon.stub();
-    unauthorizedAccessTokenRequest.withArgs(request).returns(Promise.resolve(expectedError));
-
-    let unauthorizedOauth2Route = proxyquire('../../app/oauth2/oauth2-route', {
-      './access-token-request': unauthorizedAccessTokenRequest,
-      'config': config
-    }).oauth2Route;
-
-    next.callsFake((result) => {
-      try {
-
-        expect(unauthorizedAccessTokenRequest).to.be.calledWith(request);
-        expect(result).to.eql(expectedError);
-        done();
-      } catch (e) {
-        done(e);
-      }
-    });
-
-    unauthorizedOauth2Route(request, response, next);
   });
 });
