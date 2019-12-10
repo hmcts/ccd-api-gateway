@@ -26,9 +26,6 @@ locals {
   // Payments API
   payments_url = "http://payment-api-${local.env_ase_url}"
 
-  // Pay bulkscan API
-  pay_bulkscan_url = "http://ccpay-bulkscanning-api-${local.env_ase_url}"
-
   // Reference Data API
   refdata_url = "http://rd-professional-api-${local.env_ase_url}"
 
@@ -109,7 +106,6 @@ module "api-gateway-web" {
     PROXY_MV_ANNOTATIONS_API_URL = "${var.mv_annotations_api_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
-    PROXY_PAY_BULKSCAN = "${local.pay_bulkscan_url}"
     PROXY_REFDATA = "${local.refdata_url}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
     DUMMY_VAR = "true"
