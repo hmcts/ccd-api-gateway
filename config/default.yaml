@@ -6,7 +6,6 @@ proxy:
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
   payments: http://localhost:9999/payments
-  pay_bulkscan: http://localhost:8888/pay-bulkscan
   refdata: http://localhost:8090/refdata
   mv_annotations: http://localhost:4623
 idam:
