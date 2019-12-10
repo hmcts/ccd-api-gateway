@@ -6,5 +6,3 @@ nodejs:
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
     IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
     PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-aat.service.core-compute-aat.internal
-    PROXY_AGGREGATED: https://ccd-data-store-api-pr-601.service.core-compute-preview.internal
-    PROXY_DATA: https://ccd-data-store-api-pr-601.service.core-compute-preview.internal
