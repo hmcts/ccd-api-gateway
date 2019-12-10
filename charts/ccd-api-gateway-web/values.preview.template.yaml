@@ -7,3 +7,7 @@ nodejs:
     IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
     CORS_ORIGIN_WHITELIST: "*"
     PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-aat.service.core-compute-aat.internal
+
+#   TODO temporary to investigate build issue on PR. To remove once release is complete
+    PROXY_AGGREGATED: https://ccd-data-store-api-pr-601.service.core-compute-preview.internal
+    PROXY_DATA: https://ccd-data-store-api-pr-601.service.core-compute-preview.internal
