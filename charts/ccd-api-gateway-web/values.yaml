@@ -27,3 +27,6 @@ nodejs:
         - ccd-api-gateway-oauth2-client-secret
         - ccd-gw-s2s-secret
         - postcode-info-address-lookup-token
+    s2s:
+      secrets:
+        - microservicekey-ccd-gw
