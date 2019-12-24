@@ -34,7 +34,7 @@
     "express": "^4.15.5",
     "form-data": "^2.1.4",
     "http-proxy-middleware": "^0.17.4",
-    "https-proxy-agent": "^2.2.1",
+    "https-proxy-agent": "^2.2.3",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.4",
     "jwt-decode": "^2.2.0",
@@ -70,6 +70,7 @@
     "braces": "^2.3.2",
     "js-yaml": "3.13.1",
     "lodash": "^4.17.4",
-    "handlebars": "^4.3.0"
+    "handlebars": "^4.5.3",
+    "mem": "^6.0.0"
   }
 }
