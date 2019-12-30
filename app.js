@@ -134,6 +134,14 @@ applyProxy(app, {
 });
 
 applyProxy(app, {
+  source: '/pay-bulkscan',
+  target: config.get('proxy.pay_bulkscan'),
+  filter: [
+    '/pay-bulkscan/cases/**'
+  ]
+});
+
+applyProxy(app, {
   source: '/refdata',
   target: config.get('proxy.refdata')
 });
