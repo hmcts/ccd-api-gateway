@@ -6,6 +6,7 @@ proxy:
   print_service: PROXY_PRINT_SERVICE
   case_activity: PROXY_CASE_ACTIVITY
   payments: PROXY_PAYMENTS
+  pay_bulkscan: PROXY_PAY_BULKSCAN
   refdata: PROXY_REFDATA
   mv_annotations: PROXY_MV_ANNOTATIONS_API_URL
 idam:
