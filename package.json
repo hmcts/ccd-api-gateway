@@ -34,7 +34,7 @@
     "express": "^4.15.5",
     "form-data": "^2.1.4",
     "http-proxy-middleware": "^0.17.4",
-    "https-proxy-agent": "^2.2.3",
+    "https-proxy-agent": "^4.0.0",
     "js-yaml": "^3.13.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
