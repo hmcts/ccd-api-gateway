@@ -29,9 +29,6 @@ locals {
   // Pay bulkscan API
   pay_bulkscan_url = "http://ccpay-bulkscanning-api-${local.env_ase_url}"
 
-  // Pay bulkscan API
-  pay_bulkscan_url = "http://ccpay-bulkscanning-api-${local.env_ase_url}"
-
   // Reference Data API
   refdata_url = "http://rd-professional-api-${local.env_ase_url}"
 
