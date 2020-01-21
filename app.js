@@ -11,10 +11,12 @@ const authCheckerUserOnlyFilter = require('./app/user/auth-checker-user-only-fil
 const addressLookup = require('./app/address/address-lookup');
 const serviceFilter = require('./app/service/service-filter');
 const corsHandler = require('./app/security/cors');
+const hstsHandler = require('./app/security/hsts');
 const healthcheck = require('@hmcts/nodejs-healthcheck');
 const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
 const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
 const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
+const noCache = require('nocache');
 
 let app = express();
 const appHealth = express();
@@ -22,6 +24,10 @@ const logger = Logger.getLogger('app');
 
 app.use(ExpressLogger.accessLogger());
 app.use(cookieParser());
+
+const poweredByHeader = 'x-powered-by';
+app.disable(poweredByHeader);
+appHealth.disable(poweredByHeader);
 
 const applyProxy = (app, config) => {
   let options = {
@@ -58,6 +64,8 @@ healthcheck.addTo(appHealth, healthConfig);
 appHealth.get('/', routes.configure(healthConfig));
 app.use(appHealth);
 
+app.use(noCache());
+app.use(hstsHandler);
 app.use(corsHandler);
 
 app.get('/oauth2', oauth2Route);
