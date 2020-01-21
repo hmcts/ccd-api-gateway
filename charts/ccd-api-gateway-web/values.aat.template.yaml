@@ -1,3 +1,5 @@
 nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  environment:
+    CORS_ORIGIN_WHITELIST: "*"

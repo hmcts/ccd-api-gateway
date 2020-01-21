@@ -44,6 +44,7 @@ function createServer(app) {
  */
 
 server.listen(port);
+server.setTimeout(300000);
 server.on('error', onError);
 server.on('listening', onListening);
 
