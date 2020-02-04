@@ -13,7 +13,7 @@ locals {
 
   env_ase_url = "${local.local_env}.service.${local.local_ase}.internal"
 
-  default_cors_origin = "https://ccd-case-management-web-${var.env}.service.${local.ase_name}.internal,https://ccd-case-management-web-${var.env}-staging.service.${local.ase_name}.internal"
+  default_cors_origin = "https://ccd-case-management-web-${var.env}.service.${local.ase_name}.internal,https://ccd-case-management-web-${var.env}-staging.service.${local.ase_name}.internal,https://www-ccd.${var.env}.platform.hmcts.net,https://www.ccd.${var.env}.platform.hmcts.net"
   default_document_management_url = "http://dm-store-${local.env_ase_url}"
 
   cors_origin = "${var.cors_origin != "" ? var.cors_origin : local.default_cors_origin}"
@@ -25,6 +25,9 @@ locals {
 
   // Payments API
   payments_url = "http://payment-api-${local.env_ase_url}"
+  
+  // Pay bulkscan API
+  pay_bulkscan_url = "http://ccpay-bulkscanning-api-${local.env_ase_url}"
 
   // Reference Data API
   refdata_url = "http://rd-professional-api-${local.env_ase_url}"
@@ -107,6 +110,7 @@ module "api-gateway-web" {
     PROXY_MV_ANNOTATIONS_API_URL = "${var.mv_annotations_api_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
+    PROXY_PAY_BULKSCAN = "${local.pay_bulkscan_url}"
     PROXY_REFDATA = "${local.refdata_url}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
     DUMMY_VAR = "true"
