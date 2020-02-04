@@ -12,13 +12,14 @@ nodejs:
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session/:token
     IDAM_BASE_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
     IDAM_S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    CORS_ORIGIN_WHITELIST: https://ccd-case-management-web-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal,https://ccd-case-management-web-{{ .Values.global.environment }}-staging.service.core-compute-{{ .Values.global.environment }}.internal,https://www-ccd.nonprod.platform.hmcts.net,http://localhost:3451,*
+    CORS_ORIGIN_WHITELIST: https://ccd-case-management-web-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal,https://ccd-case-management-web-{{ .Values.global.environment }}-staging.service.core-compute-{{ .Values.global.environment }}.internal,https://www-ccd.{{ .Values.global.environment }}.platform.hmcts.net,https://www-ccd.nonprod.platform.hmcts.net,https://www.ccd.platform.hmcts.net
     PROXY_AGGREGATED: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_CASE_ACTIVITY: http://ccd-case-activity-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_DATA: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_DOCUMENT_MANAGEMENT: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PAYMENTS: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PROXY_PAY_BULKSCAN: http://ccpay-bulkscanning-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PRINT_SERVICE: http://ccd-case-print-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   keyVaults:
@@ -27,3 +28,6 @@ nodejs:
         - ccd-api-gateway-oauth2-client-secret
         - ccd-gw-s2s-secret
         - postcode-info-address-lookup-token
+    s2s:
+      secrets:
+        - microservicekey-ccd-gw
