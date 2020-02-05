@@ -32,6 +32,9 @@ locals {
   // Reference Data API
   refdata_url = "http://rd-professional-api-${local.env_ase_url}"
 
+  // Case Document AM API
+  case_document_am_api = "http://ccd-case-document-am-api-${local.env_ase_url}"
+
   // Vault name
   previewVaultName = "${var.raw_product}-aat"
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
@@ -111,6 +114,7 @@ module "api-gateway-web" {
     PROXY_PAYMENTS = "${local.payments_url}"
     PROXY_PAY_BULKSCAN = "${local.pay_bulkscan_url}"
     PROXY_REFDATA = "${local.refdata_url}"
+    PROXY_CASE_DOCUMENT = "${local.case_document_am_api}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
     DUMMY_VAR = "true"
   }
