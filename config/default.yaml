@@ -9,6 +9,7 @@ proxy:
   pay_bulkscan: http://localhost:8888/pay-bulkscan
   refdata: http://localhost:8090/refdata
   mv_annotations: http://localhost:4623
+  case_document: http://localhost:4455
 idam:
   base_url: http://localhost:5000
   s2s_url: http://localhost:4502

@@ -146,6 +146,11 @@ applyProxy(app, {
   target: config.get('proxy.refdata')
 });
 
+applyProxy(app, {
+  source: '/casedocument',
+  target: config.get('proxy.case_document')
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   let err = new Error('Not Found');

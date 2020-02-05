@@ -9,6 +9,8 @@ proxy:
   pay_bulkscan: PROXY_PAY_BULKSCAN
   refdata: PROXY_REFDATA
   mv_annotations: PROXY_MV_ANNOTATIONS_API_URL
+  case_document: PROXY_CASE_DOCUMENT
+
 idam:
   base_url: IDAM_BASE_URL
   s2s_url: IDAM_S2S_URL
