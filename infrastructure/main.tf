@@ -112,9 +112,9 @@ module "api-gateway-web" {
     PROXY_MV_ANNOTATIONS_API_URL = "${var.mv_annotations_api_url}"
     PROXY_PRINT_SERVICE = "${local.ccd_print_service_url}"
     PROXY_PAYMENTS = "${local.payments_url}"
+    PROXY_CASE_DOCUMENT = "${local.case_document_am_api}"
     PROXY_PAY_BULKSCAN = "${local.pay_bulkscan_url}"
     PROXY_REFDATA = "${local.refdata_url}"
-    PROXY_CASE_DOCUMENT = "${local.case_document_am_api}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
     DUMMY_VAR = "true"
   }
