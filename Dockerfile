@@ -4,11 +4,6 @@ ARG base=hmctspublic.azurecr.io/base/node:12-stretch-slim
 # Base image
 FROM ${base} as base
 
-USER root
-RUN apt-get update \
-    && apt-get install -y curl
-USER hmcts
-
 COPY package.json yarn.lock ./
 RUN yarn install --production \
     && yarn cache clean
@@ -20,8 +15,4 @@ COPY config ./config
 # Runtime image
 FROM base as runtime
 ENV PORT 3453
-HEALTHCHECK --interval=10s \
-    --timeout=10s \
-    --retries=10 \
-    CMD http_proxy="" curl --silent --fail http://localhost:3453/health
 EXPOSE 3453
