@@ -4,7 +4,9 @@ FROM node:12.14.1-slim as base
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash -s \
+RUN apt-get update \
+    && apt-get install -y curl \
+    && curl -o- -L https://yarnpkg.com/install.sh | bash -s \
     && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" \
     && yarn install --production \
     && yarn cache clean
