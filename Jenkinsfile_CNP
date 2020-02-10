@@ -45,6 +45,7 @@ withPipeline("nodejs", product, component) {
 
     before('securitychecks') {sh 'yarn test:audit'}
 
+    enableDockerBuild()
     installCharts()
 
     afterCheckout {

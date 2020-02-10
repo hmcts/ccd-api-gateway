@@ -93,7 +93,6 @@ module "api-gateway-web" {
   appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
 
   app_settings = {
-    WEBSITE_NODE_DEFAULT_VERSION = "~12"
     IDAM_OAUTH2_TOKEN_ENDPOINT = "${var.idam_api_url}/oauth2/token"
     IDAM_OAUTH2_CLIENT_ID = "ccd_gateway"
     IDAM_OAUTH2_CLIENT_SECRET = "${data.azurerm_key_vault_secret.oauth2_client_secret.value}"
