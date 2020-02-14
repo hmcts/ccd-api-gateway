@@ -20,7 +20,7 @@ cd ccd-api-gateway
 
 ### Prerequisites
 
-* [Node.js](https://nodejs.org/) >= v8.0.0
+* [Node.js](https://nodejs.org/) >= v12.0.0
 * [yarn](https://yarnpkg.com/)
 * [Docker](https://www.docker.com)
 
