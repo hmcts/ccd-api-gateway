@@ -12,8 +12,8 @@ const setup = () => {
   if (config.has('secrets.ccd')) {
     setSecret('secrets.ccd.ccd-api-gateway-oauth2-client-secret', 'secrets.ccd.ccd-api-gateway-oauth2-client-secret');
     setSecret('secrets.ccd.postcode-info-address-lookup-token', 'secrets.ccd.postcode-info-address-lookup-token');
-    setSecret('secrets.ccd.microservicekey-ccd-gw', 'secrets.s2s.microservicekey-ccd-gw');
-    setSecret('secrets.ccd.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
+    setSecret('secrets.ccd.microservicekey-ccd-gw', 'secrets.ccd.microservicekey-ccd-gw');
+    setSecret('secrets.ccd.AppInsightsInstrumentationKey', 'secrets.ccd.AppInsightsInstrumentationKey');
   }
 };
 
