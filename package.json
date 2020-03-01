@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "private": true,
   "engines": {
-    "node": "^12.14.1",
+    "node": ">=12.13.0",
     "yarn": "^1.12.3"
   },
   "scripts": {
@@ -15,7 +15,6 @@
     "test:coverage": "NODE_ENV=test NODE_PATH=. istanbul cover _mocha 'test/**/*.spec.js'",
     "test:acceptance": "echo 'TODO - CALL JAVA INTEGRATION TEST'",
     "test:audit": "./bin/run-yarn-audit.sh -f yarn-audit-known-issues",
-    "test:nsp": "NODE_PATH=. nsp check",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "test:a11y": "NODE_PATH=.",
@@ -55,7 +54,6 @@
     "mockery": "^2.1.0",
     "moment": "^2.22.1",
     "nock": "^10.0.6",
-    "nsp": "^3.2.1",
     "pa11y": "^5.2.0",
     "proxyquire": "^2.0.1",
     "should": "^13.2.3",
