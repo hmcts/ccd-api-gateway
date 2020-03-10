@@ -23,7 +23,7 @@ nodejs:
     PROXY_PAYMENTS: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PAY_BULKSCAN: http://ccpay-bulkscanning-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PRINT_SERVICE: http://ccd-case-print-service-nodejs
-    PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PROXY_MV_ANNOTATIONS_API_URL: http://em-anno-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_REFDATA: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   keyVaults:
     ccd:
