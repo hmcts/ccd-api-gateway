@@ -15,5 +15,5 @@ nodejs:
     CORS_ORIGIN_WHITELIST: https://ccd-case-management-web-pr-891.service.core-compute-preview.internal,https://ccd-case-management-web-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal,https://ccd-case-management-web-{{ .Values.global.environment }}-staging.service.core-compute-{{ .Values.global.environment }}.internal,https://www-ccd.{{ .Values.global.environment }}.platform.hmcts.net,https://www-ccd.nonprod.platform.hmcts.net,https://www.ccd.platform.hmcts.net
     PROXY_AGGREGATED: http://ccd-data-store-api-pr-835.service.core-compute-preview.internal
     PROXY_DATA: http://ccd-data-store-api-pr-835.service.core-compute-preview.internal
-    PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api-pr-552.service.core-compute-preview.internal
+    PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api-pr-554.service.core-compute-preview.internal
 
