@@ -25,7 +25,7 @@ locals {
 
   // Payments API
   payments_url = "http://payment-api-${local.env_ase_url}"
-  
+
   // Pay bulkscan API
   pay_bulkscan_url = "http://ccpay-bulkscanning-api-${local.env_ase_url}"
 
