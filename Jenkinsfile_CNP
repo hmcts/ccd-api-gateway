@@ -45,8 +45,9 @@ withPipeline("nodejs", product, component) {
 
     before('securitychecks') {sh 'yarn test:audit'}
 
-    enableDockerBuild()
     installCharts()
+    enableAksStagingDeployment()
+    disableLegacyDeploymentOnAAT()
 
     afterCheckout {
         sh "yarn cache clean"

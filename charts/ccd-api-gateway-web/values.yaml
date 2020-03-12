@@ -1,5 +1,7 @@
 nodejs:
+  aadIdentityName: ccd
   image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
+  ingressHost: 'gateway-ccd.{{ .Values.global.environment }}.platform.hmcts.net'
   applicationPort: 3453
   cpuLimits: 1
   environment:
@@ -20,15 +22,15 @@ nodejs:
     PROXY_DOCUMENT_MANAGEMENT: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PAYMENTS: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PAY_BULKSCAN: http://ccpay-bulkscanning-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    PROXY_PRINT_SERVICE: http://ccd-case-print-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PROXY_PRINT_SERVICE: http://ccd-case-print-service-nodejs
+    PROXY_MV_ANNOTATIONS_API_URL: http://em-anno-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PROXY_REFDATA: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_CASE_DOCUMENT: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   keyVaults:
     ccd:
       secrets:
         - ccd-api-gateway-oauth2-client-secret
-        - ccd-gw-s2s-secret
         - postcode-info-address-lookup-token
-    s2s:
-      secrets:
         - microservicekey-ccd-gw
+        - AppInsightsInstrumentationKey
+
