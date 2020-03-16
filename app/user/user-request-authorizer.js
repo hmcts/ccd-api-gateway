@@ -65,8 +65,8 @@ const authorizeRoles = (request, user) => {
 };
 
 const fillInUserId = (request, user) => {
-  request.url = request.url.replace(USER_ID_PLACEHOLDER, user.id);
-  request.originalUrl = request.originalUrl.replace(USER_ID_PLACEHOLDER, user.id);
+  request.url = request.url.replace(USER_ID_PLACEHOLDER, user.uid);
+  request.originalUrl = request.originalUrl.replace(USER_ID_PLACEHOLDER, user.uid);
 };
 
 exports.ERROR_TOKEN_MISSING = ERROR_TOKEN_MISSING;
