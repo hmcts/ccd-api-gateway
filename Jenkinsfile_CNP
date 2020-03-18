@@ -33,6 +33,9 @@ withPipeline("nodejs", product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
+    if (env.BRANCH_NAME == 'develop') {
+        enableSlackNotifications('#ccd-develop-builds')
+    }
     onDemo {
         enableSlackNotifications('#ccd-demo-builds')
     }
