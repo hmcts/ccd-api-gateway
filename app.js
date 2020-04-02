@@ -41,7 +41,10 @@ const applyProxy = (app, config) => {
             status: 504
           });
       },
-      logLevel: 'warn'
+      logLevel: 'warn',
+      onProxyRes: function onProxyRes(proxyRes, req, res) {
+        logger.warn("Content-Length Header Value: " + res.getHeader("Content-Length"));
+      }
   };
 
   if (false !== config.rewrite) {
