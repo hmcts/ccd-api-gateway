@@ -43,8 +43,8 @@ const applyProxy = (app, config) => {
       },
       logLevel: 'warn',
       onProxyRes: function onProxyRes(proxyRes, req, res) {
-        logger.warn('Content-Length Header Value: ' + res.getHeader('Content-Length'));
-        const headers = res.getHeaders();
+        logger.warn('Content-Length Header Value: ' + proxyRes.getHeader('Content-Length'));
+        const headers = proxyRes.getHeaders();
         for(let k in headers) {
           logger.warn(k + ': ' + headers[k]);
         }
