@@ -19,7 +19,7 @@ nodejs:
     PROXY_CASE_ACTIVITY: http://ccd-case-activity-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_DATA: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    PROXY_DOCUMENT_MANAGEMENT: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PROXY_DOCUMENT_MANAGEMENT: http://dm-store-pr-558.service.core-compute-preview.internal
     PROXY_PAYMENTS: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PAY_BULKSCAN: http://ccpay-bulkscanning-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PROXY_PRINT_SERVICE: http://ccd-case-print-service-nodejs
