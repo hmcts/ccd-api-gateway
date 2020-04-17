@@ -30,7 +30,7 @@ appInsights:
 secrets:
   ccd:
     ccd-api-gateway-oauth2-client-secret: ""
-    postcode-info-address-lookup-token: ""
+    postcode-info-address-lookup-token: AA
     microservicekey-ccd-gw: ""
     AppInsightsInstrumentationKey: ""
     
