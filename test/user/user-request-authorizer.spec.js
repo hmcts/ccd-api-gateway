@@ -14,7 +14,7 @@ describe('UserRequestAuthorizer', () => {
     const USER_ID = '1';
     const ROLE_1 = 'role1';
     const DETAILS = {
-      uid: USER_ID,
+      id: USER_ID,
       roles: [ROLE_1]
     };
     const COOKIES = {
