@@ -4,7 +4,7 @@ const fetch = require('../util/fetch');
 const getUserDetails = (jwt) => {
   let bearerJwt = jwt.startsWith('Bearer ') ? jwt : 'Bearer ' + jwt;
 
-  return fetch(`${config.get('idam.base_url')}/details`, {
+  return fetch(`${config.get('idam.base_url')}/o/userinfo`, {
     headers: {
       'Authorization': bearerJwt
     }
