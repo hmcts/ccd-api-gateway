@@ -1,4 +1,4 @@
-const userResolver = require('./user-resolver');
+const userResolver = require('./cached-user-resolver');
 const authorizedRolesExtractor = require('./authorised-roles-extractor');
 const COOKIE_ACCESS_TOKEN = require('../oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 

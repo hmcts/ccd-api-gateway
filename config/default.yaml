@@ -24,6 +24,9 @@ security:
   cors_origin_methods: "GET,POST,OPTIONS,PUT,DELETE"
   cors_origin_whitelist: "http://localhost:3451,http://localhost:3452"
   secure_auth_cookie_enabled: false
+cache:
+  user_info_ttl: 1800
+  user_info_check_period: 120
 appInsights:
   enabled: true
   roleName: "ccd-api-gateway"
