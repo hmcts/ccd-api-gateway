@@ -49,10 +49,21 @@ describe('getCachedUserDetails', () => {
     assert.calledOnce(userInfoCacheSpy);
   });
 
-  it('should get user details with cached value', async () => {
+  it('should get cached user details', async () => {
     initNock(TOKEN, USER_DETAILS);
     const firstResult = await cachedUserResolver.getUserDetails(TOKEN);
     const cachedResult = await cachedUserResolver.getUserDetails(TOKEN);
+
+    expect(JSON.stringify(firstResult)).to.equal(JSON.stringify(cachedResult));
+    expect(JSON.stringify(cachedResult)).to.equal(JSON.stringify(USER_DETAILS));
+    assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
+    assert.calledTwice(userInfoCacheSpy);
+  });
+
+  it('should get cached user details with token including Bearer', async () => {
+    initNock(TOKEN, USER_DETAILS);
+    const firstResult = await cachedUserResolver.getUserDetails(TOKEN);
+    const cachedResult = await cachedUserResolver.getUserDetails(`Bearer ${TOKEN}`);
 
     expect(JSON.stringify(firstResult)).to.equal(JSON.stringify(cachedResult));
     expect(JSON.stringify(cachedResult)).to.equal(JSON.stringify(USER_DETAILS));
