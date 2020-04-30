@@ -41,7 +41,7 @@ describe('logoutRoute', () => {
     };
     sandbox = sinon.sandbox.create();
     clock = sandbox.useFakeTimers();
-    userInfoCache = new CacheService(CACHE_TTL_SECONDS, 120);
+    userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'get');
     cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', {
       '../cache/cache-config': { userInfoCache }

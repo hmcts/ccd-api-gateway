@@ -1,9 +1,12 @@
 const NodeCache = require('node-cache');
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('CacheService');
 
 class Cache {
 
-  constructor(ttlSeconds, checkPeriodSeconds) {
+  constructor(name, ttlSeconds, checkPeriodSeconds) {
     this.cache = new NodeCache({ stdTTL: ttlSeconds, checkperiod: checkPeriodSeconds });
+    this.name = name;
   }
 
   get(key, storeFunction) {
@@ -12,14 +15,17 @@ class Cache {
       return Promise.resolve(value);
     }
 
-    return storeFunction().then((result) => {
+    return storeFunction().then(result => {
       this.cache.set(key, result);
       return result;
+    }).catch(error => {
+      logger.warn(`Error in store function for cache '${this.name}' with key '${key}'`);
+      throw error;
     });
   }
 
   del(keys) {
-    this.cache.del(keys);
+    return this.cache.del(keys);
   }
 }
 

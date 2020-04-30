@@ -43,7 +43,7 @@ describe('CacheService', () => {
             nodeCacheSpy = sinon.spy(function () { return MockNodeCache; });
     
             StubbedCacheService = proxyquire('../../app/cache/cache-service', { 'node-cache': nodeCacheSpy });
-            cache = new StubbedCacheService(CACHE_TTL_SECONDS, 120);
+            cache = new StubbedCacheService('TestCache', CACHE_TTL_SECONDS, 120);
         });
     
         it('should get existing cache value', async () => {
@@ -68,13 +68,15 @@ describe('CacheService', () => {
             assert.calledWith(setStub, KEY, STORE_FUNCTION_VALUE);
         });
     
-        it('should delete existing cache value', () => {
+        it('should delete existing cache value', async () => {
+            await cache.get(KEY, storeFunction);
+
             cache.del(KEY);
     
             assert.calledWithNew(nodeCacheSpy);
             assert.calledWith(deleteStub, KEY);
-            assert.notCalled(getStub);
-            assert.notCalled(setStub);
+            assert.calledOnce(getStub);
+            assert.calledOnce(setStub);
         });
     });  
 
@@ -83,6 +85,7 @@ describe('CacheService', () => {
         let clock;
         let getSpy;
         let setSpy;
+        let delSpy;
     
         let cache;
     
@@ -91,7 +94,8 @@ describe('CacheService', () => {
             clock = sandbox.useFakeTimers();
             getSpy = sandbox.spy(NodeCache.prototype, 'get');
             setSpy = sandbox.spy(NodeCache.prototype, 'set');
-            cache = new CacheService(CACHE_TTL_SECONDS, 120);
+            delSpy = sandbox.spy(NodeCache.prototype, 'del');
+            cache = new CacheService('TestCache', CACHE_TTL_SECONDS, 120);
         });
 
         afterEach(() => {
@@ -161,6 +165,32 @@ describe('CacheService', () => {
             assert.calledWith(setSpy, KEY, SECOND_STORE_FUNCTION_VALUE);
             assert.calledTwice(getSpy);
             assert.calledTwice(setSpy);
+        });
+
+        it('should delete cache value', async () => {
+            await cache.get(KEY, storeFunction);
+            
+            const result = cache.del(KEY);
+    
+            expect(result).to.equal(1);
+            assert.calledWith(getSpy, KEY);
+            assert.calledWith(setSpy, KEY, STORE_FUNCTION_VALUE);
+            assert.calledWith(delSpy, KEY);
+            assert.calledOnce(getSpy);
+            assert.calledOnce(setSpy);
+            assert.calledOnce(delSpy);
+        });
+
+        it('should not cache any value when store function errors', async (done) => {
+            let result;
+            try {
+                result = await cache.get(KEY, () => new Error());
+            } catch {
+                expect(result).to.equal(undefined);
+                assert.calledOnce(getSpy);
+                assert.notCalled(setSpy);
+                done();
+            }
         });
     });  
 });

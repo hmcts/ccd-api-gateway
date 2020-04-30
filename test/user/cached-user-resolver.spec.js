@@ -7,6 +7,7 @@ const sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 const nock = require('nock');
 const CacheService = require('../../app/cache/cache-service');
+const NodeCache = require('node-cache');
 
 describe('getCachedUserDetails', () => {
   const TOKEN = 'TOKEN';
@@ -16,6 +17,7 @@ describe('getCachedUserDetails', () => {
   const CACHE_TTL_SECONDS = 1800;
 
   let userInfoCacheSpy;
+  let nodeCacheSpy;
   let sandbox;
   let clock;
 
@@ -25,7 +27,8 @@ describe('getCachedUserDetails', () => {
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
     clock = sandbox.useFakeTimers();
-    userInfoCache = new CacheService(CACHE_TTL_SECONDS, 120);
+    nodeCacheSpy = sandbox.spy(NodeCache.prototype, 'set');
+    userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'get');
     cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', { 
       '../cache/cache-config': { userInfoCache }
@@ -47,6 +50,7 @@ describe('getCachedUserDetails', () => {
     expect(JSON.stringify(result)).to.equal(JSON.stringify(USER_DETAILS));
     assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
     assert.calledOnce(userInfoCacheSpy);
+    assert.calledOnce(nodeCacheSpy);
   });
 
   it('should get cached user details', async () => {
@@ -58,6 +62,7 @@ describe('getCachedUserDetails', () => {
     expect(JSON.stringify(cachedResult)).to.equal(JSON.stringify(USER_DETAILS));
     assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
     assert.calledTwice(userInfoCacheSpy);
+    assert.calledOnce(nodeCacheSpy);
   });
 
   it('should get cached user details with token including Bearer', async () => {
@@ -69,6 +74,7 @@ describe('getCachedUserDetails', () => {
     expect(JSON.stringify(cachedResult)).to.equal(JSON.stringify(USER_DETAILS));
     assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
     assert.calledTwice(userInfoCacheSpy);
+    assert.calledOnce(nodeCacheSpy);
   });
 
   it('should get user details with no cache for different tokens', async () => {
@@ -85,6 +91,7 @@ describe('getCachedUserDetails', () => {
     assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
     assert.calledWith(userInfoCacheSpy, OTHER_TOKEN, sinon.match.func);
     assert.calledTwice(userInfoCacheSpy);
+    assert.calledTwice(nodeCacheSpy);
   });
 
   it('should get new user details after ttl expiry', async () => {
@@ -98,6 +105,23 @@ describe('getCachedUserDetails', () => {
     expect(JSON.stringify(result)).to.equal(JSON.stringify(USER_DETAILS));
     assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
     assert.calledTwice(userInfoCacheSpy);
+    assert.calledTwice(nodeCacheSpy);
+  });
+
+  it('should not cache when error is returned', async () => {
+    nock(URL).get(DETAILS_PATH).reply(500);
+
+    let result;
+    try {
+      result = await cachedUserResolver.getUserDetails(TOKEN);
+    } catch {
+      expect(result).to.equal(undefined);
+      assert.calledOnce(userInfoCacheSpy);
+      assert.notCalled(nodeCacheSpy);
+      return;
+    }
+
+    chai.assert.fail('getUserDetails did not throw error');
   });
 
   const initNock = (token, details) => {
