@@ -114,7 +114,7 @@ describe('getCachedUserDetails', () => {
     let result;
     try {
       result = await cachedUserResolver.getUserDetails(TOKEN);
-    } catch {
+    } catch(error) {
       expect(result).to.equal(undefined);
       assert.calledOnce(userInfoCacheSpy);
       assert.notCalled(nodeCacheSpy);
