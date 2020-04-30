@@ -185,7 +185,7 @@ describe('CacheService', () => {
             let result;
             try {
                 result = await cache.get(KEY, () => new Error());
-            } catch {
+            } catch(error) {
                 expect(result).to.equal(undefined);
                 assert.calledOnce(getSpy);
                 assert.notCalled(setSpy);
