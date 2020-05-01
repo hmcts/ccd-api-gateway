@@ -19,7 +19,7 @@ class Cache {
       this.cache.set(key, result);
       return result;
     }).catch(error => {
-      logger.warn(`Error in store function for cache '${this.name}' with key '${key}'`);
+      logger.warn(`Error in store function for cache '${this.name}'`);
       throw error;
     });
   }
