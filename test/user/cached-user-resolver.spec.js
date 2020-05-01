@@ -12,7 +12,7 @@ const NodeCache = require('node-cache');
 describe('getCachedUserDetails', () => {
   const TOKEN = 'TOKEN';
   const USER_DETAILS = { user: 'Details' };
-  const URL = 'http://localhost:5000';
+  const URL = 'http://test-idam:1234';
   const DETAILS_PATH = '/o/userinfo';
   const CACHE_TTL_SECONDS = 1800;
 

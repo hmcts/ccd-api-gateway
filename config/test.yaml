@@ -1,2 +1,4 @@
 appInsights:
   enabled: false
+idam:
+  base_url: http://test-idam:1234

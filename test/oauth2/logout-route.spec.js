@@ -20,7 +20,7 @@ describe('logoutRoute', () => {
   const TOKEN = 'TOKEN';
   const USER_DETAILS = { user: 'Details' };
   const DETAILS_PATH = '/o/userinfo';
-  const URL = 'http://localhost:5000';
+  const URL = 'http://test-idam:1234';
 
   let request;
   let response;
