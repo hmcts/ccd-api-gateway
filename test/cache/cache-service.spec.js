@@ -49,7 +49,7 @@ describe('CacheService', () => {
         it('should get existing cache value', async () => {
             getStub.returns(STORE_FUNCTION_VALUE);
     
-            const result = await cache.get(KEY, storeFunction);
+            const result = await cache.getOrElseUpdate(KEY, storeFunction);
     
             expect(result).to.equal(STORE_FUNCTION_VALUE);
             assert.calledWithNew(nodeCacheSpy);
@@ -60,7 +60,7 @@ describe('CacheService', () => {
         it('should create new cache value for non-existing key', async () => {
             getStub.returns(undefined);
     
-            const result = await cache.get(KEY, storeFunction);
+            const result = await cache.getOrElseUpdate(KEY, storeFunction);
     
             expect(result).to.equal(STORE_FUNCTION_VALUE);
             assert.calledWithNew(nodeCacheSpy);
@@ -69,7 +69,7 @@ describe('CacheService', () => {
         });
     
         it('should delete existing cache value', async () => {
-            await cache.get(KEY, storeFunction);
+            await cache.getOrElseUpdate(KEY, storeFunction);
 
             cache.del(KEY);
     
@@ -104,7 +104,7 @@ describe('CacheService', () => {
         });
     
         it('should use store function for key with no cache', async () => {
-            const result = await cache.get(KEY, storeFunction);
+            const result = await cache.getOrElseUpdate(KEY, storeFunction);
         
             expect(result).to.equal(STORE_FUNCTION_VALUE);
             assert.calledWith(getSpy, KEY);
@@ -114,8 +114,8 @@ describe('CacheService', () => {
         });
 
         it('should get cached value', async () => {
-            const firstResult = await cache.get(KEY, storeFunction);
-            const cachedResult = await cache.get(KEY, secondStoreFunction);
+            const firstResult = await cache.getOrElseUpdate(KEY, storeFunction);
+            const cachedResult = await cache.getOrElseUpdate(KEY, secondStoreFunction);
         
             expect(firstResult).to.equal(cachedResult);
             expect(cachedResult).to.equal(STORE_FUNCTION_VALUE);
@@ -126,8 +126,8 @@ describe('CacheService', () => {
         });
 
         it('should use different store functions for different keys with no cache', async () => {
-            const firstResult = await cache.get(KEY, storeFunction);
-            const secondResult = await cache.get(SECOND_KEY, secondStoreFunction);
+            const firstResult = await cache.getOrElseUpdate(KEY, storeFunction);
+            const secondResult = await cache.getOrElseUpdate(SECOND_KEY, secondStoreFunction);
         
             expect(firstResult).to.equal(STORE_FUNCTION_VALUE);
             expect(secondResult).to.equal(SECOND_STORE_FUNCTION_VALUE);
@@ -140,10 +140,10 @@ describe('CacheService', () => {
         });
 
         it('should get new value after ttl expiry', async () => {
-            await cache.get(KEY, storeFunction);
+            await cache.getOrElseUpdate(KEY, storeFunction);
             clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
 
-            const result = await cache.get(KEY, secondStoreFunction);
+            const result = await cache.getOrElseUpdate(KEY, secondStoreFunction);
         
             expect(result).to.equal(SECOND_STORE_FUNCTION_VALUE);
             assert.calledWith(getSpy, KEY);
@@ -154,10 +154,10 @@ describe('CacheService', () => {
         });
 
         it('should get new value after key deletion', async () => {
-            await cache.get(KEY, storeFunction);
+            await cache.getOrElseUpdate(KEY, storeFunction);
             cache.del(KEY);
 
-            const result = await cache.get(KEY, secondStoreFunction);
+            const result = await cache.getOrElseUpdate(KEY, secondStoreFunction);
     
             expect(result).to.equal(SECOND_STORE_FUNCTION_VALUE);
             assert.calledWith(getSpy, KEY);
@@ -168,7 +168,7 @@ describe('CacheService', () => {
         });
 
         it('should delete cache value', async () => {
-            await cache.get(KEY, storeFunction);
+            await cache.getOrElseUpdate(KEY, storeFunction);
             
             const result = cache.del(KEY);
     
@@ -184,7 +184,7 @@ describe('CacheService', () => {
         it('should not cache any value when store function errors', async (done) => {
             let result;
             try {
-                result = await cache.get(KEY, () => new Error());
+                result = await cache.getOrElseUpdate(KEY, () => new Error());
             } catch(error) {
                 expect(result).to.equal(undefined);
                 assert.calledOnce(getSpy);

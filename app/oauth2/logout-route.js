@@ -2,7 +2,7 @@ const config = require('config');
 const fetch = require('node-fetch');
 const COOKIE_ACCESS_TOKEN = require('./oauth2-route').COOKIE_ACCESS_TOKEN;
 const TOKEN_PLACEHOLDER = ':token';
-const userInfoCache = require('../cache/cache-config').userInfoCache;
+const { userInfoCache } = require('../cache/cache-config');
 
 const logoutRoute = (req, res, next) => {
   const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];

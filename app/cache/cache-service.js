@@ -9,14 +9,26 @@ class Cache {
     this.name = name;
   }
 
-  get(key, storeFunction) {
-    const value = this.cache.get(key);
+  get(key) {
+    return this.cache.get(key);
+  }
+
+  set(key, value) {
+    this.cache.set(key, value);
+  }
+
+  /**
+   * If given key is already in the cache, returns associated value.
+   * Otherwise, computes value from given expression op, stores with key in the cache and returns that value.
+   */
+  getOrElseUpdate(key, op) {
+    const value = this.get(key);
     if (value) {
       return Promise.resolve(value);
     }
 
-    return storeFunction().then(result => {
-      this.cache.set(key, result);
+    return op().then(result => {
+      this.set(key, result);
       return result;
     }).catch(error => {
       logger.warn(`Error in store function for cache '${this.name}'`);
