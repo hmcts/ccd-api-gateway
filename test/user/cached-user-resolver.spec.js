@@ -29,7 +29,7 @@ describe('getCachedUserDetails', () => {
     clock = sandbox.useFakeTimers();
     nodeCacheSpy = sandbox.spy(NodeCache.prototype, 'set');
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
-    userInfoCacheSpy = sandbox.spy(userInfoCache, 'get');
+    userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
     cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', { 
       '../cache/cache-config': { userInfoCache }
     });

@@ -1,9 +1,9 @@
 const userResolver = require('./user-resolver');
-const userInfoCache = require('../cache/cache-config').userInfoCache;
+const { userInfoCache } = require('../cache/cache-config');
 const jwtUtil = require('../util/jwt');
 
 const getCachedUserDetails = (jwt) => {
-  return userInfoCache.get(jwtUtil.getJwt(jwt), 
+  return userInfoCache.getOrElseUpdate(jwtUtil.removeBearer(jwt), 
     () => userResolver.getUserDetails(jwt));
 };
 
