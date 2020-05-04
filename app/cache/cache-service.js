@@ -19,7 +19,7 @@ class Cache {
 
   /**
    * If given key is already in the cache, returns associated value.
-   * Otherwise, computes value from given expression op, stores with key in the cache and returns that value.
+   * Otherwise, computes value from given op function, stores with key in the cache and returns that value.
    */
   getOrElseUpdate(key, op) {
     const value = this.get(key);
@@ -31,7 +31,7 @@ class Cache {
       this.set(key, result);
       return result;
     }).catch(error => {
-      logger.warn(`Error in store function for cache '${this.name}'`);
+      logger.warn(`Error computing value to be cached for cache '${this.name}'`);
       throw error;
     });
   }
