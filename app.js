@@ -58,6 +58,13 @@ const applyProxy = (app, config) => {
       console.log('>>>>>>>>>>');
       console.log('proxyReq: ', proxyReq);
     };
+    // eslint-disable-next-line no-unused-vars
+    options.onProxyRes = (proxyRes, req, res) => {
+      const chunked = /chunked/i.test(proxyRes.headers['transfer-encoding']);
+      console.log('chunked', chunked);
+
+      console.log('proxyRes', proxyRes.headers);
+    };
   }
 
   if (config.filter) {
