@@ -52,7 +52,11 @@ const applyProxy = (app, config) => {
 
   if (config.source === '/documents') {
     options.onProxyReq = (proxyReq, req) => {
-      console.log('proxyReq headers: ', req.headers);
+      console.log('req headers: ', req.headers);
+      console.log('<<<<<<<<<<');
+      console.log('full request: ', req);
+      console.log('>>>>>>>>>>');
+      console.log('proxyReq: ', proxyReq);
     };
   }
 
