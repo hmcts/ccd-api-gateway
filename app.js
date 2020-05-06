@@ -53,11 +53,6 @@ const applyProxy = (app, config) => {
   if (config.source === '/documents') {
     options.onProxyReq = (proxyReq, req) => {
       console.log('proxyReq headers: ', req.headers);
-      proxyReq.setHeader('Accept-Ranges', 'none');
-    };
-    options.onProxyRes = (proxyRes, req, res) => {
-      console.log('proxyRes headers: ',res.headers);
-      proxyRes.headers['Accept-Ranges'] = 'none';
     };
   }
 
