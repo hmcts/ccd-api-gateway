@@ -50,6 +50,13 @@ const applyProxy = (app, config) => {
     };
   }
 
+  if (config.source === '/documents') {
+    options.onProxyReq = (proxyReq, req) => {
+      console.log(req.headers);
+      proxyReq.setHeader('Accept-Ranges', 'none');
+    };
+  }
+
   if (config.filter) {
     app.use(config.source, proxy(config.filter, options));
   } else {
