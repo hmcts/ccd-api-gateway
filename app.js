@@ -51,8 +51,12 @@ const applyProxy = (app, config) => {
   }
 
   if (config.source === '/documents') {
-    options.onProxyReq = (proxyReq, req) => {
+    options.onProxyReq = (req) => {
       console.log('req headers: ', req.headers);
+
+      req.removeHeader('accept-encoding');
+
+      console.log('proxyReq headers: ', req.headers);
     };
     // eslint-disable-next-line no-unused-vars
     options.onProxyRes = (proxyRes, req, res) => {
