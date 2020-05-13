@@ -43,7 +43,7 @@ describe('UserRequestAuthorizer', () => {
       };
 
       userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
-        './cached-user-resolver': userResolver,
+        './user-resolver': userResolver,
         './authorised-roles-extractor': authorizedRolesExtractor
       });
     });

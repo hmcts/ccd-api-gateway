@@ -1,7 +1,6 @@
+const userResolver = require('./user-resolver');
 const authorizedRolesExtractor = require('./authorised-roles-extractor');
 const COOKIE_ACCESS_TOKEN = require('../oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
-const config = require('config');
-const userResolver = config.get('cache.user_info_enabled') ? require('./cached-user-resolver') : require('./user-resolver');
 
 const AUTHORIZATION = 'Authorization';
 const ERROR_TOKEN_MISSING = {
