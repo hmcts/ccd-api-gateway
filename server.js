@@ -4,13 +4,13 @@
  * Module dependencies.
  */
 
+require('@hmcts/properties-volume').addTo(require('config'));
 let app = require('./app');
 let debug = require('debug')('ccd-api-gateway-web:server');
 let http = require('http');
 let https = require('https');
 let path = require('path');
 let fs = require('fs');
-require('@hmcts/properties-volume').addTo(require('config'));
 
 /**
  * Get port from environment and store in Express.
@@ -44,6 +44,7 @@ function createServer(app) {
  */
 
 server.listen(port);
+server.setTimeout(300000);
 server.on('error', onError);
 server.on('listening', onListening);
 
