@@ -33,6 +33,9 @@ withPipeline("nodejs", product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
+    if (env.BRANCH_NAME == 'develop') {
+        enableSlackNotifications('#ccd-develop-builds')
+    }
     onDemo {
         enableSlackNotifications('#ccd-demo-builds')
     }
@@ -43,8 +46,10 @@ withPipeline("nodejs", product, component) {
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
 
-    enableDockerBuild()
-    installCharts()
+    before('securitychecks') {sh 'yarn test:audit'}
+
+    enableAksStagingDeployment()
+    disableLegacyDeployment()
 
     afterCheckout {
         sh "yarn cache clean"
