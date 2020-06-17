@@ -41,7 +41,7 @@ const applyProxy = (app, config) => {
             status: 504
           });
       },
-     onProxyReq: function onProxyReq(proxyReq, req, res) {
+     onProxyReq: function onProxyReq(proxyReq, req) {
       // Log outbound request to remote target
       console.log('-->  ', req.method, req.path, req.headers, '->', proxyReq.path + proxyReq.headers);
     },
