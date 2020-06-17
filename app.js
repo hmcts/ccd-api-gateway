@@ -41,7 +41,7 @@ const applyProxy = (app, config) => {
             status: 504
           });
       },
-      logLevel: 'warn'
+      logLevel: 'debug'
   };
 
   if (false !== config.rewrite) {
