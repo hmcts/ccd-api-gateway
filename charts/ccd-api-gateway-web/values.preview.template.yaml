@@ -15,3 +15,4 @@ nodejs:
     PROXY_AGGREGATED: http://ccd-data-store-api-pr-601.service.core-compute-preview.internal
     PROXY_DATA: http://ccd-data-store-api-pr-601.service.core-compute-preview.internal
     PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal
+    PROXY_DOCUMENT_MANAGEMENT: http://dm-store-pr-652.service.core-compute-preview.internal
