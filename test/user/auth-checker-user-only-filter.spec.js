@@ -9,7 +9,7 @@ chai.use(sinonChai);
 describe('authCheckerUserOnlyFilter', () => {
 
   const user = {
-    id: '123',
+    uid: '123',
     roles: ['r1', 'r2']
   };
 
@@ -54,7 +54,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
     it('should add user ID as a request header', done => {
       filter(req, res, () => {
-        expect(req.headers['user-id']).to.equal(user.id);
+        expect(req.headers['user-id']).to.equal(user.uid);
         done();
       });
     });
