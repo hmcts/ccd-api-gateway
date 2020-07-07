@@ -14,7 +14,7 @@ describe('UserRequestAuthorizer', () => {
     const USER_ID = '1';
     const ROLE_1 = 'role1';
     const DETAILS = {
-      id: USER_ID,
+      uid: USER_ID,
       roles: [ROLE_1]
     };
     const COOKIES = {
@@ -43,7 +43,7 @@ describe('UserRequestAuthorizer', () => {
       };
 
       userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
-        './user-resolver': userResolver,
+        './cached-user-resolver': userResolver,
         './authorised-roles-extractor': authorizedRolesExtractor
       });
     });

@@ -48,7 +48,6 @@ withPipeline("nodejs", product, component) {
 
     before('securitychecks') {sh 'yarn test:audit'}
 
-    installCharts()
     enableAksStagingDeployment()
     disableLegacyDeployment()
 
