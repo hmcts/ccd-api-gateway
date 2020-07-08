@@ -1,6 +1,6 @@
 # Keep hub.Dockerfile aligned to this file as far as possible
 
-ARG base=hmctspublic.azurecr.io/base/node:12-alpine
+ARG base=hmctspublic.azurecr.io/base/node:12-stretch-slim
 
 # Base image
 FROM ${base} as base
