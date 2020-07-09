@@ -34,4 +34,3 @@ resource azurerm_key_vault_secret "idam_service_secret" {
   value = "${data.azurerm_key_vault_secret.idam_service_key.value}"
   key_vault_id = "${data.azurerm_key_vault.ccd_shared_key_vault.id}"
 }
-
