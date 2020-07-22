@@ -30,6 +30,7 @@
     "cookie-parser": "~1.4.3",
     "cross-env": "^5.0.5",
     "debug": "~2.6.3",
+    "dont-sniff-mimetype": "^1.1.0",
     "express": "^4.15.5",
     "form-data": "^2.1.4",
     "handlebars": "^4.5.3",
@@ -65,7 +66,7 @@
     "sinon-chai": "^2.11.0",
     "sinon-express-mock": "^2.0.0",
     "sonar-scanner": "^3.1.0",
-    "supertest": "^3.0.0"    
+    "supertest": "^3.0.0"
   },
   "resolutions": {
     "braces": "^2.3.2",
@@ -73,6 +74,6 @@
     "lodash": "^4.17.4",
     "handlebars": "^4.5.3",
     "mem": "^6.0.0",
-    "minimist": "^1.2.3"    
+    "minimist": "^1.2.3"
   }
 }
