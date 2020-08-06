@@ -70,7 +70,7 @@
   "resolutions": {
     "braces": "^2.3.2",
     "js-yaml": "3.13.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "handlebars": "^4.5.3",
     "mem": "^6.0.0",
     "minimist": "^1.2.3"
