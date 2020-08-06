@@ -37,7 +37,7 @@
     "https-proxy-agent": "^2.2.3",
     "js-yaml": "^3.13.1",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "mem": "^6.0.0",
     "nocache": "^2.1.0",
     "node-cache": "^5.1.0",
@@ -65,14 +65,14 @@
     "sinon-chai": "^2.11.0",
     "sinon-express-mock": "^2.0.0",
     "sonar-scanner": "^3.1.0",
-    "supertest": "^3.0.0"    
+    "supertest": "^3.0.0"
   },
   "resolutions": {
     "braces": "^2.3.2",
     "js-yaml": "3.13.1",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "handlebars": "^4.5.3",
     "mem": "^6.0.0",
-    "minimist": "^1.2.3"    
+    "minimist": "^1.2.3"
   }
 }
