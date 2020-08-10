@@ -14,7 +14,7 @@
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
     "test:coverage": "NODE_ENV=test NODE_PATH=. istanbul cover _mocha 'test/**/*.spec.js'",
     "test:acceptance": "echo 'TODO - CALL JAVA INTEGRATION TEST'",
-    "test:audit": "./bin/run-yarn-audit.sh -f yarn-audit-known-issues",
+    "test:audit": "./bin/run-yarn-audit.sh -f ccd-yarn-audit-known-issues",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "test:a11y": "NODE_PATH=.",
@@ -37,7 +37,7 @@
     "https-proxy-agent": "^2.2.3",
     "js-yaml": "^3.13.1",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "mem": "^6.0.0",
     "nocache": "^2.1.0",
     "node-cache": "^5.1.0",
@@ -70,7 +70,7 @@
   "resolutions": {
     "braces": "^2.3.2",
     "js-yaml": "3.13.1",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "handlebars": "^4.5.3",
     "mem": "^6.0.0",
     "minimist": "^1.2.3"    
