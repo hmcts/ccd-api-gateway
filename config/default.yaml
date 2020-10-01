@@ -29,10 +29,6 @@ cache:
   user_info_enabled: true
   user_info_ttl: 600
   user_info_check_period: 120
-secrets:
-  ccd:
-    ccd-api-gateway-oauth2-client-secret: ccd_gateway_secret
-    postcode-info-address-lookup-token: AA
-  s2s:
-    microservicekey-ccd-gw: AAAAAAAAAAAAAAAC
-
+appInsights:
+  enabled: true
+  roleName: "ccd-api-gateway"
