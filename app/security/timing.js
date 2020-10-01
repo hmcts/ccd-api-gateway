@@ -6,5 +6,3 @@ const handleTiming = (req, res, next) => {
 };
 
 module.exports = handleTiming;
-
-
