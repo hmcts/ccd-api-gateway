@@ -56,8 +56,4 @@ withPipeline("nodejs", product, component) {
         sh "yarn cache clean"
     }
 
-    after('build') {
-        sh "yarn check"
-    }
-
 }
