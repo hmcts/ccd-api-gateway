@@ -6,6 +6,7 @@ proxy:
   print_service: https://return-case-doc.dev.ccd.reform.hmcts.net
   case_activity: http://localhost:3460
   payments: http://localhost:9999/payments
+  pay_bulkscan: http://localhost:8888/pay-bulkscan
   refdata: http://localhost:8090/refdata
   mv_annotations: http://localhost:4623
 idam:
@@ -23,13 +24,11 @@ security:
   cors_origin_methods: "GET,POST,OPTIONS,PUT,DELETE"
   cors_origin_whitelist: "http://localhost:3451,http://localhost:3452"
   secure_auth_cookie_enabled: false
+cache:
+  user_info_enabled: true
+  user_info_ttl: 600
+  user_info_check_period: 120
 appInsights:
-  instrumentationKey: "some-key"
   enabled: true
   roleName: "ccd-api-gateway"
-secrets:
-  ccd:
-    ccd-api-gateway-oauth2-client-secret: ccd_gateway_secret
-    postcode-info-address-lookup-token: AA
-  s2s:
-    microservicekey-ccd-gw: AAAAAAAAAAAAAAAC
+
