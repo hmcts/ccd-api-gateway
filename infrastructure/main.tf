@@ -107,6 +107,7 @@ module "api-gateway-web" {
     PROXY_PAYMENTS = "${local.payments_url}"
     PROXY_REFDATA = "${local.refdata_url}"
     SECURE_AUTH_COOKIE_ENABLED = "true"
+    TIMING-ALLOW-ORIGIN = "A,B,C"
     DUMMY_VAR = "true"
   }
 }
