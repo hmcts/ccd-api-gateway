@@ -14,7 +14,6 @@
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
     "test:coverage": "NODE_ENV=test NODE_PATH=. istanbul cover _mocha 'test/**/*.spec.js'",
     "test:acceptance": "echo 'TODO - CALL JAVA INTEGRATION TEST'",
-    "test:audit": "./bin/run-yarn-audit.sh -f ccd-yarn-audit-known-issues",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "test:a11y": "NODE_PATH=.",
