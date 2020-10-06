@@ -11,6 +11,7 @@ const authCheckerUserOnlyFilter = require('./app/user/auth-checker-user-only-fil
 const addressLookup = require('./app/address/address-lookup');
 const serviceFilter = require('./app/service/service-filter');
 const corsHandler = require('./app/security/cors');
+const handleTiming = require('./app/security/timing');
 const hstsHandler = require('./app/security/hsts');
 const healthcheck = require('@hmcts/nodejs-healthcheck');
 const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
@@ -69,6 +70,7 @@ app.use(noCache());
 app.use(noSniff());
 app.use(hstsHandler);
 app.use(corsHandler);
+app.use(handleTiming);
 
 app.get('/oauth2', oauth2Route);
 
