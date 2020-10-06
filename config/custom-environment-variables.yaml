@@ -24,6 +24,7 @@ security:
   cors_origin_methods: CORS_ORIGIN_METHODS
   cors_origin_whitelist: CORS_ORIGIN_WHITELIST
   secure_auth_cookie_enabled: SECURE_AUTH_COOKIE_ENABLED
+  timing-allow-origin: TIMING-ALLOW-ORIGIN
 cache:
   user_info_enabled: CACHE_USER_INFO_ENABLED
   user_info_ttl: CACHE_USER_INFO_TTL
