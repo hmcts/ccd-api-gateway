@@ -9,6 +9,7 @@ nodejs:
     CORS_ORIGIN_METHODS: GET,POST,OPTIONS,PUT,DELETE
     IDAM_SERVICE_NAME: ccd_gw
     SECURE_AUTH_COOKIE_ENABLED: true
+    TIMING-ALLOW-ORIGIN: https://ccd-case-management-web-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal,https://ccd-case-management-web-{{ .Values.global.environment }}-staging.service.core-compute-{{ .Values.global.environment }}.internal
     UV_THREADPOOL_SIZE: 64
     IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/token
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/session/:token

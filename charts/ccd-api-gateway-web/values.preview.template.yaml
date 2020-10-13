@@ -6,6 +6,7 @@ nodejs:
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
     IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
     CORS_ORIGIN_WHITELIST: "*"
+    TIMING-ALLOW-ORIGIN: "*"
     PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-aat.service.core-compute-aat.internal
 
 #    TODO temporary to investigate build issue on PR. To remove once release is complete
