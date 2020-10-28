@@ -9,6 +9,9 @@ properties(
 def product = "ccd"
 def component = "api-gateway-web"
 
+// Variables to switch pipeline logic and wiring per type of build
+def gatewayApiDevelopPr = "PR-332" // This doesn't change frequently, but when it does, only change this value.
+
 def secrets = [
     'ccd-${env}': [
         secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
@@ -33,7 +36,7 @@ withPipeline("nodejs", product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
     }
-    if (env.BRANCH_NAME == 'develop') {
+    if (env.BRANCH_NAME.equalsIgnoreCase(gatewayApiDevelopPr)) {
         enableSlackNotifications('#ccd-develop-builds')
     }
     onDemo {
@@ -45,8 +48,6 @@ withPipeline("nodejs", product, component) {
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
-
-    before('securitychecks') {sh 'yarn test:audit'}
 
     enableAksStagingDeployment()
     disableLegacyDeployment()
