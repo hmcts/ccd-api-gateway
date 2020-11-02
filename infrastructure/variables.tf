@@ -11,3 +11,7 @@ variable "component" {
 variable "env" {
   description = "(Required) The environment in which to deploy the application infrastructure."
 }
+
+variable "common_tags" {
+  type = map(string)
+}
