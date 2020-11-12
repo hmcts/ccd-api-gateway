@@ -20,7 +20,7 @@
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-api-gateway-web' -Dsonar.sources=app/ -Dsonar.tests=test/ -Dsonar.exclusions=node_modules/**,coverage/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
   },
   "dependencies": {
-    "@hmcts/nodejs-healthcheck": "^1.6.0",
+    "@hmcts/nodejs-healthcheck": "1.7.0",
     "@hmcts/nodejs-logging": "^3.0.0",
     "@hmcts/properties-volume": "0.0.9",
     "applicationinsights": "^1.0.5",
