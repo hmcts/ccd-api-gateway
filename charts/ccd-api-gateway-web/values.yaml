@@ -4,6 +4,9 @@ nodejs:
   ingressHost: 'gateway-ccd.{{ .Values.global.environment }}.platform.hmcts.net'
   applicationPort: 3453
   cpuLimits: 1
+  autoscaling:
+    enabled: true 
+    maxReplicas: 12
   environment:
     IDAM_OAUTH2_CLIENT_ID: ccd_gateway
     CORS_ORIGIN_METHODS: GET,POST,OPTIONS,PUT,DELETE

@@ -31,4 +31,13 @@ describe('health check', () => {
       expect(res.body.status).equal('UP');
     });
   });
+
+  it('should return 200 OK for readiness health check', async () => {
+    await request(app)
+    .get('/health/readiness')
+    .expect(res => {
+      expect(res.status).equal(200);
+      expect(res.body.status).equal('UP');
+    });
+  });
 });
