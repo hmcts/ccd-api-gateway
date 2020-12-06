@@ -10,9 +10,9 @@ nodejs:
     PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-aat.service.core-compute-aat.internal
 
 #    TODO temporary to investigate build issue on PR. To remove once release is complete
-    PROXY_AGGREGATED: http://ccd-data-store-api-pr-601.service.core-compute-preview.internal
-    PROXY_DATA: http://ccd-data-store-api-pr-601.service.core-compute-preview.internal
-    PROXY_PRINT_SERVICE: http://ccd-case-print-service-pr-205.service.core-compute-preview.internal
-    PROXY_AGGREGATED: http://ccd-data-store-api-pr-601.service.core-compute-preview.internal
-    PROXY_DATA: http://ccd-data-store-api-pr-601.service.core-compute-preview.internal
+    PROXY_AGGREGATED: http://ccd-data-store-api-pr-1260.service.core-compute-preview.internal
+    PROXY_DATA: http://ccd-data-store-api-pr-1260.service.core-compute-preview.internal
+    PROXY_PRINT_SERVICE: http://ccd-case-print-service-pr-260.service.core-compute-preview.internal
+    PROXY_AGGREGATED: http://ccd-data-store-api-pr-1260.service.core-compute-preview.internal
+    PROXY_DATA: http://ccd-data-store-api-pr-1260.service.core-compute-preview.internal
     PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal
