@@ -40,7 +40,7 @@
     "lodash": "^4.17.19",
     "mem": "^6.0.0",
     "nocache": "^2.1.0",
-    "node-cache": "^5.1.0",
+    "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
     "otp": "^0.1.3"
   },
