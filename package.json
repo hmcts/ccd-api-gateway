@@ -35,7 +35,7 @@
     "handlebars": "^4.5.3",
     "http-proxy-middleware": "^0.17.4",
     "https-proxy-agent": "^2.2.3",
-    "js-yaml": "^3.13.1",
+    "js-yaml": "^3.14.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.19",
     "mem": "^6.0.0",
