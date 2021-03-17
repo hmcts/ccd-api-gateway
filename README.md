@@ -89,7 +89,7 @@ As a result, the API gateway will be started and made available on port `3453`.
 
 ## Integration tests
 
-The integration tests are mavenized and can be run using:
+The integration tests are mavenized and can be run using-
 
 ```bash
 yarn integration
