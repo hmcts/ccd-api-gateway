@@ -21,9 +21,8 @@ describe('Address Lookup', () => {
   it('Should expect key and postcode placed holders to be substituted', (done) => {
 
     let postcode = 'P5TCDE';
-    nock('https://api.ordnancesurvey.co.uk')
-      .get(/places.*postcode=P5TCDE.*/)
-      // .get('/places/v1/addresses/postcode?postcode='+postcode+'.*')
+    nock('https://api.os.uk')
+      .get(/search.*postcode=P5TCDE.*/)
       .reply(200, '{results:[]}');
     addressLookup(postcode).then((body) => {
       expect(body).to.be.equals('{results:[]}');
@@ -33,7 +32,7 @@ describe('Address Lookup', () => {
 
     it('Should error when Postcode Service returns non-200 response', (done) => {
       let postcode = 'P5TCDE';
-      nock('https://api.ordnancesurvey.co.uk')
+      nock('https://api.os.uk')
         .get(uri => uri.includes('key=AA'))
         .reply(401, 'ErrorBody');
 
@@ -52,7 +51,7 @@ describe('Address Lookup', () => {
 
     it('Should return the response without modification to the client', (done) => {
       let postcode = 'P5TCDE';
-      nock('https://api.ordnancesurvey.co.uk')
+      nock('https://api.os.uk')
         .get(uri => uri.includes('key=AA'))
         .reply(200, 'JSONArray');
       addressLookup(postcode).then(body => expect(body).to.be.equals('JSONArray'));
