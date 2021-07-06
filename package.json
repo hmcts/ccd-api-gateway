@@ -13,6 +13,7 @@
     "test": "yarn test:unit",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
     "test:coverage": "NODE_ENV=test NODE_PATH=. istanbul cover _mocha 'test/**/*.spec.js'",
+    "fortifyScan": "./test/java/gradlew -p test/java fortifyScan",
     "test:acceptance": "echo 'TODO - CALL JAVA INTEGRATION TEST'",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",

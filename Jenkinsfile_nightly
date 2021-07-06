@@ -5,7 +5,7 @@ properties([
     pipelineTriggers([cron('H 05 * * *')])
 ])
 
-@Library("Infrastructure")
+@Library("Infrastructure@ccd-1257")
 
 def type = "nodejs"
 def product = "ccd"
@@ -13,9 +13,14 @@ def component = "api-gateway-web"
 
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
+    enableFortifyScan()
 
     afterCheckout {
         sh "yarn cache clean"
+    }
+
+    after('fortify-scan') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Reports/**/*'
     }
 
 }
