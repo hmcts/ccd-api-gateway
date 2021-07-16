@@ -2,6 +2,9 @@
 
 ARG base=hmctspublic.azurecr.io/base/node:12-alpine
 
+RUN useradd myLowPrivilegeUser
+USER myLowPrivilegeUser
+
 # Base image
 FROM ${base} as base
 
