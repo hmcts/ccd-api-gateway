@@ -5,6 +5,8 @@ ARG base=hmctspublic.azurecr.io/base/node:12-alpine
 # Base image
 FROM ${base} as base
 
+USER hmcts
+
 COPY package.json yarn.lock ./
 RUN yarn install --production \
     && yarn cache clean
