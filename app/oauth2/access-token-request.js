@@ -6,10 +6,19 @@ const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('accessTokenRequest');
 
 const completeRedirectURI = (uri) => {
-  if (!uri.startsWith('http')) {
+  if (uri.startsWith('undefined')){
+    throw ERROR_INVALID_REDIRECT_URI;
+  } else if (!uri.startsWith('http')) {
     return `https://${uri}`;
   }
   return uri;
+};
+
+const ERROR_INVALID_REDIRECT_URI = {
+  code: 'INVALID_REDIRECT_URI',
+  error: 'Bad Request',
+  message: 'Redirect URI cannot start with undefined',
+  status: 400
 };
 
 function accessTokenRequest(request) {
