@@ -14,6 +14,7 @@ describe('Access Token Request', () => {
   const TOKEN_ENDPOINT = 'http://localhost:1234/oauth2/token';
   const REDIRECT_URN = 'localhost/redirect/to';
   const REDIRECT_URL = 'https://localhost/redirect/to';
+  const UNDEFINED_URI = 'undefined:///oauth2redirect';
   const AUTH_CODE = 'xyz789';
 
   const REQUEST = sinonExpressMock.mockReq({
@@ -27,6 +28,12 @@ describe('Access Token Request', () => {
       code: AUTH_CODE,
 
       redirect_uri: REDIRECT_URL
+    }
+  });
+  const REQUEST_UNDEFINED_URI = sinonExpressMock.mockReq({
+    query: {
+      code: AUTH_CODE,
+      redirect_uri: UNDEFINED_URI
     }
   });
   const SUCCESSFUL_RESPONSE = {
@@ -119,5 +126,18 @@ describe('Access Token Request', () => {
         done();
       })
       .catch(error => done(new Error(error)));
+  });
+
+  it('should reject undefined uri requests.', async () => {
+    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
+    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
+    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
+    try {
+      await accessTokenRequest(REQUEST_UNDEFINED_URI);
+    } catch (error) {
+        expect(error.status).to.deep.equal(400);
+        expect(error.error).to.deep.equal('Bad Request');
+        expect(error.message).to.deep.equal('Redirect URI cannot start with undefined');
+    }
   });
 });
