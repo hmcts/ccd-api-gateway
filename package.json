@@ -18,7 +18,7 @@
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "test:a11y": "NODE_PATH=.",
-    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-api-gateway-web' -Dsonar.sources=app/ -Dsonar.tests=test/ -Dsonar.exclusions=node_modules/**,coverage/** -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-api-gateway-web' -Dsonar.sources=app/ -Dsonar.tests=test/ -Dsonar.exclusions=node_modules/**,coverage/**,app/oauth2/access-token-request.js -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "1.7.0",
