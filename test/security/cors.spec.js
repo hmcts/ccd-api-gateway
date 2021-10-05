@@ -69,4 +69,30 @@ describe('CORS', () => {
 
     expect(res.set).to.have.been.calledWith('Access-Control-Allow-Origin', ORIGIN_2);
   });
+
+  it('should not allow allowed origin to be set if it contains invalid regex', () => {
+    req.get.withArgs('origin').returns('http://something?questionable');
+
+    handleCors(req, res, next);
+
+    expect(res.set).not.to.have.been.calledWith('Access-Control-Allow-Origin', 'http://something?questionable');
+  });
+
+  it('should not allow headers to be set if it contains invalid regex', () => {
+    req.get.withArgs('Access-Control-Request-Headers').returns('/n@ccept');
+
+    handleCors(req, res, next);
+
+    expect(res.set).not.to.have.been.calledWith('Access-Control-Allow-Headers', '/n@ccept');
+  });
+
+  it('should allow headers to be set if it contains valid regex', () => {
+    req.get.withArgs('Access-Control-Request-Headers').returns('Accept, Authorization, Content-Type');
+
+    handleCors(req, res, next);
+
+    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type');
+  });
+  
+  
 });
