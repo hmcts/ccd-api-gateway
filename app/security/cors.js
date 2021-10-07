@@ -1,4 +1,5 @@
 const config = require('config');
+const sanitize = require('../util/sanitize');
 
 const WILDCARD = '*';
 
@@ -22,7 +23,7 @@ const handleCors = (req, res, next) => {
     if (corsOptions.allowOrigin) {
         var origin = req.get('origin');
         if (corsOptions.allowOrigin(origin)) {
-            res.set('Access-Control-Allow-Origin', origin);
+            res.set('Access-Control-Allow-Origin', sanitize.sanitizeData(origin));
         }
     } else {
         res.set('Access-Control-Allow-Origin', '*');
@@ -33,7 +34,7 @@ const handleCors = (req, res, next) => {
     if (corsOptions.allowMethods) {
         res.set('Access-Control-Allow-Methods', corsOptions.allowMethods);
     }
-    res.set('Access-Control-Allow-Headers', req.get('Access-Control-Request-Headers'));
+    res.set('Access-Control-Allow-Headers', sanitize.sanitizeData(req.get('Access-Control-Request-Headers')));
     if('OPTIONS' === req.method) {
         res
             .status(200)
