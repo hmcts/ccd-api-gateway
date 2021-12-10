@@ -13,14 +13,15 @@ def component = "api-gateway-web"
 
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
-    enableFortifyScan()
+    // Temporarily disable fortify scan stage until fortify access re-enabled
+    //enableFortifyScan()
 
     afterCheckout {
         sh "yarn cache clean"
     }
 
-    after('fortify-scan') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
-    }
+    //after('fortify-scan') {
+    //    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+    //}
 
 }
