@@ -8,5 +8,5 @@ maintainers:
     email: ccd-devops@HMCTS.NET
 dependencies:
   - name: nodejs
-    version: 2.3.7
+    version: 2.3.9
     repository: '@hmctspublic'
