@@ -1,21 +1,35 @@
-# Keep hub.Dockerfile aligned to this file as far as possible
+ARG PLATFORM=""
+FROM hmctspublic.azurecr.io/base/node${PLATFORM}:14-alpine as base
 
-ARG base=hmctspublic.azurecr.io/base/node:14-alpine
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
-# Base image
-FROM ${base} as base
+USER root
+RUN apk update \
+  && apk add bzip2 patch python3 py3-pip make gcc g++ \
+  && rm -rf /var/lib/apt/lists/* \
+  && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+COPY . .
+RUN chown -R hmcts:hmcts .
 
 USER hmcts
 
 COPY package.json yarn.lock ./
-RUN yarn install --production \
-    && yarn cache clean
+
+RUN yarn install --ignore-optional --network-timeout 1200000
+
+# ---- Build Image ----
+FROM base as build
+
+RUN sleep 1 && yarn install --ignore-optional --production --network-timeout 1200000 && yarn cache clean
 
 COPY app.js server.js ./
 COPY app ./app
 COPY config ./config
 
 # Runtime image
-FROM base as runtime
+FROM hmctspublic.azurecr.io/base/node${PLATFORM}:14-alpine as runtime
+
 ENV PORT 3453
 EXPOSE 3453
