@@ -16,6 +16,9 @@ RUN chown -R hmcts:hmcts .
 USER hmcts
 
 COPY package.json yarn.lock ./
+COPY app.js server.js ./
+COPY app ./app
+COPY config ./config
 
 RUN yarn install --ignore-optional --network-timeout 1200000
 
@@ -24,12 +27,10 @@ FROM base as build
 
 RUN sleep 1 && yarn install --ignore-optional --production --network-timeout 1200000 && yarn cache clean
 
-COPY app.js server.js ./
-COPY app ./app
-COPY config ./config
-
 # Runtime image
 FROM hmctspublic.azurecr.io/base/node${PLATFORM}:14-alpine as runtime
+
+COPY --from=build $WORKDIR .
 
 ENV PORT 3453
 EXPOSE 3453
