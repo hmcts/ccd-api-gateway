@@ -31,7 +31,8 @@ function createServer(app) {
     const sslDirectory = path.join(__dirname, '..', 'app', 'resources', 'localhost-ssl');
     const sslOptions = {
       cert: fs.readFileSync(path.join(sslDirectory, 'localhost.crt')),
-      key: fs.readFileSync(path.join(sslDirectory, 'localhost.key'))
+      key: fs.readFileSync(path.join(sslDirectory, 'localhost.key')),
+      secureProtocol: "TLS_method"
     };
     return https.createServer(sslOptions, app);
   } else {
