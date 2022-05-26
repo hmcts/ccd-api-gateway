@@ -32,7 +32,7 @@ function createServer(app) {
     const sslOptions = {
       cert: fs.readFileSync(path.join(sslDirectory, 'localhost.crt')),
       key: fs.readFileSync(path.join(sslDirectory, 'localhost.key')),
-      secureProtocol: "TLS_method"
+      secureProtocol: 'TLS_method'
     };
     return https.createServer(sslOptions, app);
   } else {
