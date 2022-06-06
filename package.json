@@ -20,6 +20,7 @@
     "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.projectKey='ccd-api-gateway-web' -Dsonar.sources=app/ -Dsonar.tests=test/ -Dsonar.exclusions=node_modules/**,coverage/**,app/oauth2/access-token-request.js -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
   },
   "dependencies": {
+    "multer": "^1.4.4-lts.1",
     "@hmcts/nodejs-healthcheck": "1.7.0",
     "@hmcts/nodejs-logging": "^3.0.0",
     "@hmcts/properties-volume": "^0.0.13",
