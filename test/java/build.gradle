@@ -30,3 +30,5 @@ task fortifyScan(type: JavaExec)  {
     // The line below prevents the build from failing if the Fortify scan detects issues
     ignoreExitValue = true
 }
+
+// dummy comment
