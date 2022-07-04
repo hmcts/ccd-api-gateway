@@ -13,6 +13,7 @@ RUN apk update \
 COPY . .
 RUN chown -R hmcts:hmcts .
 
+
 USER hmcts
 
 COPY package.json yarn.lock ./
