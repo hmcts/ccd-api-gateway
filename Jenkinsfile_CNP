@@ -33,6 +33,8 @@ def vaultOverrides = [
     'spreview': 'saat'
 ]
 
+env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
 withPipeline("nodejs", product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')

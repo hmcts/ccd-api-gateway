@@ -1,33 +1,161 @@
 version: 1.0-preview-1
 steps:
-  - id: pull-base
-    cmd: docker pull {{.Run.Registry}}/ccd/ccd-api-gateway/base:latest || true
-    when: ["-"]
-    keep: true
 
-  - id: base
+  - id: pull-hmcts-base-amd64
+    cmd: docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:14-alpine && docker tag hmctspublic.azurecr.io/base/node:14-alpine hmctspublic.azurecr.io/base/node/linux/amd64:14-alpine
+    when: ["-"]
+
+  - id: pull-base-amd64
+    cmd: docker pull --platform linux/amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
+    when: ["-"]
+    ignoreErrors: true
+
+  - id: pull-build-amd64
+    cmd: docker pull --platform linux/amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
+    when: ["-"]
+    ignoreErrors: true
+
+  - id: base-amd64
     build: >
-      -t {{.Run.Registry}}/ccd/ccd-api-gateway/base
-      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:latest
+      -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
+      --build-arg PLATFORM=/linux/amd64
+      --platform linux/amd64
       --target base
       .
     when:
-      - pull-base
-    keep: true
+      - pull-base-amd64
+    timeout: 7200
 
-  - id: runtime
+  - id: build-amd64
     build: >
-      -t {{.Run.Registry}}/{{CI_IMAGE_TAG}}
-      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:latest
+      -t {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
+      --build-arg PLATFORM=/linux/amd64
+      --platform linux/amd64
+      --target build
+      .
+    when:
+      - base-amd64
+      - pull-build-amd64
+    timeout: 7200
+
+  - id: runtime-amd64
+    build: >
+      -t {{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
+      --build-arg PLATFORM=/linux/amd64
+      --platform linux/amd64
       --target runtime
       .
     when:
-      - base
-    keep: true
+      - base-amd64
+      - build-amd64
+    timeout: 7200
+
+  - id: pull-hmcts-base-arm64
+    cmd: docker pull --platform linux/arm64 hmctspublic.azurecr.io/base/node:14-alpine && docker tag hmctspublic.azurecr.io/base/node:14-alpine hmctspublic.azurecr.io/base/node/linux/arm64:14-alpine
+    when:
+      - pull-hmcts-base-amd64
+
+  - id: pull-base-arm64
+    cmd: docker pull --platform linux/arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
+    when:
+      - pull-base-amd64
+    ignoreErrors: true
+
+  - id: pull-build-arm64
+    cmd: docker pull --platform linux/arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
+    when:
+      - pull-build-amd64
+    ignoreErrors: true
+
+  - id: reset-qemu
+    cmd: multiarch/qemu-user-static --reset -p yes
+    when:
+      - pull-build-arm64
+    privileged: true
+
+  - id: base-arm64
+    build: >
+      -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
+      --build-arg PLATFORM=/linux/arm64
+      --platform linux/arm64/v8
+      --target base
+      .
+    when:
+      - reset-qemu
+    timeout: 7200
+
+  - id: build-arm64
+    build: >
+      -t {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
+      --build-arg PLATFORM=/linux/arm64
+      --platform linux/arm64/v8
+      --target build
+      .
+    when:
+      - base-arm64
+      - pull-build-arm64
+    timeout: 7200
+
+  - id: runtime-arm64
+    build: >
+      -t {{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
+      --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
+      --build-arg PLATFORM=/linux/arm64
+      --platform linux/arm64/v8
+      --target runtime
+      .
+    when:
+      - base-arm64
+      - build-arm64
+    timeout: 7200
 
   - id: push-images
     push:
-      - "{{.Run.Registry}}/ccd/ccd-api-gateway/base:latest"
-      - "{{.Run.Registry}}/{{CI_IMAGE_TAG}}"
+      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:amd64"
+      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:amd64"
+      - "{{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64"
+      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:arm64"
+      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:arm64"
+      - "{{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64"
     when:
-      - runtime
+      - runtime-amd64
+      - runtime-arm64
+
+  - id: manifest-create-base
+    cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/base hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:arm64
+    when:
+      - push-images
+
+  - id: manifest-push-base
+    cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/base
+    when:
+      - manifest-create-base
+
+  - id: manifest-create-build
+    cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/build hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:arm64
+    when:
+      - push-images
+
+  - id: manifest-push-build
+    cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/build
+    when:
+      - manifest-create-build
+
+  - id: manifest-create-runtime
+    cmd: docker manifest create {{.Run.Registry}}/{{CI_IMAGE_TAG}} {{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64 {{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64
+    when:
+      - push-images
+
+  - id: manifest-push-runtime
+    cmd: docker manifest push --purge {{.Run.Registry}}/{{CI_IMAGE_TAG}}
+    when:
+      - manifest-create-runtime
