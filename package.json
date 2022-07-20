@@ -1,6 +1,5 @@
 {
   "name": "ccd-api-gateway-web",
-  "version": "1.4.0",
   "private": true,
   "engines": {
     "node": "^14.18.1",
