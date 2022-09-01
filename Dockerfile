@@ -21,9 +21,7 @@ COPY app.js server.js ./
 COPY app ./app
 COPY config ./config
 
-RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
-  yarn config set yarn-offline-mirror-pruning true && \
-  yarn install --prefer-offline
+RUN yarn install --ignore-optional --network-timeout 1200000
 
 # ---- Build Image ----
 FROM base as build
