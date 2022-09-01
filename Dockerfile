@@ -23,7 +23,7 @@ COPY config ./config
 
 RUN yarn config set yarn-offline-mirror ~/npm-packages-offline-cache && \
   yarn config set yarn-offline-mirror-pruning true && \
-  yarn install --prefer-offline --verbose
+  yarn install --prefer-offline
 
 # ---- Build Image ----
 FROM base as build
