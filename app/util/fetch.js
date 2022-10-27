@@ -18,7 +18,9 @@ const fetch = (...args) => {
 
 
       return Promise.reject(res);
-    });
+    })
+    .catch(err => logger.error('fetch inside catch res: ', err))
+    .finally(res => logger.error('fetch finally res: ', res));
 };
 
 module.exports = fetch;
