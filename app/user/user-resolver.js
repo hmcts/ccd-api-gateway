@@ -5,7 +5,7 @@ const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('userResolver');
 
 const getUserDetails = (jwt) => {
-  logger.error('getUserDetails inside');
+  logger.error('getUserDetails inside 2');
   return fetch(`${config.get('idam.base_url')}/o/userinfo`, {
     headers: {
       'Authorization': jwtUtil.addBearer(jwt)
