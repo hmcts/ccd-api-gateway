@@ -18,7 +18,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .catch(error => {
       if (error.name === 'FetchError') {
         logger.error(error);
-        if(error.message.includes("getaddrinfo ENOTFOUND")) {
+        if(isBadGatewayError(error)) {
           next({
             status: 502,
             error: 'Bad Gateway',
@@ -38,5 +38,13 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
       }
     });
 };
+
+const isBadGatewayError = (error) => {
+  return error.message.includes("getaddrinfo ENOTFOUND") || 
+  error.message.includes("socket hang up") ||
+  error.message.includes("getaddrinfo EAI_AGAIN") ||
+  error.message.includes("connect ETIMEOUT") ||
+  error.message.includes("ECONNRESET");
+}
 
 module.exports = authCheckerUserOnlyFilter;
