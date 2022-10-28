@@ -18,11 +18,19 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .catch(error => {
       if (error.name === 'FetchError') {
         logger.error(error);
-        next({
-          status: 500,
-          error: 'Internal Server Error',
-          message: error.message
-        });
+        if(error.message.includes("getaddrinfo ENOTFOUND")) {
+          next({
+            status: 502,
+            error: 'Bad Gateway',
+            message: error.message
+          });
+        } else {
+          next({
+            status: 500,
+            error: 'Internal Server Error',
+            message: error.message
+          });
+        } 
       } else {
         logger.warn('Unsuccessful user authentication', error);
         error.status = error.status || 401;
