@@ -13,7 +13,7 @@ const getUserDetails = (jwt) => {
   })
   .then(res => res.json())
   // .finally(res => logger.error('getUserDetails res: ', res, ' res.json: ', res.json()));
-  .catch(err => logger.error('getUserDetails inside catch res: ', err, ' end***'))
+  // .catch(err => logger.error('getUserDetails inside catch res: ', err, ' end***'))
   .finally(res => logger.error('getUserDetails res: ', res, ' end***'));
   // .finally(res => logger.error('getUserDetails finally'));
 };
