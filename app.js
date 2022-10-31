@@ -193,7 +193,8 @@ const isBadGatewayError = (error) => {
   error.message.includes("socket hang up") ||
   error.message.includes("getaddrinfo EAI_AGAIN") ||
   error.message.includes("connect ETIMEOUT") ||
-  error.message.includes("ECONNRESET");
+  error.message.includes("ECONNRESET") ||
+  error.message.includes("ECONNREFUSED");
 }
 
 module.exports = app;
