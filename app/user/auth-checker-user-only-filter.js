@@ -18,19 +18,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .catch(error => {
       if (error.name === 'FetchError') {
         logger.error(error);
-        if(isBadGatewayError(error)) {
-          next({
-            status: 502,
-            error: 'Bad Gateway',
-            message: error.message
-          });
-        } else {
-          next({
-            status: 500,
-            error: 'Internal Server Error',
-            message: error.message
-          });
-        } 
+        mapFetchErrors(err, res); 
       } else {
         logger.warn('Unsuccessful user authentication', error);
         error.status = error.status || 401;
@@ -46,6 +34,23 @@ const isBadGatewayError = (error) => {
   error.message.includes("connect ETIMEOUT") ||
   error.message.includes("ECONNRESET") ||
   error.message.includes("ECONNREFUSED");
+}
+
+const mapFetchErrors = (err, res) => {
+  if (isBadGatewayError(err)){
+    res.status(502);
+    res.json({
+      error: "Bad Gateway",
+      status: 502
+    });
+  }
+  else {
+    res.status(500);
+    res.json({
+      error: 'Error when connecting to remote server',
+      status: 504
+    });
+  }
 }
 
 module.exports = authCheckerUserOnlyFilter;
