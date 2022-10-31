@@ -38,11 +38,22 @@ const applyProxy = (app, config) => {
       onError: function onError(err, req, res) {
           logger.error("Mike error applyProxy ");
           console.error(err);
-          res.status(500);
-          res.json({
-            error: 'Error when connecting to remote server',
-            status: 504
-          });
+
+          if (isBadGatewayError(err)){
+            res.status(502);
+            res.json({
+              error: "Bad Gateway",
+              status: 502
+            });
+          }
+          else {
+            res.status(500);
+            res.json({
+              error: 'Error when connecting to remote server',
+              status: 504
+            });
+          }
+          
       },
       logLevel: 'warn'
   };
@@ -176,5 +187,13 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
     message: err.message || 'You are not authorised to access that resource'
   });
 });
+
+const isBadGatewayError = (error) => {
+  return error.message.includes("getaddrinfo ENOTFOUND") || 
+  error.message.includes("socket hang up") ||
+  error.message.includes("getaddrinfo EAI_AGAIN") ||
+  error.message.includes("connect ETIMEOUT") ||
+  error.message.includes("ECONNRESET");
+}
 
 module.exports = app;
