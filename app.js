@@ -36,6 +36,7 @@ const applyProxy = (app, config) => {
       target: config.target,
       changeOrigin: true,
       onError: function onError(err, req, res) {
+          logger.error("Mike error applyProxy ");
           console.error(err);
           res.status(500);
           res.json({
@@ -160,6 +161,7 @@ app.use(function (req, res, next) {
 // error handler
 app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   logger.error(err);
+  logger.error("Mike error app.use() ");
 
   // set locals, only providing error in development
   res.locals.message = err.message;
