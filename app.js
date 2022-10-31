@@ -173,30 +173,4 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   });
 });
 
-const isBadGatewayError = (error) => {
-  return error.message.includes("getaddrinfo ENOTFOUND") || 
-  error.message.includes("socket hang up") ||
-  error.message.includes("getaddrinfo EAI_AGAIN") ||
-  error.message.includes("connect ETIMEOUT") ||
-  error.message.includes("ECONNRESET") ||
-  error.message.includes("ECONNREFUSED");
-}
-
-const mapFetchErrors = (err, res) => {
-  if (isBadGatewayError(err)){
-    res.status(502);
-    res.json({
-      error: "Bad Gateway",
-      status: 502
-    });
-  }
-  else {
-    res.status(500);
-    res.json({
-      error: 'Error when connecting to remote server',
-      status: 504
-    });
-  }
-}
-
 module.exports = app;
