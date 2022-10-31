@@ -38,22 +38,21 @@ const applyProxy = (app, config) => {
       onError: function onError(err, req, res) {
           logger.error("Mike error applyProxy ");
           console.error(err);
-
-          if (isBadGatewayError(err)){
-            res.status(502);
-            res.json({
-              error: "Bad Gateway",
-              status: 502
-            });
-          }
-          else {
-            res.status(500);
-            res.json({
-              error: 'Error when connecting to remote server',
-              status: 504
-            });
-          }
-          
+          mapErrors(err, res);
+          // if (isBadGatewayError(err)){
+          //   res.status(502);
+          //   res.json({
+          //     error: "Bad Gateway",
+          //     status: 502
+          //   });
+          // }
+          // else {
+          //   res.status(500);
+          //   res.json({
+          //     error: 'Error when connecting to remote server',
+          //     status: 504
+          //   });
+          // }
       },
       logLevel: 'warn'
   };
@@ -195,6 +194,23 @@ const isBadGatewayError = (error) => {
   error.message.includes("connect ETIMEOUT") ||
   error.message.includes("ECONNRESET") ||
   error.message.includes("ECONNREFUSED");
+}
+
+const mapErrors = (err, res) => {
+  if (isBadGatewayError(err)){
+    res.status(502);
+    res.json({
+      error: "Bad Gateway",
+      status: 502
+    });
+  }
+  else {
+    res.status(500);
+    res.json({
+      error: 'Error when connecting to remote server',
+      status: 504
+    });
+  }
 }
 
 module.exports = app;
