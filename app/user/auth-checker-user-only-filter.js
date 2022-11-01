@@ -28,12 +28,12 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
 };
 
 const isBadGatewayError = (error) => {
-  return error.message.includes("getaddrinfo ENOTFOUND") || 
+  return error.message !== undefined && (error.message.includes("getaddrinfo ENOTFOUND") || 
   error.message.includes("socket hang up") ||
   error.message.includes("getaddrinfo EAI_AGAIN") ||
   error.message.includes("connect ETIMEOUT") ||
   error.message.includes("ECONNRESET") ||
-  error.message.includes("ECONNREFUSED");
+  error.message.includes("ECONNREFUSED"));
 }
 
 const mapFetchErrors = (err, res) => {
