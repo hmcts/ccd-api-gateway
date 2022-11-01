@@ -18,7 +18,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .catch(error => {
       if (error.name === 'FetchError') {
         logger.error(error);
-        mapFetchErrors(err, res); 
+        mapFetchErrors(error, res); 
       } else {
         logger.warn('Unsuccessful user authentication', error);
         error.status = error.status || 401;
