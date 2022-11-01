@@ -49,7 +49,7 @@ const mapFetchErrors = (error, res) => {
   else {
     res.status(500);
     res.json({
-      error: 'Error when connecting to remote server test '.concat(error.message) ,
+      error: 'Error when connecting to remote server test error: '.concat(error) ,
       status: 504
     });
   }
