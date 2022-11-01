@@ -29,6 +29,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
 };
 
 const isBadGatewayError = (error) => {
+  logger.error("mikes error inside authCheckerUserOnlyFilter.isBadGatewayError")
   return error.message !== undefined && (error.message.includes("getaddrinfo ENOTFOUND") || 
   error.message.includes("socket hang up") ||
   error.message.includes("getaddrinfo EAI_AGAIN") ||
@@ -48,7 +49,7 @@ const mapFetchErrors = (error, res) => {
   else {
     res.status(500);
     res.json({
-      error: 'Error when connecting to remote server',
+      error: 'Error when connecting to remote server test '.concat(error.message) ,
       status: 504
     });
   }
