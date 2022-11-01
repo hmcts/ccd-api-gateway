@@ -36,8 +36,8 @@ const isBadGatewayError = (error) => {
   error.message.includes("ECONNREFUSED"));
 }
 
-const mapFetchErrors = (err, res) => {
-  if (isBadGatewayError(err)){
+const mapFetchErrors = (error, res) => {
+  if (isBadGatewayError(error)){
     res.status(502);
     res.json({
       error: "Bad Gateway",
