@@ -4,7 +4,7 @@ const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('authCheckerUserOnlyFilter');
 
 const authCheckerUserOnlyFilter = (req, res, next) => {
-
+  logger.error("mikes error inside authCheckerUserOnlyFilter")
   req.authentication = {};
 
   userRequestAuthorizer
@@ -18,6 +18,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .catch(error => {
       if (error.name === 'FetchError') {
         logger.error(error);
+        logger.error("mikes error inside authCheckerUserOnlyFilter FetchError")
         mapFetchErrors(error, res); 
       } else {
         logger.warn('Unsuccessful user authentication', error);
