@@ -42,7 +42,7 @@ const applyProxy = (app, config) => {
           if (isBadGatewayError(err)){
             res.status(502);
             res.json({
-              error: "Bad Gateway",
+              error: 'Bad Gateway',
               status: 502
             });
           }

@@ -79,6 +79,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       filter(req, res, error => {
         expect(error).to.equal(error);
+        // expect(error.status).to.equal(403);
         done();
       });
     });
@@ -98,6 +99,113 @@ describe('authCheckerUserOnlyFilter', () => {
         done();
       });
     });
+
+    it('should return 502 status code in case of FetchError and error message containing "socket hang up" and no status', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah socket hang up blah'
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(502);
+        expect(error.error).to.equal('Bad Gateway');
+        expect(error.message).to.equal('blah socket hang up blah');
+        done();
+      });
+    });
+
+    it('should return 502 status code in case of FetchError and error message containing "socket hang up" and 403 status', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah socket hang up blah',
+        status: 403
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(502);
+        expect(error.error).to.equal('Bad Gateway');
+        expect(error.message).to.equal('blah socket hang up blah');
+        done();
+      });
+    });
+
+    it('should return 502 status code in case of FetchError and error message containing "getaddrinfo EAI_AGAIN" and no status', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah getaddrinfo EAI_AGAIN blah'
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(502);
+        expect(error.error).to.equal('Bad Gateway');
+        expect(error.message).to.equal('blah getaddrinfo EAI_AGAIN blah');
+        done();
+      });
+    });
+
+    it('should return 502 status code in case of FetchError and error message containing "connect ETIMEOUT" and no status', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah connect ETIMEOUT blah'
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(502);
+        expect(error.error).to.equal('Bad Gateway');
+        expect(error.message).to.equal('blah connect ETIMEOUT blah');
+        done();
+      });
+    });
+
+    it('should return 502 status code in case of FetchError and error message containing "ECONNRESET" and no status', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah ECONNRESET blah'
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(502);
+        expect(error.error).to.equal('Bad Gateway');
+        expect(error.message).to.equal('blah ECONNRESET blah');
+        done();
+      });
+    });
+
+    it('should return 502 status code in case of FetchError and error message containing "ECONNREFUSED" and no status', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah ECONNREFUSED blah'
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(502);
+        expect(error.error).to.equal('Bad Gateway');
+        expect(error.message).to.equal('blah ECONNREFUSED blah');
+        done();
+      });
+    });
+
+    it('should return 500 status code in case of FetchError and error message is undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: undefined
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter(req, res, error => {
+        expect(error.status).to.equal(500);
+        expect(error.error).to.equal('Internal Server Error');
+        expect(error.message).to.equal(undefined);
+        done();
+      });
+    });
+
 
     it('should return 401 status code when idam call fails with no error status', done => {
       error = {};
