@@ -4,7 +4,7 @@ const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('authCheckerUserOnlyFilter');
 
 const authCheckerUserOnlyFilter = (req, res, next) => {
-  logger.error("mikes error inside authCheckerUserOnlyFilter");
+  logger.error('mikes error inside authCheckerUserOnlyFilter');
   req.authentication = {};
 
   userRequestAuthorizer
@@ -18,7 +18,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .catch(error => {
       if (error.name === 'FetchError') {
         logger.error(error);
-        logger.error("mikes error inside authCheckerUserOnlyFilter FetchError");
+        logger.error('mikes error inside authCheckerUserOnlyFilter FetchError');
         mapFetchErrors(error, res, next);
       } else {
         logger.warn('Unsuccessful user authentication', error);
@@ -29,14 +29,14 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
 };
 
 const isBadGatewayError = (error) => {
-  logger.error("mikes error inside authCheckerUserOnlyFilter.isBadGatewayError error.name: ".concat(error.name, " status: ", error.status));
-  return error.message !== undefined && (error.message.includes("getaddrinfo ENOTFOUND") || 
-  error.message.includes("socket hang up") ||
-  error.message.includes("getaddrinfo EAI_AGAIN") ||
-  error.message.includes("connect ETIMEOUT") ||
-  error.message.includes("ECONNRESET") ||
-  error.message.includes("ECONNREFUSED"));
-}
+  logger.error('mikes error inside authCheckerUserOnlyFilter.isBadGatewayError error.name: '.concat(error.name, ' status: ', error.status));
+  return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') || 
+  error.message.includes('socket hang up') ||
+  error.message.includes('getaddrinfo EAI_AGAIN') ||
+  error.message.includes('connect ETIMEOUT') ||
+  error.message.includes('ECONNRESET') ||
+  error.message.includes('ECONNREFUSED'));
+};
 
 const mapFetchErrors = (error, res, next) => {
   if (isBadGatewayError(error)){
@@ -53,7 +53,7 @@ const mapFetchErrors = (error, res, next) => {
     message: error.message
     });
   }
-}
+};
 
 module.exports = authCheckerUserOnlyFilter;
 // module.exports = mapFetchErrors;

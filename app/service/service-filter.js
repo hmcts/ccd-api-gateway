@@ -12,7 +12,7 @@ const serviceFilter = (req, res, next) => {
         .catch(error => {
           if (error.name === 'FetchError') {
               logger.error(error);
-              logger.error("Mike error serviceFilter ");
+              logger.error('Mike error serviceFilter');
 
               next({
                 status: 500,
