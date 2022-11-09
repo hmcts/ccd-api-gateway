@@ -38,7 +38,8 @@ const applyProxy = (app, config) => {
       onError: function onError(err, req, res) {
           logger.error('Mike error applyProxy');
           console.error(err);
-          mapFetchErrors(err, res);
+          authCheckerUserOnlyFilter.mapFetchErrors(err, res);
+          // mapFetchErrors(err, res);
       },
       logLevel: 'warn'
   };
@@ -182,6 +183,7 @@ const isBadGatewayError = (error) => {
   error.message.includes('ECONNREFUSED'));
 };
 
+// export function mapFetchErrors(err, res) {
 const mapFetchErrors = (err, res) => {
   if (isBadGatewayError(err)){
     res.status(502);
@@ -200,3 +202,4 @@ const mapFetchErrors = (err, res) => {
 };
 
 module.exports = app;
+// exports.mapFetchErrors = mapFetchErrors;

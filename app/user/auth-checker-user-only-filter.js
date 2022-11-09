@@ -55,5 +55,9 @@ const mapFetchErrors = (error, res, next) => {
   }
 };
 
-module.exports = authCheckerUserOnlyFilter;
+// module.exports = authCheckerUserOnlyFilter;
 // module.exports = mapFetchErrors;
+module.exports = {
+  authCheckerUserOnlyFilter,
+  mapFetchErrors
+}
