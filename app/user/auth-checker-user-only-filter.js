@@ -60,4 +60,4 @@ const mapFetchErrors = (error, res, next) => {
 module.exports = {
   authCheckerUserOnlyFilter,
   mapFetchErrors
-}
+};

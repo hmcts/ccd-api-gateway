@@ -174,31 +174,31 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   });
 });
 
-const isBadGatewayError = (error) => {
-  return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') || 
-  error.message.includes('socket hang up') ||
-  error.message.includes('getaddrinfo EAI_AGAIN') ||
-  error.message.includes('connect ETIMEOUT') ||
-  error.message.includes('ECONNRESE') ||
-  error.message.includes('ECONNREFUSED'));
-};
+// const isBadGatewayError = (error) => {
+//   return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') || 
+//   error.message.includes('socket hang up') ||
+//   error.message.includes('getaddrinfo EAI_AGAIN') ||
+//   error.message.includes('connect ETIMEOUT') ||
+//   error.message.includes('ECONNRESE') ||
+//   error.message.includes('ECONNREFUSED'));
+// };
 
-// export function mapFetchErrors(err, res) {
-const mapFetchErrors = (err, res) => {
-  if (isBadGatewayError(err)){
-    res.status(502);
-    res.json({
-      error: 'Bad Gateway',
-      status: 502
-    });
-  }
-  else {
-    res.status(500);
-    res.json({
-      error: 'Error when connecting to remote server test error: '.concat(err) ,
-      status: 504
-    });
-  }
+// // export function mapFetchErrors(err, res) {
+// const mapFetchErrors = (err, res) => {
+//   if (isBadGatewayError(err)){
+//     res.status(502);
+//     res.json({
+//       error: 'Bad Gateway',
+//       status: 502
+//     });
+//   }
+//   else {
+//     res.status(500);
+//     res.json({
+//       error: 'Error when connecting to remote server test error: '.concat(err) ,
+//       status: 504
+//     });
+//   }
 };
 
 module.exports = app;
