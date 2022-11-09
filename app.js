@@ -7,7 +7,8 @@ let cookieParser = require('cookie-parser');
 let proxy = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
-const authCheckerUserOnlyFilter = require('./app/user/auth-checker-user-only-filter');
+const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
+const {mapFetchErrors} = require('./app/user/auth-checker-user-only-filter');
 const addressLookup = require('./app/address/address-lookup');
 const serviceFilter = require('./app/service/service-filter');
 const corsHandler = require('./app/security/cors');
@@ -38,7 +39,7 @@ const applyProxy = (app, config) => {
       onError: function onError(err, req, res) {
           logger.error('Mike error applyProxy');
           console.error(err);
-          authCheckerUserOnlyFilter.mapFetchErrors(err, res);
+          mapFetchErrors(err, res);
           // mapFetchErrors(err, res);
       },
       logLevel: 'warn'

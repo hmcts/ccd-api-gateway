@@ -39,28 +39,28 @@ describe('authCheckerUserOnlyFilter', () => {
     });
 
     it('should call next middleware without error', done => {
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error).to.be.undefined;
         done();
       });
     });
 
     it('should set authenticated user in request', done => {
-      filter(req, res, () => {
+      filter.authCheckerUserOnlyFilter(req, res, () => {
         expect(req.authentication.user).to.equal(user);
         done();
       });
     });
 
     it('should add user ID as a request header', done => {
-      filter(req, res, () => {
+      filter.authCheckerUserOnlyFilter(req, res, () => {
         expect(req.headers['user-id']).to.equal(user.uid);
         done();
       });
     });
 
     it('should add comma separated roles as a request header', done => {
-      filter(req, res, () => {
+      filter.authCheckerUserOnlyFilter(req, res, () => {
         expect(req.headers['user-roles']).to.equal(user.roles.join(','));
         done();
       });
@@ -77,7 +77,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error).to.equal(error);
         // expect(error.status).to.equal(403);
         done();
@@ -92,7 +92,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
         expect(error.message).to.equal('some message');
@@ -107,7 +107,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
         expect(error.message).to.equal('blah socket hang up blah');
@@ -123,7 +123,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
         expect(error.message).to.equal('blah socket hang up blah');
@@ -138,7 +138,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
         expect(error.message).to.equal('blah getaddrinfo EAI_AGAIN blah');
@@ -153,7 +153,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
         expect(error.message).to.equal('blah connect ETIMEOUT blah');
@@ -168,7 +168,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
         expect(error.message).to.equal('blah ECONNRESET blah');
@@ -183,7 +183,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
         expect(error.message).to.equal('blah ECONNREFUSED blah');
@@ -198,7 +198,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
         expect(error.message).to.equal(undefined);
@@ -211,7 +211,7 @@ describe('authCheckerUserOnlyFilter', () => {
       error = {};
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(401);
         done();
       });
@@ -223,7 +223,7 @@ describe('authCheckerUserOnlyFilter', () => {
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter(req, res, error => {
+      filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         done();
       });
