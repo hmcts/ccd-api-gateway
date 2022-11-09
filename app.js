@@ -37,10 +37,9 @@ const applyProxy = (app, config) => {
     target: config.target,
     changeOrigin: true,
     onError: function onError(err, req, res) {
-      let next;
       logger.error('Mike error applyProxy');
       console.error(err);
-      mapFetchErrors(err, res, next);
+      mapFetchErrors(err, res);
       // mapFetchErrors(err, res);
     },
     logLevel: 'warn'
