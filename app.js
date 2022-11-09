@@ -199,7 +199,7 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
 //       status: 504
 //     });
 //   }
-};
+// };
 
 module.exports = app;
 // exports.mapFetchErrors = mapFetchErrors;
