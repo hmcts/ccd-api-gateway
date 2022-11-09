@@ -228,6 +228,28 @@ describe('authCheckerUserOnlyFilter', () => {
         done();
       });
     });
+
+    // it('should return 502 status code in case of FetchError and error message containing "ECONNREFUSED" and no status test########################', done => {
+    //   error = {
+    //     name: 'FetchError',
+    //     message: 'blah ECONNREFUSED blah'
+    //   };
+    //   let next;
+
+    //   // userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+    //   filter.mapFetchErrors(error => {
+    //     expect(error.status).to.equal(502);
+    //     expect(error.error).to.equal('Bad Gateway');
+    //     expect(error.message).to.equal('blah ECONNREFUSED blah');
+    //     done();
+    //   }, res);
+      
+    //   // let roles = authorisedRolesExtractor.extract(request);
+    //   // expect(roles).to.contain('caseworker-test');
+    //   // expect(roles.length).to.equal(1);
+
+    // });
   });
 
 });
