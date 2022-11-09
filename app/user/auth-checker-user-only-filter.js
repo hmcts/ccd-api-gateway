@@ -40,6 +40,7 @@ const isBadGatewayError = (error) => {
 
 const mapFetchErrors = (error, res, next) => {
   if (next !== undefined){
+    logger.error('mikes error inside mapsFetchErrors typeof next: '.concat(typeof next, ' constructor.name): ', next.constructor.name));
     if (isBadGatewayError(error)){
       next({
       error: 'Bad Gateway',
@@ -55,7 +56,7 @@ const mapFetchErrors = (error, res, next) => {
       });
     }
   } else {
-    logger.error('mikes error inside mapsFetchErrors typeof res: '.concat(typeof res));
+    logger.error('mikes error inside mapsFetchErrors typeof res: '.concat(typeof res, ' constructor.name): ', res.constructor.name));
     if (isBadGatewayError(error)) {
       res.status(502);
       res.json({
