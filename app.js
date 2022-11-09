@@ -34,15 +34,16 @@ appHealth.disable(poweredByHeader);
 
 const applyProxy = (app, config) => {
   let options = {
-      target: config.target,
-      changeOrigin: true,
-      onError: function onError(err, req, res) {
-          logger.error('Mike error applyProxy');
-          console.error(err);
-          mapFetchErrors(err, res);
-          // mapFetchErrors(err, res);
-      },
-      logLevel: 'warn'
+    target: config.target,
+    changeOrigin: true,
+    onError: function onError(err, req, res) {
+      let next;
+      logger.error('Mike error applyProxy');
+      console.error(err);
+      mapFetchErrors(err, res, next);
+      // mapFetchErrors(err, res);
+    },
+    logLevel: 'warn'
   };
 
   if (false !== config.rewrite) {

@@ -39,19 +39,36 @@ const isBadGatewayError = (error) => {
 };
 
 const mapFetchErrors = (error, res, next) => {
-  if (isBadGatewayError(error)){
-    next({
-    error: 'Bad Gateway',
-    status: 502,
-    message: error.message
-    });
-  }
-  else {
-    next({
-    error: 'Internal Server Error',
-    status: 500,
-    message: error.message
-    });
+  if (next !== undefined){
+    if (isBadGatewayError(error)){
+      next({
+      error: 'Bad Gateway',
+      status: 502,
+      message: error.message
+      });
+    }
+    else {
+      next({
+      error: 'Internal Server Error',
+      status: 500,
+      message: error.message
+      });
+    }
+  } else {
+    if (isBadGatewayError(error)) {
+      res.status(502);
+      res.json({
+        error: 'Bad Gateway',
+        status: 502
+      });
+    }
+    else {
+      res.status(500);
+      res.json({
+        error: 'Error when connecting to remote server test error: '.concat(error) ,
+        status: 504
+      });
+    }
   }
 };
 
