@@ -55,6 +55,7 @@ const mapFetchErrors = (error, res, next) => {
       });
     }
   } else {
+    logger.error('mikes error inside mapsFetchErrors typeof res: '.concat(typeof res));
     if (isBadGatewayError(error)) {
       res.status(502);
       res.json({
