@@ -22,7 +22,14 @@ describe('authCheckerUserOnlyFilter', () => {
     req = {
       headers: {}
     };
-    res = {};
+    res = {
+      status: function(statusInput) {
+        this.status = statusInput;
+      },
+      json: function(jsonInput) {
+        this.json = jsonInput;
+      }
+    };
 
     userRequestAuthorizer = {
       authorise: sinon.stub()
@@ -229,27 +236,111 @@ describe('authCheckerUserOnlyFilter', () => {
       });
     });
 
-    // it('should return 502 status code in case of FetchError and error message containing "ECONNREFUSED" and no status test########################', done => {
-    //   error = {
-    //     name: 'FetchError',
-    //     message: 'blah ECONNREFUSED blah'
-    //   };
-    //   let next;
 
-    //   // userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-    //   filter.mapFetchErrors(error => {
-    //     expect(error.status).to.equal(502);
-    //     expect(error.error).to.equal('Bad Gateway');
-    //     expect(error.message).to.equal('blah ECONNREFUSED blah');
-    //     done();
-    //   }, res);
+    it('should return 502 status code in case of FetchError and error message containing "socket hang up" next undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah socket hang up blah'
+      };
+
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
       
-    //   // let roles = authorisedRolesExtractor.extract(request);
-    //   // expect(roles).to.contain('caseworker-test');
-    //   // expect(roles.length).to.equal(1);
+      expect(res.status).to.equal(502);
+      expect(res.json.error).to.equal('Bad Gateway');
+      done();
+    });
 
-    // });
+    it('should return 502 status code in case of FetchError and error message containing "getaddrinfo EAI_AGAIN" next undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah getaddrinfo EAI_AGAIN blah'
+      };
+
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
+      
+      expect(res.status).to.equal(502);
+      expect(res.json.error).to.equal('Bad Gateway');
+      done();
+      });
+
+    it('should return 502 status code in case of FetchError and error message containing "connect ETIMEOUT" next undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah connect ETIMEOUT blah'
+      };
+      
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
+      
+      expect(res.status).to.equal(502);
+      expect(res.json.error).to.equal('Bad Gateway');
+      done();
+    });
+
+    it('should return 502 status code in case of FetchError and error message containing "ECONNRESET" next undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah ECONNRESET blah'
+      };
+
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
+      
+      expect(res.status).to.equal(502);
+      expect(res.json.error).to.equal('Bad Gateway');
+      done();
+    });
+
+    it('should return 502 status code in case of FetchError and error message containing "ECONNREFUSED" next undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah ECONNREFUSED blah'
+      };
+
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
+      
+      expect(res.status).to.equal(502);
+      expect(res.json.error).to.equal('Bad Gateway');
+      done();
+
+    });
+
+
+    it('should return 500 status code in case of FetchError non matching error message and next undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: 'some message',
+        status: 403
+      };
+
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
+      
+      expect(res.status).to.equal(500);
+      expect(res.json.error).to.equal('Error when connecting to remote server test error: some message');
+      expect(res.json.status).to.equal(504);
+      done();
+    });
+
+    it('should return 500 status code in case of FetchError non matching error message undefined and next undefined', done => {
+      error = {
+        name: 'FetchError',
+        status: 403
+      };
+
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
+      
+      expect(res.status).to.equal(500);
+      expect(res.json.error).to.equal('Error when connecting to remote server test error: undefined');
+      expect(res.json.status).to.equal(504);
+      done();
+    });
+
+
   });
-
 });

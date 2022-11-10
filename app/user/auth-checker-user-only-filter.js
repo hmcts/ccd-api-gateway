@@ -67,15 +67,13 @@ const mapFetchErrors = (error, res, next) => {
     else {
       res.status(500);
       res.json({
-        error: 'Error when connecting to remote server test error: '.concat(error) ,
+        error: 'Error when connecting to remote server test error: '.concat(error.message) ,
         status: 504
       });
     }
   }
 };
 
-// module.exports = authCheckerUserOnlyFilter;
-// module.exports = mapFetchErrors;
 module.exports = {
   authCheckerUserOnlyFilter,
   mapFetchErrors
