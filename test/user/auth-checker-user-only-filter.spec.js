@@ -249,6 +249,7 @@ describe('authCheckerUserOnlyFilter', () => {
       
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
+      expect(res.json.message).to.equal('blah socket hang up blah');
       done();
     });
 
@@ -263,6 +264,7 @@ describe('authCheckerUserOnlyFilter', () => {
       
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
+      expect(res.json.message).to.equal('blah getaddrinfo EAI_AGAIN blah');
       done();
       });
 
@@ -277,6 +279,7 @@ describe('authCheckerUserOnlyFilter', () => {
       
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
+      expect(res.json.message).to.equal('blah connect ETIMEOUT blah');
       done();
     });
 
@@ -291,6 +294,7 @@ describe('authCheckerUserOnlyFilter', () => {
       
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
+      expect(res.json.message).to.equal('blah ECONNRESET blah');
       done();
     });
 
@@ -305,6 +309,7 @@ describe('authCheckerUserOnlyFilter', () => {
       
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
+      expect(res.json.message).to.equal('blah ECONNREFUSED blah');
       done();
 
     });
@@ -321,8 +326,9 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.mapFetchErrors(error , res);
       
       expect(res.status).to.equal(500);
-      expect(res.json.error).to.equal('Error when connecting to remote server test error: some message');
+      expect(res.json.error).to.equal('Error when connecting to remote server');
       expect(res.json.status).to.equal(504);
+      expect(res.json.message).to.equal('some message');
       done();
     });
 
@@ -336,8 +342,9 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.mapFetchErrors(error , res);
       
       expect(res.status).to.equal(500);
-      expect(res.json.error).to.equal('Error when connecting to remote server test error: undefined');
+      expect(res.json.error).to.equal('Error when connecting to remote server');
       expect(res.json.status).to.equal(504);
+      expect(res.json.message).to.equal(undefined);
       done();
     });
 

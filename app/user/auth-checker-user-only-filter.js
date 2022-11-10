@@ -61,14 +61,16 @@ const mapFetchErrors = (error, res, next) => {
       res.status(502);
       res.json({
         error: 'Bad Gateway',
-        status: 502
+        status: 502,
+        message: error.message
       });
     }
     else {
       res.status(500);
       res.json({
-        error: 'Error when connecting to remote server test error: '.concat(error.message) ,
-        status: 504
+        error: 'Error when connecting to remote server',
+        status: 504,
+        message: error.message
       });
     }
   }
