@@ -107,6 +107,21 @@ describe('authCheckerUserOnlyFilter', () => {
       });
     });
 
+    it('should return 502 status code in case of FetchError and error message containing "getaddrinfo ENOTFOUND" and no status', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah getaddrinfo ENOTFOUND blah'
+      };
+      userRequestAuthorizer.authorise.returns(Promise.reject(error));
+
+      filter.authCheckerUserOnlyFilter(req, res, error => {
+        expect(error.status).to.equal(502);
+        expect(error.error).to.equal('Bad Gateway');
+        expect(error.message).to.equal('blah getaddrinfo ENOTFOUND blah');
+        done();
+      });
+    });
+
     it('should return 502 status code in case of FetchError and error message containing "socket hang up" and no status', done => {
       error = {
         name: 'FetchError',
@@ -236,7 +251,20 @@ describe('authCheckerUserOnlyFilter', () => {
       });
     });
 
+    it('should return 502 status code in case of FetchError and error message containing "getaddrinfo ENOTFOUND" next undefined', done => {
+      error = {
+        name: 'FetchError',
+        message: 'blah getaddrinfo ENOTFOUND blah'
+      };
 
+      // next undefined in function call
+      filter.mapFetchErrors(error , res);
+      
+      expect(res.status).to.equal(502);
+      expect(res.json.error).to.equal('Bad Gateway');
+      expect(res.json.message).to.equal('blah getaddrinfo ENOTFOUND blah');
+      done();
+    });
 
     it('should return 502 status code in case of FetchError and error message containing "socket hang up" next undefined', done => {
       error = {
