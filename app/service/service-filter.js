@@ -12,8 +12,6 @@ const serviceFilter = (req, res, next) => {
         .catch(error => {
           if (error.name === 'FetchError') {
               logger.error(error);
-              logger.error('Mike error serviceFilter');
-
               next({
                 status: 500,
                 error: 'Internal Server Error',

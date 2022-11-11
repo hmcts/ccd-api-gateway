@@ -4,7 +4,6 @@ const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('authCheckerUserOnlyFilter');
 
 const authCheckerUserOnlyFilter = (req, res, next) => {
-  logger.error('mikes error inside authCheckerUserOnlyFilter');
   req.authentication = {};
 
   userRequestAuthorizer
@@ -18,7 +17,6 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .catch(error => {
       if (error.name === 'FetchError') {
         logger.error(error);
-        logger.error('mikes error inside authCheckerUserOnlyFilter FetchError');
         mapFetchErrors(error, res, next);
       } else {
         logger.warn('Unsuccessful user authentication', error);
@@ -29,7 +27,6 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
 };
 
 const isBadGatewayError = (error) => {
-  logger.error('mikes error inside authCheckerUserOnlyFilter.isBadGatewayError error.name: '.concat(error.name, ' status: ', error.status));
   return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') || 
   error.message.includes('socket hang up') ||
   error.message.includes('getaddrinfo EAI_AGAIN') ||
@@ -40,7 +37,6 @@ const isBadGatewayError = (error) => {
 
 const mapFetchErrors = (error, res, next) => {
   if (next !== undefined){
-    logger.error('mikes error inside mapsFetchErrors typeof next: '.concat(typeof next, ' constructor.name): ', next.constructor.name));
     if (isBadGatewayError(error)){
       next({
       error: 'Bad Gateway',
@@ -56,7 +52,6 @@ const mapFetchErrors = (error, res, next) => {
       });
     }
   } else {
-    logger.error('mikes error inside mapsFetchErrors typeof res: '.concat(typeof res, ' constructor.name): ', res.constructor.name));
     if (isBadGatewayError(error)) {
       res.status(502);
       res.json({
