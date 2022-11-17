@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const HttpsProxyAgent = require('https-proxy-agent');
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('addressLookup');
-const crypto = require('crypto').webcrypto;
+const crypto = require('crypto');
 
 function addressLookup(postcode) {
 
@@ -45,7 +45,7 @@ function s4() {
 }
 
 function randomBetween0and1() {
-  return crypto.getRandomValues(new Uint32Array(1))[0]/2**32;
+  return crypto.randomInt(0, 2**32)/2**32;
 }
 
 function errorObj(logMessage, status) {
