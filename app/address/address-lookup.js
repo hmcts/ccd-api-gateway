@@ -38,7 +38,7 @@ function uniqueId() {
 }
 
 function s4() {
-  return Math.floor((2 + Math.random()) * 0x10000)
+  return Math.ceil((1+ Math.random()) * 0x10000)
     .toString(16)
     .substring(1);
 }
