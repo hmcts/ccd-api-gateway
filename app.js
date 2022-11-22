@@ -7,7 +7,8 @@ let cookieParser = require('cookie-parser');
 let proxy = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
-const authCheckerUserOnlyFilter = require('./app/user/auth-checker-user-only-filter');
+const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
+const {mapFetchErrors} = require('./app/user/auth-checker-user-only-filter');
 const addressLookup = require('./app/address/address-lookup');
 const serviceFilter = require('./app/service/service-filter');
 const corsHandler = require('./app/security/cors');
@@ -33,17 +34,13 @@ appHealth.disable(poweredByHeader);
 
 const applyProxy = (app, config) => {
   let options = {
-      target: config.target,
-      changeOrigin: true,
-      onError: function onError(err, req, res) {
-          console.error(err);
-          res.status(500);
-          res.json({
-            error: 'Error when connecting to remote server',
-            status: 504
-          });
-      },
-      logLevel: 'warn'
+    target: config.target,
+    changeOrigin: true,
+    onError: function onError(err, req, res) {
+      console.error(err);
+      mapFetchErrors(err, res);
+    },
+    logLevel: 'warn'
   };
 
   if (false !== config.rewrite) {
