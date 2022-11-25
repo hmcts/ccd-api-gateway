@@ -39,10 +39,8 @@ function uniqueId() {
 }
 
 function errorObj(logMessage, status) {
-  var soimas = uniqueId();
-  console.log('asdmas', soimas);
   return {
-    error: soimas,
+    error: uniqueId(),
     logMessage: logMessage,
     message: 'An error occurred calling the Postcode service.',
     status: status
