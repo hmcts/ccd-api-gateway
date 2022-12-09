@@ -20,7 +20,7 @@
     "sonar-scan": "NODE_PATH=. sonar-scanner -X"
   },
   "dependencies": {
-    "@hmcts/nodejs-healthcheck": "1.7.0",
+    "@hmcts/nodejs-healthcheck": "1.8.0",
     "@hmcts/nodejs-logging": "^3.0.0",
     "@hmcts/properties-volume": "^0.0.13",
     "applicationinsights": "^1.0.5",
