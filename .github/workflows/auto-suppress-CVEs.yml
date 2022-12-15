@@ -36,4 +36,4 @@ jobs:
         with:
           skip_dirty_check: true
           commit_message: "Auto-suppress CVEs"
-          # branch: master
+          branch: ${{ github.head_ref }}
