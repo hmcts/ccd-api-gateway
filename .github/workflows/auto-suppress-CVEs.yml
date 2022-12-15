@@ -28,7 +28,8 @@ jobs:
         run: yarn audit --groups dependencies --json | grep auditAdvisory > yarn-audit-known-issues
 
       - name: Append new suppressions to yarn-audit-new-issues report
-        run: grep -Fvf yarn-audit-known-issues.bak yarn-audit-known-issues
+        run: fgrep -vf yarn-audit-known-issues.bak yarn-audit-known-issues >> yarn-audit-new-issues
+        continue-on-error: true
 
       - name: Commit updated CVE suppressions
         uses: stefanzweifel/git-auto-commit-action@v4
