@@ -21,15 +21,8 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
           ref: master
 
-      - name: Backup previous yarn-audit-known-issues
-        run: cp yarn-audit-known-issues yarn-audit-known-issues.bak
-
       - name: Run yarn audit
         run: yarn audit --groups dependencies --json | grep auditAdvisory > yarn-audit-known-issues
-
-      - name: Append new suppressions to yarn-audit-new-issues report
-        run: fgrep -vf yarn-audit-known-issues.bak yarn-audit-known-issues >> yarn-audit-new-issues
-        continue-on-error: true
 
       - name: Commit updated CVE suppressions
         uses: stefanzweifel/git-auto-commit-action@v4
