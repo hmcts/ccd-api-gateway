@@ -80,6 +80,7 @@
     "follow-redirects": "^1.14.8",
     "moment": "^2.29.4",
     "async": "^2.6.4",
-    "minimatch": "^3.0.5"
+    "minimatch": "^3.0.5",
+    "json5": "^2.2.2"
   }
 }
