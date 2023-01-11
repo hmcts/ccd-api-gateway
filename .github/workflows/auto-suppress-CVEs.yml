@@ -29,5 +29,4 @@ jobs:
         with:
           skip_dirty_check: true
           commit_message: "Auto-suppress CVEs"
-          commit_options: "--allow-empty"
           branch: master
