@@ -61,7 +61,7 @@ withPipeline("nodejs", product, component) {
     enableAksStagingDeployment()
     disableLegacyDeployment()
 
-    afterCheckout {
+    afterAlways('checkOut') {
         sh "yarn cache clean"
     }
 
