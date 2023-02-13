@@ -50,7 +50,7 @@ withPipeline("nodejs", product, component) {
         enableSlackNotifications('#ccd-pr-builds')
         def githubApi = new GithubAPI(this)
         if (!githubApi.getLabelsbyPattern(env.BRANCH_NAME, "keep-helm")) {
-            enableCleanupOfHelmReleaseOnSuccess()
+            enableCleanupOfHelmReleaseAlways()
         }
     }
 
