@@ -50,6 +50,16 @@ integration_test/target
 
 # Visual Studio Code files
 .history/
+.vscode
 
 # Yarn audit issues
 yarn-audit-issues
+
+# Yarn v3
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
