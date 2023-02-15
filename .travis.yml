@@ -11,7 +11,7 @@ install:
 cache: yarn
 script:
   - yarn --version
-  - yarn check
+  - yarn --check-cache
   - yarn lint
   - yarn test
   - yarn test:coverage
