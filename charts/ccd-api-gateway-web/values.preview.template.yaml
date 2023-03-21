@@ -11,6 +11,7 @@ nodejs:
 
 #    TODO temporary to investigate build issue on PR. To remove once release is complete
     PROXY_AGGREGATED: http://ccd-data-store-api-pr-1260.service.core-compute-preview.internal
+    PROXY_CASE_ACTIVITY: https://ccd-case-activity-api-pr-276.service.core-compute-preview.internal
     PROXY_DATA: http://ccd-data-store-api-pr-1260.service.core-compute-preview.internal
     PROXY_PRINT_SERVICE: http://ccd-case-print-service-pr-260.service.core-compute-preview.internal
     PROXY_AGGREGATED: http://ccd-data-store-api-pr-1260.service.core-compute-preview.internal
