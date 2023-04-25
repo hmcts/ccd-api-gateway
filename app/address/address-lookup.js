@@ -1,5 +1,4 @@
 const config = require('config');
-
 const fetch = require('node-fetch');
 const HttpsProxyAgent = require('https-proxy-agent');
 const { Logger } = require('@hmcts/nodejs-logging');

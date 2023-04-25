@@ -4,6 +4,7 @@ const url = require('url');
 const { Logger } = require('@hmcts/nodejs-logging');
 
 const endPoint = config.get('idam.oauth2.token_endpoint')
+GIT
 const url = new URL(endPoint);
 url.search = new URLSearchParams(params);
 
