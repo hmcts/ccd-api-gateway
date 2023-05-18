@@ -1,16 +1,7 @@
 const config = require('config');
 const fetch = require('node-fetch');
-const url = require('url');
+const { URL } = require('url');
 const { Logger } = require('@hmcts/nodejs-logging');
-
-const endPoint = config.get('idam.oauth2.token_endpoint')
-GIT
-const url = new URL(endPoint);
-url.search = new URLSearchParams(params);
-
-
-
-
 
 const logger = Logger.getLogger('accessTokenRequest');
 
@@ -40,12 +31,13 @@ function accessTokenRequest(request) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   };
-  const params = {
-    code: request.query.code,
-    redirect_uri: completeRedirectURI(request.query.redirect_uri),
-    grant_type: 'authorization_code'
-  };
-  return fetch(url.toString(), options)
+
+  const oauthUrl = new URL(config.get('idam.oauth2.token_endpoint'));
+  oauthUrl.searchParams.append('code',request.query.code);
+  oauthUrl.searchParams.append('redirect_uri',completeRedirectURI(request.query.redirect_uri));
+  oauthUrl.searchParams.append('grant_type','authorization_code');
+
+  return fetch(oauthUrl.href, options)
     .then(response => {
       if (response.status !== 200) {
         logger.error('Failed to obtain access token. response status:', response.status);

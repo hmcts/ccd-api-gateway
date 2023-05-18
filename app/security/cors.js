@@ -5,8 +5,8 @@ const WILDCARD = '*';
 
 const createWhitelistValidator = (val) => {
     const whitelist = config.get('security.cors_origin_whitelist').split(',');
-    for (let i = 0; i < whitelist.length; i++) {
-        if (val === whitelist[i] || WILDCARD === whitelist[i]) {
+    for (let w of whitelist) {
+        if (val === w || WILDCARD === w) {
             return true;
         }
     }
