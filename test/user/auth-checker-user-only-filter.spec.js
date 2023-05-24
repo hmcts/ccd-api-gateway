@@ -79,14 +79,14 @@ describe('authCheckerUserOnlyFilter', () => {
 
     it('should call next middleware with error', done => {
       error = {
-        name: 'FetchError',
+        name: 'not a FetchError',
         status: 403
       };
       userRequestAuthorizer.authorise.returns(Promise.reject(error));
 
-      filter.authCheckerUserOnlyFilter(req, res, error => {
-        expect(error).to.equal(error);
-        // expect(error.status).to.equal(403);
+      filter.authCheckerUserOnlyFilter(req, res, err => {
+        expect(err).to.equal(error);
+        expect(err.status).to.equal(403);
         done();
       });
     });
@@ -259,7 +259,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
       expect(res.json.message).to.equal('blah getaddrinfo ENOTFOUND blah');
@@ -274,7 +274,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
       expect(res.json.message).to.equal('blah socket hang up blah');
@@ -289,7 +289,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
       expect(res.json.message).to.equal('blah getaddrinfo EAI_AGAIN blah');
@@ -301,10 +301,10 @@ describe('authCheckerUserOnlyFilter', () => {
         name: 'FetchError',
         message: 'blah connect ETIMEOUT blah'
       };
-      
+
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
       expect(res.json.message).to.equal('blah connect ETIMEOUT blah');
@@ -319,7 +319,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
       expect(res.json.message).to.equal('blah ECONNRESET blah');
@@ -334,7 +334,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
       expect(res.json.message).to.equal('blah ECONNREFUSED blah');
@@ -352,7 +352,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(500);
       expect(res.json.error).to.equal('Error when connecting to remote server');
       expect(res.json.status).to.equal(504);
@@ -368,7 +368,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       // next undefined in function call
       filter.mapFetchErrors(error , res);
-      
+
       expect(res.status).to.equal(500);
       expect(res.json.error).to.equal('Error when connecting to remote server');
       expect(res.json.status).to.equal(504);
