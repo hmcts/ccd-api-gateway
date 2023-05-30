@@ -30,7 +30,7 @@ describe('getCachedUserDetails', () => {
     nodeCacheSpy = sandbox.spy(NodeCache.prototype, 'set');
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
-    cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', { 
+    cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', {
       '../cache/cache-config': { userInfoCache }
     });
   });
@@ -99,7 +99,7 @@ describe('getCachedUserDetails', () => {
     await cachedUserResolver.getUserDetails(TOKEN);
     clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
     initNock(TOKEN, USER_DETAILS);
-  
+
     const result = await cachedUserResolver.getUserDetails(TOKEN);
 
     expect(JSON.stringify(result)).to.equal(JSON.stringify(USER_DETAILS));
@@ -115,6 +115,7 @@ describe('getCachedUserDetails', () => {
     try {
       result = await cachedUserResolver.getUserDetails(TOKEN);
     } catch(error) {
+      expect(error).to.not.equal(undefined);
       expect(result).to.equal(undefined);
       assert.calledOnce(userInfoCacheSpy);
       assert.notCalled(nodeCacheSpy);
