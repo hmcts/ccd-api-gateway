@@ -6,7 +6,7 @@ const enabled = config.get('appInsights.enabled');
 function fineGrainedSampling(envelope) {
   // activity data is not interesting and should not really be going through this proxy anyway
   // when it was at 100% it was generating nearly 50% of HMCTS app insights data ingestion alone
-  if (envelope.data.baseType === 'RequestData' && envelope.data.baseData.name.includes('/activity')) {
+  if (['RequestData', 'RemoteDependencyData'].includes(envelope.data.baseType) && envelope.data.baseData.name.includes('/activity')) {
     envelope.sampleRate = 1;
   }
 
