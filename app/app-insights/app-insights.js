@@ -22,6 +22,7 @@ const enableAppInsights = () => {
       .setAutoCollectConsole(true, true);
     appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = appInsightsRoleName;
     appInsights.defaultClient.addTelemetryProcessor(fineGrainedSampling);
+    appInsights.defaultClient.config.samplingPercentage = 10;
     appInsights.start();
   }
 };
