@@ -6,6 +6,7 @@
 
 !package.json
 !yarn.lock
+!.yarnrc.yml
 
 !app.js
 !server.js
@@ -16,3 +17,12 @@
 
 !acb.yaml
 !Dockerfile
+
+# Yarn v3
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
