@@ -3,6 +3,7 @@ FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as base
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
 USER root
 RUN apk update \
