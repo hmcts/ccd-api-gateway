@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "private": true,
   "engines": {
-    "node": "^16.15.0"
+    "node": "^18.17.1"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=. yarn node server.js",
