@@ -1,8 +1,9 @@
 ARG PLATFORM=""
-FROM hmctspublic.azurecr.io/base/node${PLATFORM}:16-alpine as base
+FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as base
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
 USER root
 RUN apk update \
@@ -27,7 +28,7 @@ FROM base as build
 RUN sleep 1 && yarn install --ignore-optional --production --network-timeout 1200000 && yarn cache clean
 
 # Runtime image
-FROM hmctspublic.azurecr.io/base/node${PLATFORM}:16-alpine as runtime
+FROM hmctspublic.azurecr.io/base/node${PLATFORM}:18-alpine as runtime
 
 COPY --from=build $WORKDIR .
 

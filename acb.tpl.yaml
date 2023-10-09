@@ -2,7 +2,7 @@ version: 1.0-preview-1
 steps:
 
   - id: pull-hmcts-base-amd64
-    cmd: docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:16-alpine && docker tag hmctspublic.azurecr.io/base/node:16-alpine hmctspublic.azurecr.io/base/node/linux/amd64:16-alpine
+    cmd: docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:18-alpine && docker tag hmctspublic.azurecr.io/base/node:18-alpine hmctspublic.azurecr.io/base/node/linux/amd64:18-alpine
     when: ["-"]
 
   - id: pull-base-amd64
@@ -56,7 +56,7 @@ steps:
     timeout: 7200
 
   - id: pull-hmcts-base-arm64
-    cmd: docker pull --platform linux/arm64 hmctspublic.azurecr.io/base/node:16-alpine && docker tag hmctspublic.azurecr.io/base/node:16-alpine hmctspublic.azurecr.io/base/node/linux/arm64:16-alpine
+    cmd: docker pull --platform linux/arm64 hmctspublic.azurecr.io/base/node:18-alpine && docker tag hmctspublic.azurecr.io/base/node:18-alpine hmctspublic.azurecr.io/base/node/linux/arm64:18-alpine
     when:
       - pull-hmcts-base-amd64
 
