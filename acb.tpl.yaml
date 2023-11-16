@@ -4,16 +4,22 @@ steps:
   - id: pull-hmcts-base-amd64
     cmd: docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:18-alpine && docker tag hmctspublic.azurecr.io/base/node:18-alpine hmctspublic.azurecr.io/base/node/linux/amd64:18-alpine
     when: ["-"]
+    retries: 3
+    retryDelay: 5
 
   - id: pull-base-amd64
     cmd: docker pull --platform linux/amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
     when: ["-"]
     ignoreErrors: true
+    retries: 3
+    retryDelay: 5
 
   - id: pull-build-amd64
     cmd: docker pull --platform linux/amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
     when: ["-"]
     ignoreErrors: true
+    retries: 3
+    retryDelay: 5
 
   - id: base-amd64
     build: >
@@ -26,6 +32,8 @@ steps:
     when:
       - pull-base-amd64
     timeout: 7200
+    retries: 3
+    retryDelay: 5
 
   - id: build-amd64
     build: >
@@ -40,6 +48,8 @@ steps:
       - base-amd64
       - pull-build-amd64
     timeout: 7200
+    retries: 3
+    retryDelay: 5
 
   - id: runtime-amd64
     build: >
@@ -54,29 +64,39 @@ steps:
       - base-amd64
       - build-amd64
     timeout: 7200
+    retries: 3
+    retryDelay: 5
 
   - id: pull-hmcts-base-arm64
     cmd: docker pull --platform linux/arm64 hmctspublic.azurecr.io/base/node:18-alpine && docker tag hmctspublic.azurecr.io/base/node:18-alpine hmctspublic.azurecr.io/base/node/linux/arm64:18-alpine
     when:
       - pull-hmcts-base-amd64
+    retries: 3
+    retryDelay: 5
 
   - id: pull-base-arm64
     cmd: docker pull --platform linux/arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
     when:
       - pull-base-amd64
     ignoreErrors: true
+    retries: 3
+    retryDelay: 5
 
   - id: pull-build-arm64
     cmd: docker pull --platform linux/arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
     when:
       - pull-build-amd64
     ignoreErrors: true
+    retries: 3
+    retryDelay: 5
 
   - id: reset-qemu
     cmd: multiarch/qemu-user-static --reset -p yes
     when:
       - pull-build-arm64
     privileged: true
+    retries: 3
+    retryDelay: 5
 
   - id: base-arm64
     build: >
@@ -89,6 +109,8 @@ steps:
     when:
       - reset-qemu
     timeout: 7200
+    retries: 3
+    retryDelay: 5
 
   - id: build-arm64
     build: >
@@ -103,6 +125,8 @@ steps:
       - base-arm64
       - pull-build-arm64
     timeout: 7200
+    retries: 3
+    retryDelay: 5
 
   - id: runtime-arm64
     build: >
@@ -117,6 +141,8 @@ steps:
       - base-arm64
       - build-arm64
     timeout: 7200
+    retries: 3
+    retryDelay: 5
 
   - id: push-images
     push:
@@ -129,39 +155,47 @@ steps:
     when:
       - runtime-amd64
       - runtime-arm64
+    retries: 3
+    retryDelay: 5
 
   - id: manifest-create-base
     cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/base hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:arm64
     when:
       - push-images
     retries: 3
-    retryDelay: 3
+    retryDelay: 5
 
   - id: manifest-push-base
     cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/base
     when:
       - manifest-create-base
+    retries: 3
+    retryDelay: 5
 
   - id: manifest-create-build
     cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/build hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:arm64
     when:
       - push-images
     retries: 3
-    retryDelay: 3
+    retryDelay: 5
 
   - id: manifest-push-build
     cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/build
     when:
       - manifest-create-build
+    retries: 3
+    retryDelay: 5
 
   - id: manifest-create-runtime
     cmd: docker manifest create {{.Run.Registry}}/{{CI_IMAGE_TAG}} {{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64 {{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64
     when:
       - push-images
     retries: 3
-    retryDelay: 3
+    retryDelay: 5
 
   - id: manifest-push-runtime
     cmd: docker manifest push --purge {{.Run.Registry}}/{{CI_IMAGE_TAG}}
     when:
       - manifest-create-runtime
+    retries: 3
+    retryDelay: 5
