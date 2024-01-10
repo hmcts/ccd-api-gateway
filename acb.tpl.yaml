@@ -134,26 +134,36 @@ steps:
     cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/base hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:arm64
     when:
       - push-images
+    retries: 3
+    retryDelay: 3
 
   - id: manifest-push-base
     cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/base
     when:
       - manifest-create-base
+    retries: 3
+    retryDelay: 3
 
   - id: manifest-create-build
     cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/build hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:arm64
     when:
       - push-images
+    retries: 3
+    retryDelay: 3
 
   - id: manifest-push-build
     cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/build
     when:
       - manifest-create-build
+    retries: 3
+    retryDelay: 3
 
   - id: manifest-create-runtime
     cmd: docker manifest create {{.Run.Registry}}/{{CI_IMAGE_TAG}} {{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64 {{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64
     when:
       - push-images
+    retries: 3
+    retryDelay: 3
 
   - id: manifest-push-runtime
     cmd: docker manifest push --purge {{.Run.Registry}}/{{CI_IMAGE_TAG}}
