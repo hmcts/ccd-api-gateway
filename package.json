@@ -77,7 +77,7 @@
     "glob-parent": "^5.1.2",
     "ws": "^6.2.2",
     "ansi-regex": "^5.0.1",
-    "follow-redirects": "^1.14.8",
+    "follow-redirects": "^1.15.5",
     "moment": "^2.29.4",
     "async": "^2.6.4",
     "minimatch": "^3.0.5",
