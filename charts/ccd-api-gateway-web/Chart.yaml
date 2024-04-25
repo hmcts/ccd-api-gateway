@@ -2,11 +2,11 @@ description: Helm chart for the HMCTS CCD API Gateway
 apiVersion: v2
 name: ccd-api-gateway-web
 home: https://github.com/hmcts/ccd-api-gateway
-version: 1.2.6
+version: 1.2.7
 maintainers:
   - name: HMCTS CCD Dev Team
     email: ccd-devops@HMCTS.NET
 dependencies:
   - name: nodejs
-    version: 3.0.0
+    version: 3.1.0
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
