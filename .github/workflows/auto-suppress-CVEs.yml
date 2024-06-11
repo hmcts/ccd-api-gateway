@@ -22,7 +22,7 @@ jobs:
           ref: master
 
       - name: Run yarn audit
-        run: yarn audit --groups dependencies --json | grep auditAdvisory > yarn-audit-known-issues
+        run: yarn npm audit --recursive --environment production --json > yarn-audit-known-issues
 
       - name: Commit updated CVE suppressions
         uses: stefanzweifel/git-auto-commit-action@v4
