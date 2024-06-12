@@ -1144,7 +1144,6 @@ __metadata:
     lodash: ^4.17.21
     mem: ^6.0.0
     mocha: ^5.2.0
-    mockery: ^2.1.0
     moment: ^2.29.4
     nocache: ^2.1.0
     nock: ^13.3.2
@@ -3366,13 +3365,6 @@ __metadata:
     _mocha: ./bin/_mocha
     mocha: ./bin/mocha
   checksum: 08d37a9fa0e67141d8e062356a6915402788fb4d7b1ff9cb7311efa140aa3f255c98f6fa64697981d721d3a41f4eb4d9a28fc986f84499456f1978c0ea2d4109
-  languageName: node
-  linkType: hard
-
-"mockery@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "mockery@npm:2.1.0"
-  checksum: 2454348d891fc8a6f2ff8d60776372461b8a129e1feb2ee19052190add2a28216b91a28c8403040c52ce1e7ec337fb03387f31ecd644af3edcc325ec80da9bcc
   languageName: node
   linkType: hard
 

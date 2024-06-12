@@ -54,7 +54,6 @@
     "istanbul": "^0.4.5",
     "jsonwebtoken": "^9.0.0",
     "mocha": "^5.2.0",
-    "mockery": "^2.1.0",
     "moment": "^2.29.4",
     "nock": "^13.3.2",
     "pa11y": "^5.2.0",
