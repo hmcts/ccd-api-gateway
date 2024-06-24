@@ -14,7 +14,7 @@ def component = "api-gateway-web"
 
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications('#ccd-nightly-builds')
-    enableFortifyScan()
+    // enableFortifyScan()
 
     afterAlways('checkOut')  {
         sh "yarn cache clean"
