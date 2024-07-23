@@ -1,6 +1,5 @@
 const chai = require('chai');
 const expect = chai.expect;
-const mockery = require('mockery');
 const nock = require('nock');
 
 /* The line below turns off ESLints 'no-undef' for the chai 'fail' function */
@@ -10,11 +9,6 @@ describe('Address Lookup', () => {
   let addressLookup;
 
   before(function(){
-    mockery.enable({
-      warnOnReplace: false,
-      warnOnUnregistered: false,
-      useCleanCache: true
-    });
     addressLookup = require('../../app/address/address-lookup');
   });
 
