@@ -622,6 +622,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/http-proxy@npm:^1.17.3":
+  version: 1.17.15
+  resolution: "@types/http-proxy@npm:1.17.15"
+  dependencies:
+    "@types/node": "*"
+  checksum: d96eaf4e22232b587b46256b89c20525c453216684481015cf50fb385b0b319b883749ccb77dee9af57d107e8440cdacd56f4234f65176d317e9777077ff5bf3
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 20.5.7
   resolution: "@types/node@npm:20.5.7"
@@ -1115,7 +1124,7 @@ __metadata:
     form-data: ^2.1.4
     git-message: ^2.0.2
     handlebars: ^4.7.7
-    http-proxy-middleware: ^0.20.0
+    http-proxy-middleware: ^0.21.0
     https-proxy-agent: ^2.2.3
     istanbul: ^0.4.5
     js-yaml: ^3.13.1
@@ -2552,19 +2561,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:^0.20.0":
-  version: 0.20.0
-  resolution: "http-proxy-middleware@npm:0.20.0"
+"http-proxy-middleware@npm:^0.21.0":
+  version: 0.21.0
+  resolution: "http-proxy-middleware@npm:0.21.0"
   dependencies:
-    http-proxy: ^1.17.0
+    "@types/http-proxy": ^1.17.3
+    http-proxy: ^1.18.0
     is-glob: ^4.0.1
-    lodash: ^4.17.14
+    lodash: ^4.17.15
     micromatch: ^4.0.2
-  checksum: 2dae37844e1b4d97b31376b4edbe57addf36932e508f40696d7c236bb169f61cb0f473b92e47594a6a6149f39dec3d2044360d6c4f8d6eff56df4d8ef8a765ea
+  checksum: a83da87a1e21ec5c56141c7b75e084190accdfb5a243e3ddbb71a759615f30510dcaccc6501cea4275f2dd1502bab3bedb8ec345ae6f7c588ef5a6c947ba1cb3
   languageName: node
   linkType: hard
 
-"http-proxy@npm:^1.17.0":
+"http-proxy@npm:^1.18.0":
   version: 1.18.1
   resolution: "http-proxy@npm:1.18.1"
   dependencies:
