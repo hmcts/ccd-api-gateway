@@ -25,6 +25,7 @@
     "applicationinsights": "2.9.1",
     "body-parser": "^1.20.1",
     "config": "^3.3.7",
+    "cookie": "^0.7.0",
     "cookie-parser": "~1.4.3",
     "cross-env": "^5.2.1",
     "debug": "~2.6.3",
