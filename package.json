@@ -86,5 +86,5 @@
     "@babel/traverse": "7.23.2",
     "braces": "^3.0.3"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.8.7"
 }
