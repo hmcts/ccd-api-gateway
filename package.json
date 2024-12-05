@@ -83,7 +83,7 @@
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
     "qs": "^6.10.3",
-    "@babel/traverse": "7.23.2",
+    "@babel/traverse": "7.26.4",
     "braces": "^3.0.3"
   },
   "packageManager": "yarn@3.4.1"
