@@ -84,7 +84,8 @@
     "cookiejar": "^2.1.4",
     "qs": "^6.10.3",
     "@babel/traverse": "7.23.2",
-    "micromatch": "^4.0.8"
+    "micromatch": "^4.0.8",
+    "braces": "^3.0.3"
   },
   "packageManager": "yarn@3.4.1"
 }
