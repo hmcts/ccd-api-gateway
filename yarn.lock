@@ -962,8 +962,8 @@ __metadata:
   linkType: hard
 
 "body-parser@npm:^1.20.1":
-  version: 1.20.2
-  resolution: "body-parser@npm:1.20.2"
+  version: 1.20.3
+  resolution: "body-parser@npm:1.20.3"
   dependencies:
     bytes: 3.1.2
     content-type: ~1.0.5
@@ -973,17 +973,17 @@ __metadata:
     http-errors: 2.0.0
     iconv-lite: 0.4.24
     on-finished: 2.4.1
-    qs: 6.11.0
+    qs: 6.13.0
     raw-body: 2.5.2
     type-is: ~1.6.18
     unpipe: 1.0.0
-  checksum: 14d37ec638ab5c93f6099ecaed7f28f890d222c650c69306872e00b9efa081ff6c596cd9afb9930656aae4d6c4e1c17537bea12bb73c87a217cb3cfea8896737
+  checksum: 1a35c59a6be8d852b00946330141c4f142c6af0f970faa87f10ad74f1ee7118078056706a05ae3093c54dabca9cd3770fa62a170a85801da1a4324f04381167d
   languageName: node
   linkType: hard
 
 "body-parser@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "body-parser@npm:2.0.1"
+  version: 2.0.2
+  resolution: "body-parser@npm:2.0.2"
   dependencies:
     bytes: 3.1.2
     content-type: ~1.0.5
@@ -995,8 +995,7 @@ __metadata:
     qs: 6.13.0
     raw-body: ^3.0.0
     type-is: ~1.6.18
-    unpipe: 1.0.0
-  checksum: 78f2fb1a16b86c7a471aed9be3ab250f37c2b88f8b41774c9850e505ff2b41226c542dfaa3c29db3ecd96dcc18eac76bc1f94bc4f7296ede8f024cdcd5e130de
+  checksum: 24514663b0569f6d918e6111c6938950a91021d7816de41cd77775d3904a2ea32fffd35004eb3d7f0e1c10e73b7f683203420c4216b076ecf747be44be805175
   languageName: node
   linkType: hard
 
