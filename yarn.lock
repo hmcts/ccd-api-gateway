@@ -1469,10 +1469,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.6.0":
-  version: 0.6.0
-  resolution: "cookie@npm:0.6.0"
-  checksum: f56a7d32a07db5458e79c726b77e3c2eff655c36792f2b6c58d351fb5f61531e5b1ab7f46987150136e366c65213cbe31729e02a3eaed630c3bf7334635fb410
+"cookie@npm:0.7.1":
+  version: 0.7.1
+  resolution: "cookie@npm:0.7.1"
+  checksum: cec5e425549b3650eb5c3498a9ba3cde0b9cd419e3b36e4b92739d30b4d89e0b678b98c1ddc209ce7cf958cd3215671fd6ac47aec21f10c2a0cc68abd399d8a7
   languageName: node
   linkType: hard
 
@@ -2016,14 +2016,14 @@ __metadata:
   linkType: hard
 
 "express@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "express@npm:5.0.0"
+  version: 5.0.1
+  resolution: "express@npm:5.0.1"
   dependencies:
     accepts: ^2.0.0
     body-parser: ^2.0.1
     content-disposition: ^1.0.0
     content-type: ~1.0.4
-    cookie: 0.6.0
+    cookie: 0.7.1
     cookie-signature: ^1.2.1
     debug: 4.3.6
     depd: 2.0.0
@@ -2051,7 +2051,7 @@ __metadata:
     type-is: ^2.0.0
     utils-merge: 1.0.1
     vary: ~1.1.2
-  checksum: afafd5041e6cdc6f24405b0f82b1d4e2ef691479d2a6e33b7d7b9e79d1ec17d57bef8cf442bf4078e65017d23b9cb199a0a508ea64f5e11af0857c662e247eaf
+  checksum: d1a3e934a2e3c5d7491049dabbedf6290e942b081a76e88598f3b0870ae53d4177c116ab5056bdbb32fc3cf556d3388362b689d06b73aaba7de67c2af29fd25b
   languageName: node
   linkType: hard
 
