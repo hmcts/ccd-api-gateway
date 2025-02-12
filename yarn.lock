@@ -508,6 +508,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sinonjs/formatio@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@sinonjs/formatio@npm:2.0.0"
+  dependencies:
+    samsam: 1.3.0
+  checksum: 489d1e0351b8264836563ec55a22684391338bde5baf1688f6cc2d836600a57a3f3054e3da6435e541d5d118d55e900d32d81cfd0332638a0b8942b68217d853
+  languageName: node
+  linkType: hard
+
 "@sinonjs/formatio@npm:^3.2.1":
   version: 3.2.2
   resolution: "@sinonjs/formatio@npm:3.2.2"
@@ -1094,7 +1103,7 @@ __metadata:
     proxyquire: ^2.0.1
     should: ^13.2.3
     should-http: ^0.1.0
-    sinon: 4.1.3
+    sinon: 4.5.0
     sinon-chai: ^2.11.0
     sinon-express-mock: ^2.0.0
     sonar-scanner: ^3.1.0
@@ -2233,15 +2242,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formatio@npm:1.2.0":
-  version: 1.2.0
-  resolution: "formatio@npm:1.2.0"
-  dependencies:
-    samsam: 1.x
-  checksum: 59b7429ac3ba07bb7f610559d2adb25624409bf42acb122a812456ae4d481a9b3bfd180608a97e026038065c1d3193570d3dcd8ac25dc6b6c37cf3cb9b53b88e
-  languageName: node
-  linkType: hard
-
 "formidable@npm:^2.1.2":
   version: 2.1.2
   resolution: "formidable@npm:2.1.2"
@@ -2485,13 +2485,6 @@ __metadata:
   version: 1.0.0
   resolution: "has-flag@npm:1.0.0"
   checksum: ce3f8ae978e70f16e4bbe17d3f0f6d6c0a3dd3b62a23f97c91d0fda9ed8e305e13baf95cc5bee4463b9f25ac9f5255de113165c5fb285e01b8065b2ac079b301
-  languageName: node
-  linkType: hard
-
-"has-flag@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "has-flag@npm:2.0.0"
-  checksum: 7d060d142ef6740c79991cb99afe5962b267e6e95538bf8b607026b9b1e7451288927bc8e7b4a9484a8b99935c0af023070f91ee49faef791ecd401dc58b2e8d
   languageName: node
   linkType: hard
 
@@ -4342,7 +4335,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"samsam@npm:1.x":
+"samsam@npm:1.3.0":
   version: 1.3.0
   resolution: "samsam@npm:1.3.0"
   checksum: 084914f7707538b735a41e0edba86abd8f9dd2a47a79511b56b55e8032801db767d9eb31899246179295fbb9ab7ab4d12ebc3410ad4265d897cbf0056c3db63d
@@ -4580,18 +4573,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon@npm:4.1.3":
-  version: 4.1.3
-  resolution: "sinon@npm:4.1.3"
+"sinon@npm:4.5.0":
+  version: 4.5.0
+  resolution: "sinon@npm:4.5.0"
   dependencies:
+    "@sinonjs/formatio": ^2.0.0
     diff: ^3.1.0
-    formatio: 1.2.0
     lodash.get: ^4.4.2
     lolex: ^2.2.0
     nise: ^1.2.0
-    supports-color: ^4.4.0
+    supports-color: ^5.1.0
     type-detect: ^4.0.5
-  checksum: 7ac49e19f3236f797db69055df0ceaac7108f327ab9e3f69585d0badd81a663d1d12a807deb028641e623fc3c66c7543e225c55132cb49c3a8773d66f00228ca
+  checksum: 48e4ce9a7ffd5f7c2a5021a03f5c01965801864ba0195bedab34f56fe77ad44087324bb5beb2948ab32065ff577d18265898f46a9796fcb898dd053dbe31d1c6
   languageName: node
   linkType: hard
 
@@ -4799,16 +4792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^4.4.0":
-  version: 4.5.0
-  resolution: "supports-color@npm:4.5.0"
-  dependencies:
-    has-flag: ^2.0.0
-  checksum: 6da4f498d5c71e8619f06e4a11d16f044105faf7590b5b005fc84933fbefdf72c2b4e5b7174c66da6ddc68e7f6ef56cc960a5ebd6f2d542d910e259e61b02335
-  languageName: node
-  linkType: hard
-
-"supports-color@npm:^5.3.0":
+"supports-color@npm:^5.1.0, supports-color@npm:^5.3.0":
   version: 5.5.0
   resolution: "supports-color@npm:5.5.0"
   dependencies:
