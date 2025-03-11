@@ -63,3 +63,5 @@ yarn-audit-issues
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+!.yarnrc.yml
+!.yarn/**
