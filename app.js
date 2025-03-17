@@ -4,7 +4,7 @@ enableAppInsights();
 
 let express = require('express');
 let cookieParser = require('cookie-parser');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+let proxy = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
@@ -50,9 +50,9 @@ const applyProxy = (app, config) => {
   }
 
   if (config.filter) {
-    app.use(config.source, createProxyMiddleware(config.filter, options));
+    app.use(config.source, proxy(config.filter, options));
   } else {
-    app.use(config.source, createProxyMiddleware(options));
+    app.use(config.source, proxy(options));
   }
 };
 
@@ -125,7 +125,7 @@ applyProxy(app, {
 applyProxy(app, {
   source: '/payments',
   target: config.get('proxy.payments'),
-  pathFilter: [
+  filter: [
     '/payments/cases/**/payments',
     '/payments/card-payments/**',
     '/payments/credit-account-payments/**',
@@ -137,7 +137,7 @@ applyProxy(app, {
 applyProxy(app, {
   source: '/pay-bulkscan',
   target: config.get('proxy.pay_bulkscan'),
-  pathFilter: [
+  filter: [
     '/pay-bulkscan/cases/**'
   ]
 });
