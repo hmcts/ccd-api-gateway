@@ -16,3 +16,8 @@
 
 !acb.yaml
 !Dockerfile
+
+!.yarn/**
+!.yarnrc.yml
+
+!webpack.config.js
