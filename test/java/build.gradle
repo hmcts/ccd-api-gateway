@@ -14,7 +14,8 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        url 'https://jitpack.io'
+        name = "AzureArtifacts"
+        url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
     }
 }
 // end::repositories[]
@@ -22,7 +23,7 @@ repositories {
 // tag::dependencies[]
 dependencies {
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.4'
-    testImplementation 'com.github.hmcts:fortify-client:1.3.0:all'
+    testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
 }
 // end::dependencies[]
 
