@@ -4,12 +4,9 @@
     "local>hmcts/.github:renovate-config",
     "local>hmcts/.github//renovate/automerge-minor"
   ],
-  "labels": ["dependencies"],
-  "helm-requirements":
-  {
-    "fileMatch": ["\\Chart.yaml$"],
-    "aliases": {
-      "hmctspublic": "https://hmctspublic.azurecr.io/helm/v1/repo/"
-    }
-  }
+  "labels": ["Renovate Dependencies"],
+  "prConcurrentLimit": 5,
+  "schedule": ["* 16-19 * * 1-5"],
+  "automergeSchedule": ["* 14-18 * * 1-4"],
+  "rebaseWhen": "conflicted"
 }
