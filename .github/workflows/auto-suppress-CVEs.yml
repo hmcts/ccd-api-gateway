@@ -22,11 +22,22 @@ jobs:
           ref: master
 
       - name: Run yarn audit
-        run: yarn npm audit --recursive --environment production --json > yarn-audit-known-issues
+        run: yarn npm audit --recursive --environment production --json > yarn-audit-known-issues || true
+        # continue-on-error: true
 
-      - name: Commit updated CVE suppressions
+      - name: Check if working directory has changes
+        id: check_git_changes
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit suppressed CVEs if there are changes
+        if: steps.check_git_changes.outputs.has_changes == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          skip_dirty_check: true
-          commit_message: "Auto-suppress CVEs"
+          commit_message: Auto-suppress CVEs
           branch: master
+          skip_dirty_check: true
