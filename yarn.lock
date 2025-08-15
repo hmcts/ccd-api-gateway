@@ -1339,7 +1339,7 @@ __metadata:
     eslint-plugin-mocha: "npm:^6.1.1"
     express: "npm:^5.0.0"
     fetch-mock: "npm:^6.5.2"
-    form-data: "npm:^2.1.4"
+    form-data: "npm:^4.0.4"
     formidable: "npm:^3.5.4"
     git-message: "npm:^2.0.2"
     handlebars: "npm:^4.7.7"
@@ -2629,29 +2629,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^2.1.4":
-  version: 2.5.3
-  resolution: "form-data@npm:2.5.3"
-  dependencies:
-    asynckit: "npm:^0.4.0"
-    combined-stream: "npm:^1.0.8"
-    es-set-tostringtag: "npm:^2.1.0"
-    mime-types: "npm:^2.1.35"
-    safe-buffer: "npm:^5.2.1"
-  checksum: 10/c8fced6dcb97aa50d4101dd66431cbc932bfc62409dedf633c811cc2cb30abd5b0e4e24213aff86045b44a4de4178587781a9d3da7268df38e54f8b5b6acea89
-  languageName: node
-  linkType: hard
-
-"form-data@npm:^4.0.0":
-  version: 4.0.3
-  resolution: "form-data@npm:4.0.3"
+"form-data@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "form-data@npm:4.0.4"
   dependencies:
     asynckit: "npm:^0.4.0"
     combined-stream: "npm:^1.0.8"
     es-set-tostringtag: "npm:^2.1.0"
     hasown: "npm:^2.0.2"
     mime-types: "npm:^2.1.12"
-  checksum: 10/22f6e55e6f32a5797a500ed7ca5aa9d690c4de6e1b3308f25f0d83a27d08d91a265ab59a190db2305b15144f8f07df08e8117bad6a93fc93de1baa838bfcc0b5
+  checksum: 10/a4b62e21932f48702bc468cc26fb276d186e6b07b557e3dd7cc455872bdbb82db7db066844a64ad3cf40eaf3a753c830538183570462d3649fdfd705601cbcfb
   languageName: node
   linkType: hard
 
@@ -4836,7 +4823,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.2.1":
+"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.0.1":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
   checksum: 10/32872cd0ff68a3ddade7a7617b8f4c2ae8764d8b7d884c651b74457967a9e0e886267d3ecc781220629c44a865167b61c375d2da6c720c840ecd73f45d5d9451
