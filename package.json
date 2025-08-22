@@ -86,7 +86,7 @@
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
     "qs": "^6.10.3",
-    "@babel/traverse": "7.28.0",
+    "@babel/traverse": "7.28.3",
     "micromatch": "^4.0.8",
     "braces": "^3.0.3"
   },
