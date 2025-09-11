@@ -1317,7 +1317,6 @@ __metadata:
     eslint-plugin-mocha: "npm:^6.1.1"
     express: "npm:^5.0.0"
     fetch-mock: "npm:^6.5.2"
-    formidable: "npm:^3.5.4"
     git-message: "npm:^2.0.2"
     handlebars: "npm:^4.7.7"
     http-proxy-middleware: "npm:^0.20.0"
