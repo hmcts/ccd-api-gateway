@@ -29,7 +29,6 @@
     "debug": "~2.6.3",
     "dont-sniff-mimetype": "^1.1.0",
     "express": "^5.0.0",
-    "handlebars": "^4.7.7",
     "http-proxy-middleware": "^0.20.0",
     "https-proxy-agent": "^2.2.3",
     "js-yaml": "^3.13.1",
