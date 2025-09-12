@@ -34,7 +34,6 @@
     "js-yaml": "^3.13.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.21",
-    "mem": "^6.0.0",
     "nocache": "^2.1.0",
     "node-cache": "^5.1.0",
     "node-fetch": "^2.6.7",
