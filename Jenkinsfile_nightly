@@ -6,7 +6,7 @@ properties([
     pipelineTriggers([cron('H 08 * * 1-5')])
 ])
 
-@Library("Infrastructure")
+@Library("Infrastructure@patch-yarn-dependency-check-shell")
 
 def type = "nodejs"
 def product = "ccd"
