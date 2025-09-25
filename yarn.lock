@@ -1306,7 +1306,6 @@ __metadata:
     "@hmcts/nodejs-logging": "npm:^4.0.4"
     "@hmcts/properties-volume": "npm:^0.0.14"
     applicationinsights: "npm:2.9.8"
-    brace-expansion: "npm:^1.1.12"
     chai: "npm:^4.0.2"
     chai-http: "npm:^4.2.1"
     config: "npm:^3.3.7"
