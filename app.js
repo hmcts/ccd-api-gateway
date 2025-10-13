@@ -1,4 +1,5 @@
 const enableAppInsights = require('./app/app-insights/app-insights');
+const payloadGuard = require('./app/service/service-payloadGuard').default;
 
 enableAppInsights();
 
@@ -76,6 +77,18 @@ app.use(authCheckerUserOnlyFilter);
 app.get('/logout', logoutRoute);
 
 app.use(serviceFilter);
+
+// parsing + basic size limits (protects DoS)
+app.use('/data', express.json({ limit: '1mb', strict: true }));
+app.use('/data', express.urlencoded({ limit: '1mb', extended: false }));
+
+// lightweight safety/validation middleware
+app.use('/data', payloadGuard({
+  allowContentTypes: ['application/json'],
+  maxArrayLength: 10000,           // sanity cap
+  rejectPathTraversal: true,
+  rejectObviousScriptTags: true
+}));
 
 app.get('/addresses',(req, res, next) => {
   addressLookup(req.query.postcode)
