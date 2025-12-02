@@ -82,7 +82,7 @@
     "ansi-regex": "^5.0.1",
     "follow-redirects": "^1.15.6",
     "moment": "^2.29.4",
-    "async": "^2.6.4",
+    "async": "^3.0.0",
     "minimatch": "^3.0.5",
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
