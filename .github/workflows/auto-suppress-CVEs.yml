@@ -25,10 +25,8 @@ jobs:
           ref: master
 
       - name: Run yarn audit
-        #run: yarn npm audit --recursive --environment production --json > yarn-audit-known-issues || true
-        run: |
-          echo "Injecting an error to test workflow logic: YYN0035: Bad Request" > yarn-audit-known-issues
-
+        run: yarn npm audit --recursive --environment production --json > yarn-audit-known-issues || true
+  
       - name: Check if working directory has changes
         id: check_git_changes
         run: |
