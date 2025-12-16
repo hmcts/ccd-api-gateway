@@ -1,9 +1,6 @@
 name: Auto-suppress CVEs
 
 on:
-  push:
-    branches:
-      - patch-fix-auto-suppress-cve-dp
   schedule:
     # At 12 midnight and every 3rd hour from 10am through 11pm
     - cron: "0 0,10-23/3 * * *"
