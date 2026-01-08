@@ -23,8 +23,7 @@ jobs:
 
       - name: Run yarn audit
         run: yarn npm audit --recursive --environment production --json > yarn-audit-known-issues || true
-        # continue-on-error: true
-
+  
       - name: Check if working directory has changes
         id: check_git_changes
         run: |
@@ -34,8 +33,19 @@ jobs:
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Check if added lines contain Yarn errors
+        id: check_yarn_errors
+        run: |
+          added="$(git diff | grep '^+' | sed 's/^\+//')"
+          clean_added="$(echo "$added" | sed 's/\x1b\[[0-9;]*m//g')"
+          if echo "$clean_added" | grep -q 'YYN0035: Bad Request'; then
+            echo "has_yarn_errors=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_yarn_errors=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Commit suppressed CVEs if there are changes
-        if: steps.check_git_changes.outputs.has_changes == 'true'
+        if: steps.check_git_changes.outputs.has_changes == 'true' && steps.check_yarn_errors.outputs.has_yarn_errors == 'false'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Auto-suppress CVEs
