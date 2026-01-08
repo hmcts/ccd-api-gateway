@@ -63,3 +63,6 @@ yarn-audit-issues
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Local TLS artifacts
+app/resources/localhost-ssl/

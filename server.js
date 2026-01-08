@@ -28,10 +28,16 @@ let server = createServer(app);
 
 function createServer(app) {
   if (process.env.ENV === 'localdev') {
-    const sslDirectory = path.join(__dirname, '..', 'app', 'resources', 'localhost-ssl');
+    const certPath = process.env.LOCALDEV_SSL_CERT_PATH;
+    const keyPath = process.env.LOCALDEV_SSL_KEY_PATH;
+
+    if (!certPath || !keyPath) {
+      throw new Error('LOCALDEV_SSL_CERT_PATH and LOCALDEV_SSL_KEY_PATH must be set for localdev TLS.');
+    }
+
     const sslOptions = {
-      cert: fs.readFileSync(path.join(sslDirectory, 'localhost.crt')),
-      key: fs.readFileSync(path.join(sslDirectory, 'localhost.key')),
+      cert: fs.readFileSync(path.resolve(certPath)),
+      key: fs.readFileSync(path.resolve(keyPath)),
       secureProtocol: 'TLS_method'
     };
     return https.createServer(sslOptions, app);
