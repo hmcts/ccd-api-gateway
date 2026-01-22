@@ -146,11 +146,11 @@ steps:
 
   - id: push-images
     push:
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:amd64"
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:amd64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64"
       - "{{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64"
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:arm64"
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:arm64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64"
       - "{{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64"
     when:
       - runtime-amd64
