@@ -15,6 +15,15 @@ steps:
     retries: 3
     retryDelay: 5
 
+  # Ensure the correct-arch hmctspublic base image exists locally for the amd64 build chain
+  - id: ensure-node-amd64
+    cmd: >
+      docker image rm -f hmctspublic.azurecr.io/base/node:18-alpine || true &&
+      docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:18-alpine
+    when: ["-"]
+    retries: 3
+    retryDelay: 5
+
   - id: base-amd64
     build: >
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
@@ -23,6 +32,7 @@ steps:
       --target base
       .
     when:
+      - ensure-node-amd64
       - pull-base-amd64
     timeout: 7200
     retries: 3
@@ -82,6 +92,16 @@ steps:
     retries: 3
     retryDelay: 5
 
+  # Ensure the correct-arch hmctspublic base image exists locally for the arm64 build chain
+  - id: ensure-node-arm64
+    cmd: >
+      docker image rm -f hmctspublic.azurecr.io/base/node:18-alpine || true &&
+      docker pull --platform linux/arm64/v8 hmctspublic.azurecr.io/base/node:18-alpine
+    when:
+      - reset-qemu
+    retries: 3
+    retryDelay: 5
+
   - id: base-arm64
     build: >
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
@@ -90,7 +110,7 @@ steps:
       --target base
       .
     when:
-      - reset-qemu
+      - ensure-node-arm64
     timeout: 7200
     retries: 3
     retryDelay: 5
