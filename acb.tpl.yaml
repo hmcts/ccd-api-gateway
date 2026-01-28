@@ -1,12 +1,6 @@
 version: 1.0-preview-1
 steps:
 
-  - id: pull-hmcts-base-amd64
-    cmd: docker pull --platform linux/amd64 {{.Run.Registry}}/base/node:18-alpine && docker tag {{.Run.Registry}}/base/node:18-alpine {{.Run.Registry}}/base/node/linux/amd64:18-alpine
-    when: ["-"]
-    retries: 3
-    retryDelay: 5
-
   - id: pull-base-amd64
     cmd: docker pull --platform linux/amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
     when: ["-"]
@@ -25,7 +19,6 @@ steps:
     build: >
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
-      --build-arg PLATFORM=/linux/amd64
       --platform linux/amd64
       --target base
       .
@@ -40,7 +33,6 @@ steps:
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
-      --build-arg PLATFORM=/linux/amd64
       --platform linux/amd64
       --target build
       .
@@ -56,7 +48,6 @@ steps:
       -t {{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
-      --build-arg PLATFORM=/linux/amd64
       --platform linux/amd64
       --target runtime
       .
@@ -64,13 +55,6 @@ steps:
       - base-amd64
       - build-amd64
     timeout: 7200
-    retries: 3
-    retryDelay: 5
-
-  - id: pull-hmcts-base-arm64
-    cmd: docker pull --platform linux/arm64 {{.Run.Registry}}/base/node:18-alpine && docker tag {{.Run.Registry}}/base/node:18-alpine {{.Run.Registry}}/base/node/linux/arm64:18-alpine
-    when:
-      - pull-hmcts-base-amd64
     retries: 3
     retryDelay: 5
 
@@ -102,7 +86,6 @@ steps:
     build: >
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
-      --build-arg PLATFORM=/linux/arm64
       --platform linux/arm64/v8
       --target base
       .
@@ -117,7 +100,6 @@ steps:
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
-      --build-arg PLATFORM=/linux/arm64
       --platform linux/arm64/v8
       --target build
       .
@@ -133,7 +115,6 @@ steps:
       -t {{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
-      --build-arg PLATFORM=/linux/arm64
       --platform linux/arm64/v8
       --target runtime
       .
