@@ -1,12 +1,6 @@
 version: 1.0-preview-1
 steps:
 
-  - id: pull-hmcts-base-amd64
-    cmd: docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:18-alpine && docker tag hmctspublic.azurecr.io/base/node:18-alpine hmctspublic.azurecr.io/base/node/linux/amd64:18-alpine
-    when: ["-"]
-    retries: 3
-    retryDelay: 5
-
   - id: pull-base-amd64
     cmd: docker pull --platform linux/amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 && docker tag {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
     when: ["-"]
@@ -21,15 +15,24 @@ steps:
     retries: 3
     retryDelay: 5
 
+  # Ensure the correct-arch hmctspublic base image exists locally for the amd64 build chain
+  - id: ensure-node-amd64
+    cmd: >
+      docker image rm -f hmctspublic.azurecr.io/base/node:18-alpine || true &&
+      docker pull --platform linux/amd64 hmctspublic.azurecr.io/base/node:18-alpine
+    when: ["-"]
+    retries: 3
+    retryDelay: 5
+
   - id: base-amd64
     build: >
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
-      --build-arg PLATFORM=/linux/amd64
       --platform linux/amd64
       --target base
       .
     when:
+      - ensure-node-amd64
       - pull-base-amd64
     timeout: 7200
     retries: 3
@@ -40,7 +43,6 @@ steps:
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
-      --build-arg PLATFORM=/linux/amd64
       --platform linux/amd64
       --target build
       .
@@ -56,7 +58,6 @@ steps:
       -t {{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64
-      --build-arg PLATFORM=/linux/amd64
       --platform linux/amd64
       --target runtime
       .
@@ -64,13 +65,6 @@ steps:
       - base-amd64
       - build-amd64
     timeout: 7200
-    retries: 3
-    retryDelay: 5
-
-  - id: pull-hmcts-base-arm64
-    cmd: docker pull --platform linux/arm64 hmctspublic.azurecr.io/base/node:18-alpine && docker tag hmctspublic.azurecr.io/base/node:18-alpine hmctspublic.azurecr.io/base/node/linux/arm64:18-alpine
-    when:
-      - pull-hmcts-base-amd64
     retries: 3
     retryDelay: 5
 
@@ -98,16 +92,25 @@ steps:
     retries: 3
     retryDelay: 5
 
+  # Ensure the correct-arch hmctspublic base image exists locally for the arm64 build chain
+  - id: ensure-node-arm64
+    cmd: >
+      docker image rm -f hmctspublic.azurecr.io/base/node:18-alpine || true &&
+      docker pull --platform linux/arm64/v8 hmctspublic.azurecr.io/base/node:18-alpine
+    when:
+      - reset-qemu
+    retries: 3
+    retryDelay: 5
+
   - id: base-arm64
     build: >
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
-      --build-arg PLATFORM=/linux/arm64
       --platform linux/arm64/v8
       --target base
       .
     when:
-      - reset-qemu
+      - ensure-node-arm64
     timeout: 7200
     retries: 3
     retryDelay: 5
@@ -117,7 +120,6 @@ steps:
       -t {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
-      --build-arg PLATFORM=/linux/arm64
       --platform linux/arm64/v8
       --target build
       .
@@ -133,7 +135,6 @@ steps:
       -t {{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
       --cache-from {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
-      --build-arg PLATFORM=/linux/arm64
       --platform linux/arm64/v8
       --target runtime
       .
@@ -146,11 +147,11 @@ steps:
 
   - id: push-images
     push:
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:amd64"
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:amd64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64"
       - "{{.Run.Registry}}/{{CI_IMAGE_TAG}}-amd64"
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:arm64"
-      - "hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:arm64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64"
+      - "{{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64"
       - "{{.Run.Registry}}/{{CI_IMAGE_TAG}}-arm64"
     when:
       - runtime-amd64
@@ -159,28 +160,28 @@ steps:
     retryDelay: 5
 
   - id: manifest-create-base
-    cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/base hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/base:arm64
+    cmd: docker manifest create {{.Run.Registry}}/ccd/ccd-api-gateway/base {{.Run.Registry}}/ccd/ccd-api-gateway/base:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/base:arm64
     when:
       - push-images
     retries: 3
     retryDelay: 5
 
   - id: manifest-push-base
-    cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/base
+    cmd: docker manifest push --purge {{.Run.Registry}}/ccd/ccd-api-gateway/base
     when:
       - manifest-create-base
     retries: 3
     retryDelay: 5
 
   - id: manifest-create-build
-    cmd: docker manifest create hmctspublic.azurecr.io/ccd/ccd-api-gateway/build hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:amd64 hmctspublic.azurecr.io/ccd/ccd-api-gateway/build:arm64
+    cmd: docker manifest create {{.Run.Registry}}/ccd/ccd-api-gateway/build {{.Run.Registry}}/ccd/ccd-api-gateway/build:amd64 {{.Run.Registry}}/ccd/ccd-api-gateway/build:arm64
     when:
       - push-images
     retries: 3
     retryDelay: 5
 
   - id: manifest-push-build
-    cmd: docker manifest push --purge hmctspublic.azurecr.io/ccd/ccd-api-gateway/build
+    cmd: docker manifest push --purge {{.Run.Registry}}/ccd/ccd-api-gateway/build
     when:
       - manifest-create-build
     retries: 3
