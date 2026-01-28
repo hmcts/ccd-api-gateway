@@ -1,4 +1,6 @@
-FROM hmctspublic.azurecr.io/base/node:18-alpine AS base
+ARG TARGETPLATFORM
+
+FROM --platform=$TARGETPLATFORM hmctspublic.azurecr.io/base/node:18-alpine AS base
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -27,9 +29,8 @@ RUN sleep 1 && yarn install && yarn cache clean
 
 COPY --chown=hmcts:hmcts package.json yarn.lock ./
 
-
 # ---- Runtime Image ----
-FROM hmctspublic.azurecr.io/base/node:18-alpine AS runtime
+FROM --platform=$TARGETPLATFORM hmctspublic.azurecr.io/base/node:18-alpine AS runtime
 COPY --from=build $WORKDIR .
 
 ENV PORT=3453
