@@ -50,9 +50,9 @@ const applyProxy = (app, config) => {
   }
 
   if (config.filter) {
-    app.use(config.source, proxy(config.filter, options));
+    app.use(config.source, proxy.createProxyMiddleware(config.filter, options));
   } else {
-    app.use(config.source, proxy(options));
+    app.use(config.source, proxy.createProxyMiddleware(options));
   }
 };
 
