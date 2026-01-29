@@ -21,6 +21,7 @@ const enableAppInsights = () => {
       .setAutoDependencyCorrelation(true)
       .setAutoCollectConsole(true, true);
     appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = appInsightsRoleName;
+    appInsights.defaultClient.config.samplingPercentage = 1;
     appInsights.defaultClient.addTelemetryProcessor(fineGrainedSampling);
     appInsights.start();
   }
