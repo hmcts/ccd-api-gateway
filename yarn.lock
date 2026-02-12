@@ -638,6 +638,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/http-proxy@npm:^1.17.8":
+  version: 1.17.17
+  resolution: "@types/http-proxy@npm:1.17.17"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/893e46e12be576baa471cf2fc13a4f0e413eaf30a5850de8fdbea3040e138ad4171234c59b986cf7137ff20a1582b254bf0c44cfd715d5ed772e1ab94dd75cd1
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 22.9.0
   resolution: "@types/node@npm:22.9.0"
@@ -1269,7 +1278,7 @@ __metadata:
     formidable: "npm:^3.5.4"
     git-message: "npm:^2.0.2"
     handlebars: "npm:^4.7.7"
-    http-proxy-middleware: "npm:^0.20.0"
+    http-proxy-middleware: "npm:^2.0.7"
     https-proxy-agent: "npm:^2.2.3"
     istanbul: "npm:^0.4.5"
     js-yaml: "npm:^4.1.1"
@@ -2982,19 +2991,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:^0.20.0":
-  version: 0.20.0
-  resolution: "http-proxy-middleware@npm:0.20.0"
+"http-proxy-middleware@npm:^2.0.7":
+  version: 2.0.9
+  resolution: "http-proxy-middleware@npm:2.0.9"
   dependencies:
-    http-proxy: "npm:^1.17.0"
+    "@types/http-proxy": "npm:^1.17.8"
+    http-proxy: "npm:^1.18.1"
     is-glob: "npm:^4.0.1"
-    lodash: "npm:^4.17.14"
+    is-plain-obj: "npm:^3.0.0"
     micromatch: "npm:^4.0.2"
-  checksum: 10/8afc12b3797840bbc70c346fbc2e5f1bb843970a2b46ca5ec5bd45e3c8f39084fc3ee4338e429a8b6f6100c8158d482ae455d11917df666b55ff1a659107f8a9
+  peerDependencies:
+    "@types/express": ^4.17.13
+  peerDependenciesMeta:
+    "@types/express":
+      optional: true
+  checksum: 10/4ece416a91d52e96f8136c5f4abfbf7ac2f39becbad21fa8b158a12d7e7d8f808287ff1ae342b903fd1f15f2249dee87fabc09e1f0e73106b83331c496d67660
   languageName: node
   linkType: hard
 
-"http-proxy@npm:^1.17.0":
+"http-proxy@npm:^1.18.1":
   version: 1.18.1
   resolution: "http-proxy@npm:1.18.1"
   dependencies:
@@ -3245,6 +3260,13 @@ __metadata:
   version: 1.0.2
   resolution: "is-object@npm:1.0.2"
   checksum: 10/db53971751c50277f0ed31d065d93038d23cb9785090ab5c8070a903cf5bab16cdb18f05b8855599ad87ec19eb4c85afa05980bcda77dd4a8482120b6348c73c
+  languageName: node
+  linkType: hard
+
+"is-plain-obj@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "is-plain-obj@npm:3.0.0"
+  checksum: 10/a6ebdf8e12ab73f33530641972a72a4b8aed6df04f762070d823808303e4f76d87d5ea5bd76f96a7bbe83d93f04ac7764429c29413bd9049853a69cb630fb21c
   languageName: node
   linkType: hard
 
