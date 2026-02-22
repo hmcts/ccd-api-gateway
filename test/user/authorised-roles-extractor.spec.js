@@ -34,5 +34,35 @@ describe('Authorised roles extractor', () => {
           expect(roles).to.contain('caseworker-test');
           expect(roles.length).to.equal(1);
       });
+
+      it('should extract correct lowercase role from url with jurisdictions (plural)', () => {
+          let request = Object.create(http.IncomingMessage.prototype);
+          request.originalUrl = '/data/CaseWorkers/5/jurisdictions/TEST/case-types/TestAddressBookCase/cases/7';
+
+          let roles = authorisedRolesExtractor.extract(request);
+
+          expect(roles).to.contain('caseworker-test');
+          expect(roles.length).to.equal(1);
+      });
+
+      it('should extract correct lowercase role from url with jurisdictions-lite', () => {
+          let request = Object.create(http.IncomingMessage.prototype);
+          request.originalUrl = '/data/CaseWorkers/5/jurisdictions-lite/TEST/case-types/TestAddressBookCase/cases/7';
+
+          let roles = authorisedRolesExtractor.extract(request);
+
+          expect(roles).to.contain('caseworker-test');
+          expect(roles.length).to.equal(1);
+      });
+
+      it('should extract correct lowercase role from url with jurisdiction-lite (singular)', () => {
+          let request = Object.create(http.IncomingMessage.prototype);
+          request.originalUrl = '/data/CaseWorkers/5/jurisdiction-lite/TEST/case-types/TestAddressBookCase/cases/7';
+
+          let roles = authorisedRolesExtractor.extract(request);
+
+          expect(roles).to.contain('caseworker-test');
+          expect(roles.length).to.equal(1);
+      });
     });
 });
