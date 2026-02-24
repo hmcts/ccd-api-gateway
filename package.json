@@ -16,7 +16,8 @@
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "test:a11y": "NODE_PATH=.",
-    "sonar-scan": "NODE_PATH=. sonar-scanner -X"
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X",
+    "postinstall": "node scripts/patch-minimatch-compat.js || true"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.8.0",
@@ -24,7 +25,6 @@
     "@hmcts/properties-volume": "^0.0.14",
     "applicationinsights": "2.9.8",
     "body-parser": "^1.20.1",
-    "brace-expansion": "^1.1.12",
     "config": "^3.3.7",
     "cookie": "^0.7.0",
     "cookie-parser": "~1.4.3",
@@ -92,7 +92,7 @@
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
-    "brace-expansion": "^1.1.12"
+    "brace-expansion": "^5.0.2"
   },
   "packageManager": "yarn@4.12.0"
 }

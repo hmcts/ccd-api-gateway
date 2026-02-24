@@ -10,6 +10,8 @@
 !app.js
 !server.js
 
+!scripts/**
+
 !app/**
 !bin/**
 !config/**
