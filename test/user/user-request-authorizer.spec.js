@@ -42,8 +42,11 @@ describe('UserRequestAuthorizer', () => {
         extract: sinon.stub()
       };
 
+      delete require.cache[require.resolve('../../app/user/user-request-authorizer')];
+
       userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
         './cached-user-resolver': userResolver,
+        './user-resolver': userResolver,
         './authorised-roles-extractor': authorizedRolesExtractor
       });
     });
@@ -151,6 +154,117 @@ describe('UserRequestAuthorizer', () => {
           done();
         })
         .catch(() => done(new Error('Promise should have been resolved')));
+    });
+
+    describe('static role protected paths', () => {
+      beforeEach(() => {
+        request = {
+          url: '/print/probateManTypes',
+          originalUrl: '/print/probateManTypes',
+          get: sinon.stub().returns(AUTHZ_HEADER),
+          cookies: COOKIES
+        };
+
+        delete require.cache[require.resolve('../../app/user/user-request-authorizer')];
+
+        userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
+          './cached-user-resolver': userResolver,
+          './user-resolver': userResolver,
+          './authorised-roles-extractor': authorizedRolesExtractor
+        });
+      });
+
+      it('should resolve when user has caseworker-probate role for /print/probateManTypes', done => {
+        userResolver.getUserDetails.returns(Promise.resolve({
+          uid: USER_ID,
+          roles: ['caseworker-probate']
+        }));
+
+        userRequestAuthorizer.authorise(request)
+          .then(user => {
+            expect(user.roles).to.include('caseworker-probate');
+            done();
+          })
+          .catch(() => done(new Error('Promise should have been resolved')));
+      });
+
+      it('should resolve when user has caseworker-probate-issuer role for /print/probateManTypes', done => {
+        userResolver.getUserDetails.returns(Promise.resolve({
+          uid: USER_ID,
+          roles: ['caseworker-probate-issuer']
+        }));
+
+        userRequestAuthorizer.authorise(request)
+          .then(user => {
+            expect(user.roles).to.include('caseworker-probate-issuer');
+            done();
+          })
+          .catch(() => done(new Error('Promise should have been resolved')));
+      });
+
+      it('should resolve when user has both caseworker-probate and caseworker-probate-issuer roles for /print/probateManTypes', done => {
+        userResolver.getUserDetails.returns(Promise.resolve({
+          uid: USER_ID,
+          roles: ['caseworker-probate', 'caseworker-probate-issuer']
+        }));
+
+        userRequestAuthorizer.authorise(request)
+          .then(user => {
+            expect(user.roles).to.include('caseworker-probate');
+            expect(user.roles).to.include('caseworker-probate-issuer');
+            done();
+          })
+          .catch(() => done(new Error('Promise should have been resolved')));
+      });
+
+      it('should reject with UNAUTHORISED_ROLE when user has neither required role for /print/probateManTypes', done => {
+        userResolver.getUserDetails.returns(Promise.resolve({
+          uid: USER_ID,
+          roles: ['some-other-role']
+        }));
+
+        userRequestAuthorizer.authorise(request)
+          .then(() => done(new Error('Promise should have been rejected')))
+          .catch(error => {
+            expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORISED_ROLE);
+            expect(error.status).to.equal(403);
+            expect(error.error).to.equal('Unauthorised role');
+            done();
+          });
+      });
+
+      it('should reject with UNAUTHORISED_ROLE when user has no roles for /print/probateManTypes', done => {
+        userResolver.getUserDetails.returns(Promise.resolve({
+          uid: USER_ID,
+          roles: []
+        }));
+
+        userRequestAuthorizer.authorise(request)
+          .then(() => done(new Error('Promise should have been rejected')))
+          .catch(error => {
+            expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORISED_ROLE);
+            expect(error.status).to.equal(403);
+            expect(error.error).to.equal('Unauthorised role');
+            done();
+          });
+      });
+
+      it('should resolve for a path that does not match any static protected path', done => {
+        request.url = '/print/someOtherPath';
+        request.originalUrl = '/print/someOtherPath';
+
+        userResolver.getUserDetails.returns(Promise.resolve({
+          uid: USER_ID,
+          roles: ['some-other-role']
+        }));
+
+        userRequestAuthorizer.authorise(request)
+          .then(user => {
+            expect(user.roles).to.include('some-other-role');
+            done();
+          })
+          .catch(() => done(new Error('Promise should have been resolved')));
+      });
     });
   });
 });
