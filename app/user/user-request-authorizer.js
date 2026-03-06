@@ -47,22 +47,18 @@ const authorise = (request) => {
 };
 
 const authorizeRoles = (request, user) => {
-  return new Promise((resolve, reject) => {
-    if (request.originalUrl.includes('caseworkers')) {
-      let roles = authorizedRolesExtractor.extract(request);
+  if (!request.originalUrl.includes('/caseworkers/')) {
+    return Promise.resolve();
+  }
 
-      if (roles
-        && roles.length
-        && !roles.some(role => user.roles.includes(role))) {
-        reject(ERROR_UNAUTHORISED_ROLE);
-      } else {
-        resolve();
-      }
-    } else {
-      // Don't attempt to check the roles, since the URL doesn't match the expected pattern
-      resolve();
-    }
-  });
+  const roles = authorizedRolesExtractor.extract(request);
+
+  if (roles.length === 0 ||
+    !roles.some(role => user.roles.includes(role))) {
+    return Promise.reject(ERROR_UNAUTHORISED_ROLE);
+  }
+
+  return Promise.resolve();
 };
 
 const fillInUserId = (request, user) => {
