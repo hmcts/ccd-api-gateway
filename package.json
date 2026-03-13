@@ -28,7 +28,7 @@
     "config": "^3.3.7",
     "cookie": "^0.7.0",
     "cookie-parser": "~1.4.3",
-    "cross-env": "^5.2.1",
+    "cross-env": "^10.0.0",
     "debug": "~2.6.3",
     "dont-sniff-mimetype": "^1.1.0",
     "express": "^5.0.0",
