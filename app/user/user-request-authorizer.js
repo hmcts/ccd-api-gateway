@@ -1,29 +1,47 @@
 const authorizedRolesExtractor = require('./authorised-roles-extractor');
 const COOKIE_ACCESS_TOKEN = require('../oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 const config = require('config');
-const userResolver = config.get('cache.user_info_enabled') ? require('./cached-user-resolver') : require('./user-resolver');
+const userResolver = config.get('cache.user_info_enabled')
+  ? require('./cached-user-resolver')
+  : require('./user-resolver');
 
 const AUTHORIZATION = 'Authorization';
+
 const ERROR_TOKEN_MISSING = {
   error: 'Bearer token missing',
   status: 401,
   message: 'You are not authorized to access this resource'
 };
-const ERROR_UNAUTHORISED_ROLE = {
-  error: 'Unauthorised role',
-  status: 403,
-  message: 'You are not authorized to access this resource'
-};
+
+class UnauthorisedRoleError extends Error {
+  constructor() {
+    super('You are not authorized to access this resource');
+    this.error = 'Unauthorised role';
+    this.status = 403;
+  }
+}
+
+const ERROR_UNAUTHORISED_ROLE = new UnauthorisedRoleError();
+
 const ERROR_UNAUTHORISED_USER_ID = {
   error: 'Unauthorised user',
   status: 403,
   message: 'You are not authorized to access this resource'
 };
+
 const USER_ID_PLACEHOLDER = ':uid';
+
+const STATIC_ROLE_PROTECTED_PATHS = [
+  {
+    pathPrefix: '/print/probateManTypes',
+    requiredRoles: ['caseworker-probate', 'caseworker-probate-issuer']
+  }
+];
 
 const authorise = (request) => {
   let user;
-  let bearerToken = request.get(AUTHORIZATION) || (request.cookies ? request.cookies[COOKIE_ACCESS_TOKEN] : null);
+  let bearerToken = request.get(AUTHORIZATION) ||
+    (request.cookies ? request.cookies[COOKIE_ACCESS_TOKEN] : null);
 
   if (!bearerToken) {
     return Promise.reject(ERROR_TOKEN_MISSING);
@@ -32,7 +50,7 @@ const authorise = (request) => {
   // Use AccessToken cookie as Authorization header
   if (!request.get(AUTHORIZATION) && bearerToken) {
     if (!request.headers) {
-      request.headers = {[AUTHORIZATION]: `Bearer ${bearerToken}`};
+      request.headers = { [AUTHORIZATION]: `Bearer ${bearerToken}` };
     } else {
       request.headers[AUTHORIZATION] = `Bearer ${bearerToken}`;
     }
@@ -47,15 +65,28 @@ const authorise = (request) => {
 };
 
 const authorizeRoles = (request, user) => {
-  if (!request.originalUrl.includes('/caseworkers/')) {
+  if (request.originalUrl.includes('/caseworkers/')) {
+    const roles = authorizedRolesExtractor.extract(request);
+
+    if (roles.length === 0 ||
+      !roles.some(role => user.roles.includes(role))) {
+      return Promise.reject(ERROR_UNAUTHORISED_ROLE);
+    }
+
     return Promise.resolve();
   }
 
-  const roles = authorizedRolesExtractor.extract(request);
+  const matchedStaticPath = STATIC_ROLE_PROTECTED_PATHS.find(config =>
+    request.originalUrl.startsWith(config.pathPrefix)
+  );
 
-  if (roles.length === 0 ||
-    !roles.some(role => user.roles.includes(role))) {
-    return Promise.reject(ERROR_UNAUTHORISED_ROLE);
+  if (matchedStaticPath) {
+    const hasRequiredRole = matchedStaticPath.requiredRoles
+      .some(role => user.roles.includes(role));
+
+    if (!hasRequiredRole) {
+      return Promise.reject(ERROR_UNAUTHORISED_ROLE);
+    }
   }
 
   return Promise.resolve();
