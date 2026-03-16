@@ -44,6 +44,7 @@ describe('UserRequestAuthorizer', () => {
 
       userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
         './cached-user-resolver': userResolver,
+        './user-resolver': userResolver,
         './authorised-roles-extractor': authorizedRolesExtractor
       });
     });
@@ -83,18 +84,20 @@ describe('UserRequestAuthorizer', () => {
         });
     });
 
-    it('should NOT reject when no roles extracted', done => {
+    it('should reject when no roles are extracted', done => {
       authorizedRolesExtractor.extract.returns([]);
 
       userRequestAuthorizer.authorise(request)
-        .then(() => done())
+        .then(() => done(new Error('Promise should have been rejected')))
         .catch(error => {
-          expect(error).not.to.equal(userRequestAuthorizer.ERROR_UNAUTHORISED_ROLE);
+          expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORISED_ROLE);
           done();
         });
     });
 
     it('should fill in user ID placeholder in URL', done => {
+      authorizedRolesExtractor.extract.returns([ROLE_1]);
+
       userRequestAuthorizer.authorise(request)
         .then(() => {
           expect(request.url).to.equal('http://caseworkers/1/more/stuff');
@@ -118,7 +121,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should NOT reject missing Authorization header when AccessToken cookie present', done => {
       request.get.returns(null);
-      authorizedRolesExtractor.extract.returns([]);
+      authorizedRolesExtractor.extract.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => done())
@@ -130,6 +133,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should use the AccessToken cookie when present, to obtain user details', done => {
       request.get.returns(null);
+      authorizedRolesExtractor.extract.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
@@ -142,12 +146,50 @@ describe('UserRequestAuthorizer', () => {
     it('should use the AccessToken cookie to set the Authorization header, when the header is missing', done => {
       request.get.returns(null);
       request.headers = {'X_CUSTOM_HEADER': X_CUSTOM_HEADER};
+      authorizedRolesExtractor.extract.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
           expect(request.headers).not.to.be.undefined;
           expect(request.headers[userReqAuth.AUTHORIZATION]).to.equal('Bearer ' + COOKIES[COOKIE_ACCESS_TOKEN]);
           expect(request.headers['X_CUSTOM_HEADER']).to.equal(X_CUSTOM_HEADER);
+          done();
+        })
+        .catch(() => done(new Error('Promise should have been resolved')));
+    });
+
+    it('should NOT check roles and resolve when URL does not contain /caseworkers/', done => {
+      request.url = 'http://example.com/other/resource';
+      request.originalUrl = 'http://example.com/other/resource';
+
+      userRequestAuthorizer.authorise(request)
+        .then(user => {
+          expect(authorizedRolesExtractor.extract).not.to.have.been.called;
+          expect(user).to.equal(DETAILS);
+          done();
+        })
+        .catch(() => done(new Error('Promise should have been resolved')));
+    });
+
+    it('should NOT check roles when URL contains caseworkers without surrounding slashes', done => {
+      request.url = 'http://example.com/allcaseworkers/resource';
+      request.originalUrl = 'http://example.com/allcaseworkers/resource';
+
+      userRequestAuthorizer.authorise(request)
+        .then(user => {
+          expect(authorizedRolesExtractor.extract).not.to.have.been.called;
+          expect(user).to.equal(DETAILS);
+          done();
+        })
+        .catch(() => done(new Error('Promise should have been resolved')));
+    });
+
+    it('should resolve when user has at least one matching role', done => {
+      authorizedRolesExtractor.extract.returns([ROLE_1, 'other-role']);
+
+      userRequestAuthorizer.authorise(request)
+        .then(user => {
+          expect(user).to.equal(DETAILS);
           done();
         })
         .catch(() => done(new Error('Promise should have been resolved')));
