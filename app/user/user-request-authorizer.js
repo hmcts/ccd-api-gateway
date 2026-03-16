@@ -65,34 +65,31 @@ const authorise = (request) => {
 };
 
 const authorizeRoles = (request, user) => {
-  return new Promise((resolve, reject) => {
-    if (request.originalUrl.includes('caseworkers')) {
-      let roles = authorizedRolesExtractor.extract(request);
+  if (request.originalUrl.includes('/caseworkers/')) {
+    const roles = authorizedRolesExtractor.extract(request);
 
-      if (roles
-        && roles.length
-        && !roles.some(role => user.roles.includes(role))) {
-        return reject(ERROR_UNAUTHORISED_ROLE);
-      }
-
-      return resolve();
+    if (roles.length === 0 ||
+      !roles.some(role => user.roles.includes(role))) {
+      return Promise.reject(ERROR_UNAUTHORISED_ROLE);
     }
 
-    const matchedStaticPath = STATIC_ROLE_PROTECTED_PATHS.find(config =>
-      request.originalUrl.startsWith(config.pathPrefix)
-    );
+    return Promise.resolve();
+  }
 
-    if (matchedStaticPath) {
-      const hasRequiredRole = matchedStaticPath.requiredRoles
-        .some(role => user.roles.includes(role));
+  const matchedStaticPath = STATIC_ROLE_PROTECTED_PATHS.find(config =>
+    request.originalUrl.startsWith(config.pathPrefix)
+  );
 
-      if (!hasRequiredRole) {
-        return reject(ERROR_UNAUTHORISED_ROLE);
-      }
+  if (matchedStaticPath) {
+    const hasRequiredRole = matchedStaticPath.requiredRoles
+      .some(role => user.roles.includes(role));
+
+    if (!hasRequiredRole) {
+      return Promise.reject(ERROR_UNAUTHORISED_ROLE);
     }
+  }
 
-    resolve();
-  });
+  return Promise.resolve();
 };
 
 const fillInUserId = (request, user) => {
