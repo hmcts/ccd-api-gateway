@@ -11,7 +11,7 @@
     "lint": "NODE_PATH=. eslint --ignore-pattern coverage .",
     "test": "yarn test:unit",
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
-    "test:coverage": "NODE_ENV=test NODE_PATH=. nyc mocha 'test/**/*.spec.js'",
+    "test:coverage": "NODE_ENV=test NODE_PATH=. nyc --reporter=lcov --reporter=text --report-dir=coverage mocha 'test/**/*.spec.js' --recursive",
     "fortifyScan": "./test/java/gradlew -p test/java fortifyScan",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
@@ -37,7 +37,7 @@
     "handlebars": "^4.7.7",
     "http-proxy-middleware": "^0.20.0",
     "https-proxy-agent": "^2.2.3",
-    "js-yaml": "^3.13.1",
+    "js-yaml": "^4.1.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.21",
     "mem": "^6.0.0",
@@ -84,14 +84,16 @@
     "follow-redirects": "^1.15.6",
     "moment": "^2.29.4",
     "async": "^2.6.4",
-    "minimatch": "^3.0.5",
+    "minimatch": "^3.1.4",
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
-    "qs": "^6.10.3",
-    "@babel/traverse": "7.28.3",
+    "qs": "^6.14.1",
+    "@babel/traverse": "7.29.0",
+    "@babel/core": "^7.28.5",
     "micromatch": "^4.0.8",
+    "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
     "brace-expansion": "^1.1.12"
   },
-  "packageManager": "yarn@4.9.3"
+  "packageManager": "yarn@4.12.0"
 }
