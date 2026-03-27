@@ -24,7 +24,7 @@
     "@hmcts/properties-volume": "^0.0.14",
     "applicationinsights": "2.9.8",
     "body-parser": "^1.20.1",
-    "brace-expansion": "^1.1.12",
+    "brace-expansion": "^5.0.0",
     "config": "^3.3.7",
     "cookie": "^0.7.0",
     "cookie-parser": "~1.4.3",
@@ -92,7 +92,7 @@
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
-    "brace-expansion": "^1.1.12"
+    "brace-expansion": "^5.0.0"
   },
   "packageManager": "yarn@4.12.0"
 }
