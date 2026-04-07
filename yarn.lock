@@ -1283,7 +1283,7 @@ __metadata:
     formidable: "npm:^3.5.4"
     git-message: "npm:^2.0.2"
     handlebars: "npm:^4.7.7"
-    http-proxy-middleware: "npm:^2.0.7"
+    http-proxy-middleware: "npm:^2.0.9"
     https-proxy-agent: "npm:^2.2.3"
     istanbul: "npm:^0.4.5"
     js-yaml: "npm:^4.1.1"
@@ -2528,7 +2528,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^4.0.4":
+"form-data@npm:^4.0.5":
   version: 4.0.5
   resolution: "form-data@npm:4.0.5"
   dependencies:
@@ -2918,7 +2918,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:^2.0.7":
+"http-proxy-middleware@npm:^2.0.9":
   version: 2.0.9
   resolution: "http-proxy-middleware@npm:2.0.9"
   dependencies:
