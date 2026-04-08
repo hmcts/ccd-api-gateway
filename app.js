@@ -5,6 +5,7 @@ enableAppInsights();
 let express = require('express');
 let cookieParser = require('cookie-parser');
 let proxy = require('http-proxy-middleware');
+const cookieSession = require('cookie-session');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
@@ -16,6 +17,7 @@ const handleTiming = require('./app/security/timing');
 const hstsHandler = require('./app/security/hsts');
 const healthcheck = require('@hmcts/nodejs-healthcheck');
 const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
+const loginRoute = require('./app/oauth2/login-route').loginRoute;
 const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
 const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
 const noCache = require('nocache');
@@ -24,6 +26,17 @@ const noSniff = require('dont-sniff-mimetype');
 let app = express();
 const appHealth = express();
 const logger = Logger.getLogger('app');
+
+app.set('trust proxy', 1);
+
+app.use(cookieSession({
+  name: 'session',
+  keys: [config.get('security.session.secret')],
+  httpOnly: true,
+  sameSite: 'lax',
+  secure: config.get('security.secure_auth_cookie_enabled'),
+  maxAge: 10 * 60 * 1000
+}));
 
 app.use(ExpressLogger.accessLogger());
 app.use(cookieParser());
@@ -69,6 +82,7 @@ app.use(hstsHandler);
 app.use(corsHandler);
 app.use(handleTiming);
 
+app.get('/oauth2/login', loginRoute);
 app.get('/oauth2', oauth2Route);
 
 app.use(authCheckerUserOnlyFilter);

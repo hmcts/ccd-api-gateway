@@ -31,7 +31,11 @@ describe('oauth2Route', () => {
       json: sinon.stub()
     };
 
-    request = sinonExpressMock.mockReq();
+    request = sinonExpressMock.mockReq({
+      query: { code: 'abc123', state: 'expected-state' },
+      session: { oauthState: 'expected-state' }
+    });
+
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
     accessTokenRequest = sinon.stub();

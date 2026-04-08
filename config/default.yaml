@@ -16,6 +16,7 @@ idam:
   oauth2:
     token_endpoint: http://localhost:5000/oauth2/token
     logout_endpoint: http://localhost:5000/session/:token
+    authorization_endpoint: http://localhost:5000/oauth2/authorize
     client_id: ccd_gateway
 address_lookup:
   detect_proxy: false
@@ -25,6 +26,8 @@ security:
   cors_origin_whitelist: "http://localhost:3451,http://localhost:3452"
   secure_auth_cookie_enabled: false
   timing-allow-origin: "http://localhost:3451,http://localhost:3452"
+  session:
+    secret: "ccd-api-gateway-session-secret"
 cache:
   user_info_enabled: true
   user_info_ttl: 600
