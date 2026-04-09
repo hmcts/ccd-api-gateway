@@ -1,6 +1,6 @@
 nodejs:
   aadIdentityName: ccd
-  image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
+  image: 'hmctsprod.azurecr.io/ccd/api-gateway-web:latest'
   ingressHost: 'gateway-ccd.{{ .Values.global.environment }}.platform.hmcts.net'
   applicationPort: 3453
   cpuLimits: 1
