@@ -118,4 +118,120 @@ describe('oauth2Route', () => {
 
     unauthorizedOauth2Route(request, response, next);
   });
+
+  it('should fail when oauthState is missing from session', done => {
+
+    const expectedError = {
+      status: 400,
+      error: 'Bad Request',
+      message: 'Invalid state parameter - possible CSRF attack'
+    };
+
+    request.session = {};
+
+    next.callsFake((result) => {
+      try {
+        expect(accessTokenRequest).to.not.have.been.called;
+        expect(result).to.eql(expectedError);
+        expect(request.session.oauthState).to.equal(undefined);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    oauth2Route(request, response, next);
+  });
+
+  it('should fail when state parameter is missing from request', done => {
+
+    const expectedError = {
+      status: 400,
+      error: 'Bad Request',
+      message: 'Invalid state parameter - possible CSRF attack'
+    };
+
+    delete request.query.state;
+
+    next.callsFake((result) => {
+      try {
+        expect(accessTokenRequest).to.not.have.been.called;
+        expect(result).to.eql(expectedError);
+        expect(request.session.oauthState).to.equal(undefined);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    oauth2Route(request, response, next);
+  });
+
+  it('should fail when state parameter does not match session value', done => {
+
+    const expectedError = {
+      status: 400,
+      error: 'Bad Request',
+      message: 'Invalid state parameter - possible CSRF attack'
+    };
+
+    request.query.state = 'different-state';
+
+    next.callsFake((result) => {
+      try {
+        expect(accessTokenRequest).to.not.have.been.called;
+        expect(result).to.eql(expectedError);
+        expect(request.session.oauthState).to.equal(undefined);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    oauth2Route(request, response, next);
+  });
+
+  it('should use first state when query contains an array and continue', done => {
+
+    config.get.withArgs('security.secure_auth_cookie_enabled').returns(true);
+    responseFromPromiseMock.json.withArgs().returns(Promise.resolve(TOKEN));
+    request.query.state = ['expected-state', 'ignored-state'];
+
+    response.send.callsFake(() => {
+      try {
+        expect(accessTokenRequest).to.be.calledWith(request);
+        expect(request.session.oauthState).to.equal(undefined);
+        expect(response.status).to.be.calledWith(204);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    oauth2Route(request, response, next);
+  });
+
+  it('should fail when oauth2 code is missing after successful state validation', done => {
+
+    const expectedError = {
+      status: 400,
+      error: 'Bad Request',
+      message: 'Unable to obtain access token - no OAuth2 code provided'
+    };
+
+    delete request.query.code;
+
+    next.callsFake((result) => {
+      try {
+        expect(accessTokenRequest).to.not.have.been.called;
+        expect(result).to.eql(expectedError);
+        expect(request.session.oauthState).to.equal(undefined);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    oauth2Route(request, response, next);
+  });
 });
