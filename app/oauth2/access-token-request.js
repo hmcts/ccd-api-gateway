@@ -5,20 +5,28 @@ const { Logger } = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('accessTokenRequest');
 
-const completeRedirectURI = (uri) => {
-  if (uri.startsWith('undefined')){
-    throw ERROR_INVALID_REDIRECT_URI;
-  } else if (!uri.startsWith('http')) {
-    return `https://${uri}`;
-  }
-  return uri;
-};
-
 const ERROR_INVALID_REDIRECT_URI = {
   code: 'INVALID_REDIRECT_URI',
   error: 'Bad Request',
-  message: 'Redirect URI cannot start with undefined',
+  message: 'Redirect URI is not permitted',
   status: 400
+};
+
+const completeRedirectURI = (uri) => {
+  let parsedUrl;
+  try {
+    const fullUri = uri.startsWith('http') ? uri : `https://${uri}`;
+    parsedUrl = new URL(fullUri);
+  } catch (e) {
+    throw ERROR_INVALID_REDIRECT_URI;
+  }
+  const allowedHosts = config.get('idam.oauth2.redirect_uri_allowlist')
+    .split(',')
+    .map(h => h.trim());
+  if (!allowedHosts.includes(parsedUrl.hostname)) {
+    throw ERROR_INVALID_REDIRECT_URI;
+  }
+  return parsedUrl.href;
 };
 
 function accessTokenRequest(request) {
