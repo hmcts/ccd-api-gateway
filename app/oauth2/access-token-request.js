@@ -18,6 +18,7 @@ const completeRedirectURI = (uri) => {
     const fullUri = uri.startsWith('http') ? uri : `https://${uri}`;
     parsedUrl = new URL(fullUri);
   } catch (e) {
+    logger.error('Invalid redirect URI:', e.message);
     throw ERROR_INVALID_REDIRECT_URI;
   }
   const allowedHosts = config.get('idam.oauth2.redirect_uri_allowlist')
