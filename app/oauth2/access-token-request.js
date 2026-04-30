@@ -22,6 +22,7 @@ const ERROR_INVALID_REDIRECT_URI = {
 };
 
 function accessTokenRequest(request) {
+  console.log('cme-969 - in accessTokenRequest');
   const options = {
     method: 'POST',
     headers: {
@@ -31,7 +32,7 @@ function accessTokenRequest(request) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   };
-
+  console.log('cme-969 - in accessTokenRequest, made post call');
   const oauthUrl = new URL(config.get('idam.oauth2.token_endpoint'));
   oauthUrl.searchParams.append('code',request.query.code);
   oauthUrl.searchParams.append('redirect_uri',completeRedirectURI(request.query.redirect_uri));
