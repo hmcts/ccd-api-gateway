@@ -1,8 +1,16 @@
+const isControlCharacter = (character) => {
+  const code = character.charCodeAt(0);
+
+  return (code >= 0 && code <= 31) || (code >= 127 && code <= 159);
+};
+
 const sanitizeData = (data) => {
   let sanitizedData = '';
 
   if (data) {
-    sanitizedData = data.replace(/[\x00-\x1f\x7f-\x9f]/g, '');
+    sanitizedData = Array.from(data)
+      .filter((character) => !isControlCharacter(character))
+      .join('');
   }
 
   return sanitizedData;
