@@ -4,8 +4,8 @@ enableAppInsights();
 
 let express = require('express');
 let cookieParser = require('cookie-parser');
-let proxy = require('http-proxy-middleware');
 const cookieSession = require('cookie-session');
+const {legacyCreateProxyMiddleware: proxy} = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');

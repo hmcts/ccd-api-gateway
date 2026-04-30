@@ -22,25 +22,25 @@
     "@hmcts/nodejs-healthcheck": "^1.8.0",
     "@hmcts/nodejs-logging": "^4.0.4",
     "@hmcts/properties-volume": "^0.0.14",
-    "applicationinsights": "2.9.8",
-    "body-parser": "^1.20.1",
+    "applicationinsights": "3.14.0",
+    "body-parser": "^2.0.0",
     "brace-expansion": "^1.1.12",
     "config": "^3.3.7",
-    "cookie": "^0.7.0",
+    "cookie": "^1.0.0",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.1.1",
     "cross-env": "^5.2.1",
     "debug": "~2.6.3",
     "dont-sniff-mimetype": "^1.1.0",
     "express": "^5.0.0",
-    "form-data": "^4.0.0",
+    "form-data": "^4.0.4",
     "formidable": "^3.5.4",
     "handlebars": "^4.7.7",
-    "http-proxy-middleware": "^0.20.0",
+    "http-proxy-middleware": "^3.0.5",
     "https-proxy-agent": "^2.2.3",
     "js-yaml": "^4.1.1",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "mem": "^6.0.0",
     "nocache": "^2.1.0",
     "node-cache": "^5.1.0",
@@ -50,9 +50,9 @@
     "otp": "^0.1.3"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
-    "chai-http": "^4.2.1",
-    "eslint": "^8.57.0",
+    "chai": "^6.0.0",
+    "chai-http": "^5.0.0",
+    "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-mocha": "^6.1.1",
@@ -75,8 +75,9 @@
     "supertest": "^6.3.3"
   },
   "resolutions": {
-    "js-yaml": "^4.1.1",
-    "lodash": "^4.17.21",
+    "form-data": "^4.0.4",
+    "js-yaml": "3.14.2",
+    "lodash": "^4.18.1",
     "handlebars": "^4.7.7",
     "mem": "^6.0.0",
     "minimist": "^1.2.6",
@@ -86,7 +87,7 @@
     "ansi-regex": "^5.0.1",
     "follow-redirects": "^1.15.6",
     "moment": "^2.29.4",
-    "async": "^2.6.4",
+    "async": "^3.0.0",
     "minimatch": "^3.1.4",
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
@@ -96,7 +97,11 @@
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
-    "brace-expansion": "^1.1.12"
+    "brace-expansion": "^1.1.12",
+    "picomatch": "^2.3.2"
   },
-  "packageManager": "yarn@4.12.0"
+  "overrides": {
+    "picomatch": "^2.3.2"
+  },
+  "packageManager": "yarn@4.14.1"
 }
