@@ -10,7 +10,7 @@ let debug = require('debug')('ccd-api-gateway-web:server');
 let http = require('http');
 let https = require('https');
 let path = require('path');
-let fs = require('fs');
+const {readContainedFile} = require('./app/util/secure-file-reader');
 
 /**
  * Get port from environment and store in Express.
@@ -30,8 +30,8 @@ function createServer(app) {
   if (process.env.ENV === 'localdev') {
     const sslDirectory = path.join(__dirname, '..', 'app', 'resources', 'localhost-ssl');
     const sslOptions = {
-      cert: fs.readFileSync(path.join(sslDirectory, 'localhost.crt')),
-      key: fs.readFileSync(path.join(sslDirectory, 'localhost.key')),
+      cert: readContainedFile(sslDirectory, 'localhost.crt'),
+      key: readContainedFile(sslDirectory, 'localhost.key'),
       secureProtocol: 'TLS_method'
     };
     return https.createServer(sslOptions, app);
