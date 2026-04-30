@@ -20,6 +20,7 @@ const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
 const loginRoute = require('./app/oauth2/login-route').loginRoute;
 const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
 const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
+const { redactUrl } = require('./app/util/log-safe-url');
 const noCache = require('nocache');
 const noSniff = require('dont-sniff-mimetype');
 
@@ -52,6 +53,14 @@ const applyProxy = (app, config) => {
     onError: function onError(err, req, res) {
       console.error(err);
       mapFetchErrors(err, res);
+    },
+    onProxyReq: (proxyReq, req) => {
+      logger.info(`[cme-969] [gateway proxy] ${req.method} ${redactUrl(req.originalUrl || req.url)}`
+        + ` -> target=${config.target} path=${redactUrl(proxyReq.path || req.url)} source=${config.source}`);
+    },
+    onProxyRes: (proxyRes, req) => {
+      logger.info(`[cme-969] [gateway proxy response] ${req.method} ${redactUrl(req.originalUrl || req.url)}`
+        + ` <- ${proxyRes.statusCode} target=${config.target} source=${config.source}`);
     },
     logLevel: 'warn'
   };

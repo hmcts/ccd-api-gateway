@@ -1,15 +1,17 @@
 const accessTokenRequest = require('./access-token-request');
 const config = require('config');
+const { Logger } = require('@hmcts/nodejs-logging');
 const COOKIE_ACCESS_TOKEN = 'accessToken';
+const logger = Logger.getLogger('oauth2Route');
 
 const oauth2Route = (req, res, next) => {
-  console.log('cme-969 - oauth2Route');
+  logger.info('[cme-969] [gateway oauth2] handling OAuth2 callback');
   const expectedState = req.session && req.session.oauthState;
   const rawState = req.query && req.query.state;
   const receivedState = Array.isArray(rawState) ? rawState[0] : rawState;
 
   if (!expectedState || !receivedState || expectedState !== receivedState) {
-    console.log('cme-969 - in invalid state parameter block');
+    logger.warn('[cme-969] [gateway oauth2] invalid state parameter');
     if (req.session) {
       delete req.session.oauthState;
     }
@@ -23,7 +25,7 @@ const oauth2Route = (req, res, next) => {
   delete req.session.oauthState;
 
   if (!req.query.code) {
-    console.log('cme-969 - in unable to obtain block');
+    logger.warn('[cme-969] [gateway oauth2] missing OAuth2 code');
     return next({
       status: 400,
       error: 'Bad Request',
@@ -31,7 +33,7 @@ const oauth2Route = (req, res, next) => {
     });
   }
 
-  console.log('cme-969 - about to return access token request');
+  logger.info('[cme-969] [gateway oauth2] exchanging OAuth2 authorization code');
   return accessTokenRequest(req)
     .then(result => {
       if( result.status === 200 ) {

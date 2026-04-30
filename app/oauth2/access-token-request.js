@@ -2,6 +2,7 @@ const config = require('config');
 const fetch = require('node-fetch');
 const { URL } = require('url');
 const { Logger } = require('@hmcts/nodejs-logging');
+const { redactUrl } = require('../util/log-safe-url');
 
 const logger = Logger.getLogger('accessTokenRequest');
 
@@ -22,7 +23,6 @@ const ERROR_INVALID_REDIRECT_URI = {
 };
 
 function accessTokenRequest(request) {
-  console.log('cme-969 - in accessTokenRequest');
   const options = {
     method: 'POST',
     headers: {
@@ -32,14 +32,16 @@ function accessTokenRequest(request) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   };
-  console.log('cme-969 - in accessTokenRequest, made post call');
   const oauthUrl = new URL(config.get('idam.oauth2.token_endpoint'));
   oauthUrl.searchParams.append('code',request.query.code);
   oauthUrl.searchParams.append('redirect_uri',completeRedirectURI(request.query.redirect_uri));
   oauthUrl.searchParams.append('grant_type','authorization_code');
 
+  logger.info(`[cme-969] [gateway oauth2] POST ${redactUrl(oauthUrl.href)}`);
+
   return fetch(oauthUrl.href, options)
     .then(response => {
+      logger.info(`[cme-969] [gateway oauth2 response] POST ${redactUrl(oauthUrl.href)} <- ${response.status}`);
       if (response.status !== 200) {
         logger.error('Failed to obtain access token. response status:', response.status);
         logger.error('Failed to obtain access token. message:', response.statusText);
