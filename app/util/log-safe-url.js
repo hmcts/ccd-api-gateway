@@ -20,7 +20,7 @@ const redactUrl = value => {
 
   try {
     const absoluteUrl = isAbsoluteUrl(value);
-    const parsed = new URL(value, absoluteUrl ? undefined : 'http://gateway.local');
+    const parsed = new URL(value, absoluteUrl ? undefined : 'https://gateway.local');
 
     parsed.searchParams.forEach((queryValue, key) => {
       if (SENSITIVE_QUERY_PARAMETERS.includes(key.toLowerCase())) {
