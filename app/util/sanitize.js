@@ -2,7 +2,7 @@ const sanitizeData = (data) => {
   let sanitizedData = '';
 
   if (data) {
-    sanitizedData = data.replace('\n', '').replace('\r', '');
+    sanitizedData = data.replace(/[\x00-\x1f\x7f-\x9f]/g, '');
   }
 
   return sanitizedData;
