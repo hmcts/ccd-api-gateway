@@ -69,4 +69,28 @@ withPipeline("nodejs", product, component) {
         sh "yarn --check-cache"
     }
 
+    afterAlways('test') {
+    
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "mochawesome-report",
+        reportFiles          : "unit.html",
+        reportName           : "Unit Test Report"
+      ]
+    }
+
+    afterAlways('test:coverage') {
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "coverage/lcov-report",
+        reportFiles          : "index.html",
+        reportName           : "Code Coverage Report"
+      ]
+    }
+
 }

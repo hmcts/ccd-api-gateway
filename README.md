@@ -20,7 +20,7 @@ cd ccd-api-gateway
 
 ### Prerequisites
 
-* [Node.js](https://nodejs.org/) >= v18.17.0
+* [Node.js](https://nodejs.org/) >= v24.15.0
 * [yarn](https://yarnpkg.com/)
 * [Docker](https://www.docker.com)
 
@@ -59,6 +59,18 @@ To install dependencies please execute the following command:
 
 ```bash
 yarn install
+```
+
+### Managing dependencies:
+To update the versions in package.json use:
+```bash
+$ yarn upgrade-interactive
+```
+and choose the appropriate version for each dependency.
+
+The jenkins pipeline will check dependency versions for vulnerabilities. If you wish to suppress the issues that the pipeline is looking for you can populate the "yarn-audit-known-issues" file by running:
+```bash
+$ yarn suppress-cve
 ```
 
 ### Running
