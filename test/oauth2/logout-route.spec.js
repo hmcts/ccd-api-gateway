@@ -17,9 +17,6 @@ describe('logoutRoute', () => {
   const LOGOUT_END_POINT = 'http://localhost/session/:token';
   const CACHE_TTL_SECONDS = 1800;
   const TOKEN = 'TOKEN';
-  const USER_DETAILS = { user: 'Details' };
-  const DETAILS_PATH = '/o/userinfo';
-  const URL = 'http://test-idam:1234';
 
   let request;
   let response;
