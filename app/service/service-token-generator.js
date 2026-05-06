@@ -1,6 +1,6 @@
 const otp = require('otp');
 const config = require('config');
-const jwtDecode = require('jwt-decode');
+const { jwtDecode } = require('jwt-decode');
 const fetch = require('../util/fetch');
 
 const idamS2SUrl = config.get('idam.s2s_url');

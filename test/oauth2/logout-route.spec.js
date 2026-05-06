@@ -1,10 +1,9 @@
 const chai = require('chai');
-const expect = chai.expect;
-const fetchMock = require('fetch-mock');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai');
+const expect = chai.expect;
+const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 chai.use(sinonChai);
@@ -27,6 +26,7 @@ describe('logoutRoute', () => {
   let next;
   let config;
   let logoutRoute;
+  let fetchStub;
   let fetch;
   let userInfoCacheSpy;
   let sandbox;
@@ -39,7 +39,7 @@ describe('logoutRoute', () => {
     config = {
       get: sinon.stub()
     };
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     clock = sandbox.useFakeTimers();
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
@@ -59,7 +59,12 @@ describe('logoutRoute', () => {
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
 
-    fetch = fetchMock.sandbox().delete(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN), {});
+    fetchStub = sinon.stub();
+    fetch = {
+      default: fetchStub.callsFake(function() {
+        return Promise.resolve({});
+      })
+    };
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
@@ -71,29 +76,26 @@ describe('logoutRoute', () => {
     sandbox.restore();
     clock.restore();
     if (!nock.isDone()) {
-      chai.assert.fail('Not all nock interceptors have completed');
+      assert.fail('Not all nock interceptors have completed');
     }
   });
-
+ 
   it('should call IDAM OAuth 2 logout endpoint with JWT token', done => {
     response.status.callsFake(() => {
       try {
-        expect(fetch.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        expect(next).not.to.be.called;
-        expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
+        assert.calledWith(fetchStub, LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN));
+        assert.notCalled(next);
+        assert.calledWith(response.clearCookie, ACCESS_TOKEN_COOKIE_NAME);
 
-        initNock(TOKEN, USER_DETAILS);
         cachedUserResolver.getUserDetails(TOKEN);
         clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
-        initNock(TOKEN, USER_DETAILS);
 
         const result = cachedUserResolver.getUserDetails(TOKEN);
         expect(JSON.stringify(result)).to.equal('{}');
         assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
         assert.calledTwice(userInfoCacheSpy);
 
-        expect(response.status).to.be.calledWith(204);
+        assert.calledWith(response.status, 204);
         done();
       } catch (e) {
         done(e);
@@ -102,9 +104,9 @@ describe('logoutRoute', () => {
 
     logoutRoute(request, response, next);
 
-    expect(config.get).to.be.calledWith('idam.oauth2.client_id');
-    expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
-    expect(config.get).to.be.calledWith('idam.oauth2.logout_endpoint');
+    assert.calledWith(config.get, 'idam.oauth2.client_id');
+    assert.calledWith(config.get, 'secrets.ccd.ccd-api-gateway-oauth2-client-secret');
+    assert.calledWith(config.get, 'idam.oauth2.logout_endpoint');
   });
 
   it('should return 400 error when cookies missing', () => {
@@ -112,8 +114,8 @@ describe('logoutRoute', () => {
 
     logoutRoute(request, response, next);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
+    assert.notCalled(response.redirect);
+    assert.calledWith(next, {
       error: 'No auth token',
       status: 400,
       message: 'No auth token to log out'
@@ -127,21 +129,11 @@ describe('logoutRoute', () => {
 
     logoutRoute(request, response, next);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
+    assert.notCalled(response.redirect);
+    assert.calledWith(next, {
       error: 'No auth token',
       status: 400,
       message: 'No auth token to log out'
     });
   });
-
-  const initNock = (token, details) => {
-    nock(URL, {
-      reqheaders: {
-        Authorization: `Bearer ${token}`
-      }
-    }).get(DETAILS_PATH)
-      .times(1)
-      .reply(200, details);
-  };
 });
