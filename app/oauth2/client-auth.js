@@ -29,14 +29,14 @@ const getBasicAuthHeader = () => {
 };
 
 const redactAuthorizationHeader = (headers = {}) => {
-  if (!headers[AUTHORIZATION_HEADER]) {
-    return headers;
+  const result = { ...headers };
+  if (result[AUTHORIZATION_HEADER]) {
+    result[AUTHORIZATION_HEADER] = 'Basic [REDACTED]';
   }
-
-  return {
-    ...headers,
-    [AUTHORIZATION_HEADER]: 'Basic [REDACTED]'
-  };
+  if (result[AUTHORIZATION_HEADER.toLowerCase()]) {
+    result[AUTHORIZATION_HEADER.toLowerCase()] = 'Basic [REDACTED]';
+  }
+  return result;
 };
 
 module.exports = {
