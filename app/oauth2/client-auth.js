@@ -28,8 +28,8 @@ const getBasicAuthHeader = () => {
   return `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`;
 };
 
-const redactAuthorizationHeader = (headers = {}) => {
-  const result = { ...headers };
+const redactAuthorizationHeader = (headers) => {
+  const result = Object.assign({}, headers);
   if (result[AUTHORIZATION_HEADER]) {
     result[AUTHORIZATION_HEADER] = 'Basic [REDACTED]';
   }
