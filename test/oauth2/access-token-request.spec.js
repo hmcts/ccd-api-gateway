@@ -61,15 +61,19 @@ describe('Access Token Request', () => {
       get: sinon.stub()
     };
 
+    const basicAuthHeader = 'Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64');
+
     fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
+      './oauth2-client-auth': { getBasicAuthHeader: () => basicAuthHeader },
       'node-fetch': fetch
     });
 
     unsuccessfulFetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
     unsuccessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
+      './oauth2-client-auth': { getBasicAuthHeader: () => basicAuthHeader },
       'node-fetch': unsuccessfulFetch
     });
   });

@@ -2,6 +2,7 @@ const config = require('config');
 const fetch = require('node-fetch');
 const { URL } = require('url');
 const { Logger } = require('@hmcts/nodejs-logging');
+const { getBasicAuthHeader } = require('./oauth2-client-auth');
 
 const logger = Logger.getLogger('accessTokenRequest');
 
@@ -25,9 +26,7 @@ function accessTokenRequest(request) {
   const options = {
     method: 'POST',
     headers: {
-      'Authorization': 'Basic '
-        + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
-        .toString('base64'),
+      'Authorization': getBasicAuthHeader(),
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   };

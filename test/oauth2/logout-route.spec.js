@@ -51,6 +51,8 @@ describe('logoutRoute', () => {
     config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_END_POINT);
 
+    const basicAuthHeader = 'Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64');
+
     request = sinonExpressMock.mockReq({
       cookies: {
         [ACCESS_TOKEN_COOKIE_NAME]: ACCESS_TOKEN
@@ -63,6 +65,7 @@ describe('logoutRoute', () => {
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
+      './oauth2-client-auth': { getBasicAuthHeader: () => basicAuthHeader },
       'node-fetch': fetch
     }).logoutRoute;
   });
@@ -102,8 +105,6 @@ describe('logoutRoute', () => {
 
     logoutRoute(request, response, next);
 
-    expect(config.get).to.be.calledWith('idam.oauth2.client_id');
-    expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
     expect(config.get).to.be.calledWith('idam.oauth2.logout_endpoint');
   });
 
