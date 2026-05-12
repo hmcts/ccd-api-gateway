@@ -24,7 +24,7 @@
     "@hmcts/properties-volume": "^0.0.14",
     "applicationinsights": "3.14.0",
     "body-parser": "^2.0.0",
-    "brace-expansion": "^1.1.12",
+    "brace-expansion": "^1.1.13",
     "config": "^3.3.7",
     "cookie": "^1.0.0",
     "cookie-parser": "~1.4.3",
@@ -93,8 +93,7 @@
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
-    "brace-expansion": "^1.1.12",
-    "picomatch": "^2.3.2"
+    "brace-expansion": "^1.1.13"
   },
   "overrides": {
     "picomatch": "^2.3.2"
