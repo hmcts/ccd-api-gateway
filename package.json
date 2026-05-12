@@ -94,10 +94,16 @@
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
     "brace-expansion": "^1.1.12",
-    "picomatch": "^2.3.2"
+    "basic-ftp": "^5.3.1",
+    "picomatch": "^2.3.2",
+    "tar-fs": "^3.1.1",
+    "tmp": "^0.2.5"
   },
   "overrides": {
-    "picomatch": "^2.3.2"
+    "basic-ftp": "^5.3.1",
+    "picomatch": "^2.3.2",
+    "tar-fs": "^3.1.1",
+    "tmp": "^0.2.5"
   },
   "packageManager": "yarn@4.14.1"
 }
