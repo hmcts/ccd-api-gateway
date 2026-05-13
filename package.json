@@ -51,7 +51,7 @@
   "devDependencies": {
     "chai": "^6.0.0",
     "chai-http": "^5.0.0",
-    "eslint": "^10.0.0",
+    "eslint": "^9.39.4",
     "eslint-plugin-mocha": "^6.1.1",
     "fetch-mock": "^6.5.2",
     "git-message": "^2.0.2",
