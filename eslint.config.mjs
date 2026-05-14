@@ -17,6 +17,11 @@ const compat = new FlatCompat({
 export default defineConfig([{
     extends: compat.extends("eslint:recommended"),
 
+    ignores: [
+        '.yarn/**',
+        'eslint.config.mjs'
+    ],
+
     plugins: {
         mocha,
     },
