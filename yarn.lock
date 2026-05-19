@@ -2089,7 +2089,7 @@ __metadata:
     cookie: "npm:^1.0.0"
     cookie-parser: "npm:~1.4.3"
     cross-env: "npm:^10.0.0"
-    debug: "npm:~2.6.3"
+    debug: "npm:~4.4.0"
     dont-sniff-mimetype: "npm:^1.1.0"
     eslint: "npm:^6.5.1"
     eslint-plugin-mocha: "npm:^6.1.1"
@@ -2509,7 +2509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.3.1, debug@npm:^4.3.4, debug@npm:^4.3.6, debug@npm:^4.3.7, debug@npm:^4.4.0, debug@npm:^4.4.3":
+"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.3.1, debug@npm:^4.3.4, debug@npm:^4.3.6, debug@npm:^4.3.7, debug@npm:^4.4.0, debug@npm:^4.4.3, debug@npm:~4.4.0":
   version: 4.4.3
   resolution: "debug@npm:4.4.3"
   dependencies:
@@ -2539,15 +2539,6 @@ __metadata:
     supports-color:
       optional: true
   checksum: 10/8e2709b2144f03c7950f8804d01ccb3786373df01e406a0f66928e47001cf2d336cbed9ee137261d4f90d68d8679468c755e3548ed83ddacdc82b194d2468afe
-  languageName: node
-  linkType: hard
-
-"debug@npm:~2.6.3":
-  version: 2.6.9
-  resolution: "debug@npm:2.6.9"
-  dependencies:
-    ms: "npm:2.0.0"
-  checksum: 10/e07005f2b40e04f1bd14a3dd20520e9c4f25f60224cb006ce9d6781732c917964e9ec029fc7f1a151083cd929025ad5133814d4dc624a9aaf020effe4914ed14
   languageName: node
   linkType: hard
 
