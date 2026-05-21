@@ -13,7 +13,8 @@ const oauth2Route = (req, res, next) => {
             {
               maxAge: jsonResult.expires_in * 1000,
               httpOnly: true,
-              secure: config.get('security.secure_auth_cookie_enabled')
+              secure: config.get('security.secure_auth_cookie_enabled'),
+              sameSite: 'Lax'
             });
           res.status(204).send();
           }
