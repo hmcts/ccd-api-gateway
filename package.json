@@ -88,7 +88,7 @@
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
     "qs": "^6.14.1",
-    "@babel/traverse": "7.29.0",
+    "@babel/traverse": "7.29.7",
     "@babel/core": "^7.28.5",
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
