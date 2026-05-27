@@ -25,7 +25,7 @@
     "applicationinsights": "3.14.0",
     "body-parser": "^2.0.0",
     "brace-expansion": "^5.0.5",
-    "config": "^3.3.7",
+    "config": "^4.0.0",
     "cookie": "^1.0.0",
     "cookie-parser": "~1.4.3",
     "cross-env": "^10.0.0",
