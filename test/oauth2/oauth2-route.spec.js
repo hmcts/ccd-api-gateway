@@ -74,6 +74,18 @@ describe('oauth2Route', () => {
     expect(response.json).to.be.calledWith({ state: STATE });
   });
 
+  it('should issue an oauth2 state cookie with the "secure" flag disabled', () => {
+
+    config.get.withArgs('security.secure_auth_cookie_enabled').returns(false);
+
+    oauth2StateRoute(request, response);
+
+    expect(response.cookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME, STATE,
+      { maxAge: 5 * 60 * 1000, httpOnly: true, sameSite: 'lax', secure: false });
+    expect(response.status).to.be.calledWith(200);
+    expect(response.json).to.be.calledWith({ state: STATE });
+  });
+
   it('should set an accessToken cookie with the "secure" flag enabled', done => {
 
     config.get.withArgs('security.secure_auth_cookie_enabled').returns(true);
@@ -167,6 +179,51 @@ describe('oauth2Route', () => {
   it('should reject the callback when the oauth2 state does not match the cookie', () => {
 
     request.query.state = 'different-state';
+
+    oauth2Route(request, response, next);
+
+    expect(accessTokenRequest).not.to.have.been.called;
+    expect(response.clearCookie).not.to.have.been.called;
+    expect(next).to.have.been.calledWith({
+      error: 'Invalid OAuth2 state',
+      status: 400,
+      message: 'Invalid OAuth2 state parameter'
+    });
+  });
+
+  it('should reject the callback when the oauth2 state cookie is missing', () => {
+
+    request.cookies = {};
+
+    oauth2Route(request, response, next);
+
+    expect(accessTokenRequest).not.to.have.been.called;
+    expect(response.clearCookie).not.to.have.been.called;
+    expect(next).to.have.been.calledWith({
+      error: 'Invalid OAuth2 state',
+      status: 400,
+      message: 'Invalid OAuth2 state parameter'
+    });
+  });
+
+  it('should reject the callback when query is missing from the request', () => {
+
+    request.query = undefined;
+
+    oauth2Route(request, response, next);
+
+    expect(accessTokenRequest).not.to.have.been.called;
+    expect(response.clearCookie).not.to.have.been.called;
+    expect(next).to.have.been.calledWith({
+      error: 'Invalid OAuth2 state',
+      status: 400,
+      message: 'Invalid OAuth2 state parameter'
+    });
+  });
+
+  it('should reject the callback when cookies are missing from the request', () => {
+
+    request.cookies = undefined;
 
     oauth2Route(request, response, next);
 
