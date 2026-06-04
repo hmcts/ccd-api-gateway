@@ -16,7 +16,23 @@ describe('sanitizeData', () => {
     expect(sanitize.sanitizeData(value)).to.equal('ABCDE');
   });
 
+  it('keeps characters adjacent to control ranges', () => {
+    const value = 'A B~C\xa0D';
+
+    expect(sanitize.sanitizeData(value)).to.equal('A B~C\xa0D');
+  });
+
+  it('removes control characters at range boundaries', () => {
+    const value = '\x00\x1fA\x7f\x9fB';
+
+    expect(sanitize.sanitizeData(value)).to.equal('AB');
+  });
+
   it('returns an empty string for missing values', () => {
     expect(sanitize.sanitizeData()).to.equal('');
+  });
+
+  it('returns an empty string for empty input', () => {
+    expect(sanitize.sanitizeData('')).to.equal('');
   });
 });
