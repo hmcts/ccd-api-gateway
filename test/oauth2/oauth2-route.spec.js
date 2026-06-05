@@ -161,6 +161,25 @@ describe('oauth2Route', () => {
     unauthorizedOauth2Route(request, response, next);
   });
 
+  it('should pass through errors when access token request is rejected', done => {
+
+    const expectedError = new Error('token endpoint unavailable');
+    accessTokenRequest.withArgs(request).returns(Promise.reject(expectedError));
+
+    next.callsFake((result) => {
+      try {
+        expect(accessTokenRequest).to.be.calledWith(request);
+        expect(response.clearCookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME);
+        expect(result).to.equal(expectedError);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
+
+    oauth2Route(request, response, next);
+  });
+
   it('should reject the callback when the oauth2 state is missing', () => {
 
     request.query = {};
