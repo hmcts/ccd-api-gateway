@@ -1,5 +1,5 @@
 const isControlCharacter = (character) => {
-  const code = character.charCodeAt(0);
+  const code = character.codePointAt(0);
 
   return (code >= 0 && code <= 31) || (code >= 127 && code <= 159);
 };
