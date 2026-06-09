@@ -27,13 +27,13 @@ function payloadGuard(opts) {
                 let pathname = '';
                 try {
                     pathname = new URL(req.url, `http://${req.headers.host || 'localhost'}`).pathname || '';
-                } catch (e) {
+                } catch {
                     pathname = '';
                 }
                 let decodedPath = pathname;
                 try {
                     decodedPath = decodeURIComponent(pathname);
-                } catch (e) {
+                } catch {
                     // ignore decoding errors, use original
                 }
                 // Check raw req.url for traversal patterns
@@ -41,7 +41,7 @@ function payloadGuard(opts) {
                 let decodedRawUrl = rawUrl;
                 try {
                     decodedRawUrl = decodeURIComponent(rawUrl);
-                } catch (e) {
+                } catch {
                     // ignore decoding errors
                 }
                 const suspicious =
