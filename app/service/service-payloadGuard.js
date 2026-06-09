@@ -24,16 +24,16 @@ function payloadGuard(opts) {
 
             if (rejectPathTraversal) {
                 // Check both the raw URL and the normalized/decoded path
-                let pathname = '';
+                let pathname;
                 try {
                     pathname = new URL(req.url, `http://${req.headers.host || 'localhost'}`).pathname || '';
-                } catch {
+                } catch (_e) {
                     pathname = '';
                 }
                 let decodedPath = pathname;
                 try {
                     decodedPath = decodeURIComponent(pathname);
-                } catch {
+                } catch (_e) {
                     // ignore decoding errors, use original
                 }
                 // Check raw req.url for traversal patterns
@@ -41,7 +41,7 @@ function payloadGuard(opts) {
                 let decodedRawUrl = rawUrl;
                 try {
                     decodedRawUrl = decodeURIComponent(rawUrl);
-                } catch {
+                } catch (_e) {
                     // ignore decoding errors
                 }
                 const suspicious =
