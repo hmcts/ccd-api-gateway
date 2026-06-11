@@ -5,7 +5,7 @@ enableAppInsights();
 
 let express = require('express');
 let cookieParser = require('cookie-parser');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { legacyCreateProxyMiddleware: proxy } = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
@@ -34,11 +34,11 @@ app.disable(poweredByHeader);
 appHealth.disable(poweredByHeader);
 
 const applyProxy = (app, config) => {
-  const options = {
+  let options = {
     target: config.target,
     changeOrigin: true,
     onError: function onError(err, req, res) {
-      console.error(err);
+      logger.error(err);
       mapFetchErrors(err, res);
     },
     logLevel: 'warn'
@@ -51,13 +51,9 @@ const applyProxy = (app, config) => {
   }
 
   if (config.filter) {
-    const updatedOptions = options;
-    app.use(config.source, createProxyMiddleware({
-      updatedOptions,
-      pathFilter: config.filter
-    }));
+    app.use(config.source, proxy(config.filter, options));
   } else {
-    app.use(config.source, createProxyMiddleware(options));
+    app.use(config.source, proxy(options));
   }
 };
 
