@@ -1,4 +1,4 @@
-const { OTP } = require('otp');
+const OTP = require('otp');
 const config = require('config');
 const { jwtDecode } = require('jwt-decode');
 const fetch = require('../util/fetch');
@@ -6,7 +6,6 @@ const fetch = require('../util/fetch');
 const idamS2SUrl = config.get('idam.s2s_url');
 const serviceName = config.get('idam.service_name');
 const secret = config.get('secrets.ccd.microservicekey-ccd-gw');
-const otp = new OTP({ secret });
 
 // TODO Caching should be handled by a singleton service
 const cache = {};
@@ -18,7 +17,7 @@ const serviceTokenGenerator = () => {
         && currentTime < cache[serviceName].expiresAt) {
       return Promise.resolve(cache[serviceName].token);
     } else {
-      const oneTimePassword = otp.totp(Date.now());
+      const oneTimePassword = new OTP({ secret }).totp(currentTime);
       const form = {
         microservice: serviceName,
         oneTimePassword
