@@ -1,7 +1,7 @@
-const { OTP } = require('otp');
-const config = require('config');
-const { jwtDecode } = require('jwt-decode');
-const fetch = require('../util/fetch');
+import config from 'config';
+import { jwtDecode } from 'jwt-decode';
+import fetch from  '../util/fetch';
+import OTP from 'otp';
 
 const idamS2SUrl = config.get('idam.s2s_url');
 const serviceName = config.get('idam.service_name');
@@ -42,4 +42,4 @@ const serviceTokenGenerator = () => {
     }
 };
 
-module.exports = serviceTokenGenerator;
+export default serviceTokenGenerator;

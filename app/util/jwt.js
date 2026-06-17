@@ -8,5 +8,4 @@ const removeBearer = (jwt) => {
   return jwt.startsWith(BEARER_PREFIX) ? jwt.replace(BEARER_PREFIX, '') : jwt;
 };
 
-exports.addBearer = addBearer;
-exports.removeBearer = removeBearer;
+export { addBearer, removeBearer };

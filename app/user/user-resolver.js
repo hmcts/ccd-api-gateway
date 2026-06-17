@@ -1,4 +1,4 @@
-const config = require('config');
+import config from 'config';
 const fetch = require('../util/fetch');
 const jwtUtil = require('../util/jwt');
 

@@ -1,5 +1,5 @@
-const NodeCache = require('node-cache');
-const { Logger } = require('@hmcts/nodejs-logging');
+import NodeCache from 'node-cache';
+import { Logger } from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('CacheService');
 
 class Cache {
@@ -41,4 +41,4 @@ class Cache {
   }
 }
 
-module.exports = Cache;
+export default Cache;

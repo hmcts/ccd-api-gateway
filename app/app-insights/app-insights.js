@@ -1,5 +1,5 @@
-const config = require('config');
-const appInsights = require('applicationinsights');
+import config from 'config';
+import appInsights from 'applicationinsights';
 
 const enabled = config.get('appInsights.enabled');
 
@@ -26,4 +26,4 @@ const enableAppInsights = () => {
   }
 };
 
-module.exports = enableAppInsights;
+export {enableAppInsights} ;

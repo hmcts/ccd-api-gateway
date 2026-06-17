@@ -1,5 +1,5 @@
-const config = require('config');
-const sanitize = require('../util/sanitize');
+import config from 'config';
+import sanitize from '../util/sanitize';
 
 const WILDCARD = '*';
 
@@ -44,4 +44,4 @@ const handleCors = (req, res, next) => {
     }
 };
 
-module.exports = handleCors;
+export {handleCors};

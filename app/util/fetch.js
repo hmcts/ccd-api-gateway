@@ -1,4 +1,4 @@
-let _fetch = require('node-fetch').default;
+import { default as _fetch } from 'node-fetch';
 
 const fetch = (...args) => {
   return _fetch(...args)
@@ -12,4 +12,4 @@ const fetch = (...args) => {
     });
 };
 
-module.exports = fetch;
+export default fetch;

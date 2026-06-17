@@ -1,9 +1,10 @@
-const config = require('config');
-const fetch = require('node-fetch').default;
-const HttpsProxyAgent = require('https-proxy-agent');
-const { Logger } = require('@hmcts/nodejs-logging');
+import config from 'config';
+import fetch from 'node-fetch';
+import HttpsProxyAgent from 'https-proxy-agent';
+import {from} from "form-data";
+import { Logger } from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('addressLookup');
-const crypto = require('crypto');
+import  crypto from 'crypto';
 
 function addressLookup(postcode) {
 
@@ -50,4 +51,4 @@ function badResponse(res, body) {
   throw errorObj(`An error response was received from the Postcode Service. Status=${res.status}, Body=${body}`, res.status);
 }
 
-module.exports = addressLookup;
+export {addressLookup};

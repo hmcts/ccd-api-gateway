@@ -1,5 +1,5 @@
-const accessTokenRequest = require('./access-token-request');
-const config = require('config');
+import accessTokenRequest from './access-token-request';
+import config from 'config';
 const COOKIE_ACCESS_TOKEN = 'accessToken';
 
 const oauth2Route = (req, res, next) => {
@@ -29,7 +29,7 @@ const oauth2Route = (req, res, next) => {
     .catch(err => next(err));
 };
 
-module.exports = {
+export {
   COOKIE_ACCESS_TOKEN,
   oauth2Route
 };

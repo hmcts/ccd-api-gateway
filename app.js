@@ -1,26 +1,26 @@
-const enableAppInsights = require('./app/app-insights/app-insights');
-const payloadGuard = require('./app/service/service-payloadGuard');
+import enableAppInsights from './app/app-insights/app-insights.js';
+import payloadGuard from './app/service/service-payloadGuard.js';
+
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import { legacyCreateProxyMiddleware as proxy } from 'http-proxy-middleware';
+import config from 'config';
+import { Express as ExpressLogger, Logger } from '@hmcts/nodejs-logging';
+import {authCheckerUserOnlyFilter} from './app/user/auth-checker-user-only-filter.js';
+import {mapFetchErrors} from './app/user/auth-checker-user-only-filter.js';
+import addressLookup from './app/address/address-lookup.js';
+import serviceFilter from './app/service/service-filter.js';
+import corsHandler from './app/security/cors.js';
+import handleTiming from './app/security/timing.js';
+import hstsHandler from './app/security/hsts.js';
+import healthcheck from '@hmcts/nodejs-healthcheck';
+import routes from '@hmcts/nodejs-healthcheck/healthcheck/routes';
+import {oauth2Route} from './app/oauth2/oauth2-route.js';
+import {logoutRoute} from './app/oauth2/logout-route.js';
+import noCache from 'nocache';
+import noSniff from 'dont-sniff-mimetype';
 
 enableAppInsights();
-
-let express = require('express');
-let cookieParser = require('cookie-parser');
-const { legacyCreateProxyMiddleware: proxy } = require('http-proxy-middleware');
-const config = require('config');
-const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
-const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
-const {mapFetchErrors} = require('./app/user/auth-checker-user-only-filter');
-const addressLookup = require('./app/address/address-lookup');
-const serviceFilter = require('./app/service/service-filter');
-const corsHandler = require('./app/security/cors');
-const handleTiming = require('./app/security/timing');
-const hstsHandler = require('./app/security/hsts');
-const healthcheck = require('@hmcts/nodejs-healthcheck');
-const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
-const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
-const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
-const noCache = require('nocache');
-const noSniff = require('dont-sniff-mimetype');
 
 let app = express();
 const appHealth = express();
@@ -185,4 +185,4 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   });
 });
 
-module.exports = app;
+export default app;

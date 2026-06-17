@@ -1,6 +1,7 @@
-const authorizedRolesExtractor = require('./authorised-roles-extractor');
-const COOKIE_ACCESS_TOKEN = require('../oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
-const config = require('config');
+import authorizedRolesExtractor from './authorised-roles-extractor';
+import COOKIE_ACCESS_TOKEN from '../oauth2/oauth2-route';
+import config from 'config';
+
 const userResolver = config.get('cache.user_info_enabled')
   ? require('./cached-user-resolver')
   : require('./user-resolver');
@@ -50,7 +51,7 @@ const authorise = (request) => {
   // Use AccessToken cookie as Authorization header
   if (!request.get(AUTHORIZATION) && bearerToken) {
     if (!request.headers) {
-      request.headers = { [AUTHORIZATION]: `Bearer ${bearerToken}` };
+      request.headers = {[AUTHORIZATION]: `Bearer ${bearerToken}`};
     } else {
       request.headers[AUTHORIZATION] = `Bearer ${bearerToken}`;
     }
@@ -97,8 +98,10 @@ const fillInUserId = (request, user) => {
   request.originalUrl = request.originalUrl.replace(USER_ID_PLACEHOLDER, user.uid);
 };
 
-exports.ERROR_TOKEN_MISSING = ERROR_TOKEN_MISSING;
-exports.ERROR_UNAUTHORISED_ROLE = ERROR_UNAUTHORISED_ROLE;
-exports.ERROR_UNAUTHORISED_USER_ID = ERROR_UNAUTHORISED_USER_ID;
-exports.AUTHORIZATION = AUTHORIZATION;
-exports.authorise = authorise;
+export {
+  ERROR_TOKEN_MISSING,
+  ERROR_UNAUTHORISED_ROLE,
+  ERROR_UNAUTHORISED_USER_ID,
+  AUTHORIZATION,
+  authorise
+};

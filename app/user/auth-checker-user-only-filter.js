@@ -1,5 +1,5 @@
-const userRequestAuthorizer = require('./user-request-authorizer');
-const { Logger } = require('@hmcts/nodejs-logging');
+import userRequestAuthorizer from './user-request-authorizer';
+import { Logger } from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('authCheckerUserOnlyFilter');
 
@@ -27,7 +27,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
 };
 
 const isBadGatewayError = (error) => {
-  return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') || 
+  return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') ||
   error.message.includes('socket hang up') ||
   error.message.includes('getaddrinfo EAI_AGAIN') ||
   error.message.includes('connect ETIMEOUT') ||
@@ -71,7 +71,7 @@ const mapFetchErrors = (error, res, next) => {
   }
 };
 
-module.exports = {
+export {
   authCheckerUserOnlyFilter,
   mapFetchErrors
 };

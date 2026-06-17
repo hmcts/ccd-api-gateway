@@ -1,5 +1,5 @@
-const serviceTokenGenerator = require('./service-token-generator');
-const { Logger } = require('@hmcts/nodejs-logging');
+import serviceTokenGenerator from './service-token-generator.js';
+import { Logger } from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('serviceFilter');
 
@@ -26,4 +26,4 @@ const serviceFilter = (req, res, next) => {
     });
 };
 
-module.exports = serviceFilter;
+export {serviceFilter};
