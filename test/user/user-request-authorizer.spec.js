@@ -1,11 +1,11 @@
-const proxyquire =  require('proxyquire');
-const chai = require('chai');
-const sinon = require('sinon');
+import proxyquire from 'proxyquire';
+import chai from 'chai';
+import sinon from 'sinon';
 const expect = chai.expect;
-const sinonChai = require('sinon-chai').default;
+import sinonChai from  'sinon-chai';
 chai.use(sinonChai);
-const userReqAuth = require('../../app/user/user-request-authorizer');
-const COOKIE_ACCESS_TOKEN = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
+import userReqAuth from '../../app/user/user-request-authorizer.js';
+import COOKIE_ACCESS_TOKEN from '../../app/oauth2/oauth2-route.js';
 
 describe('UserRequestAuthorizer', () => {
   describe('authorize', () => {

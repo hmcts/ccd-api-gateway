@@ -1,7 +1,7 @@
-const chai = require('chai');
+import chai from 'chai';
 const expect = chai.expect;
 
-const jwtUtil = require('../../app/util/jwt');
+import * as jwtUtil from '../../app/util/jwt.js';
 
 describe('get bearer jwt', () => {
   it('should return bearer where jwt has prefix', () => {

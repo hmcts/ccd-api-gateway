@@ -1,10 +1,10 @@
-const chai = require('chai');
+import chai from 'chai';
 const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
-const nock = require('nock');
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
+import proxyquire from 'proxyquire';
+import sinon from 'sinon';
+import nock from 'nock';
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 describe('service token generator', () => {
 

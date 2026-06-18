@@ -1,5 +1,5 @@
-const proxyquire = require('proxyquire');
-const chai = require('chai');
+import proxyquire from 'proxyquire';
+import chai from 'chai';
 const expect = chai.expect;
 
 describe('service filter', () => {

@@ -1,13 +1,14 @@
-const proxyquire =  require('proxyquire');
-const chai = require('chai');
+import proxyquire from 'proxyquire';
+import chai from 'chai';
 const expect = chai.expect;
-const sinon = require('sinon');
+import sinon from 'sinon';
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai').default;
+import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
-const nock = require('nock');
-const CacheService = require('../../app/cache/cache-service');
-const NodeCache = require('node-cache');
+import nock from  'nock';
+import CacheService from '../../app/cache/cache-service.js';
+import {from} from "form-data";
+import NodeCache from  'node-cache';
 
 describe('getCachedUserDetails', () => {
   const TOKEN = 'TOKEN';

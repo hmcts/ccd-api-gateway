@@ -1,14 +1,14 @@
-const chai = require('chai');
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
+import chai from 'chai';
+import proxyquire from 'proxyquire';
+import sinon from  'sinon';
 const assert = sinon.assert;
 const expect = chai.expect;
-const sinonChai = require('sinon-chai').default;
-const sinonExpressMock = require('sinon-express-mock');
-const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
+import sinonChai from 'sinon-chai';
+import sinonExpressMock from 'sinon-express-mock';
+import ACCESS_TOKEN_COOKIE_NAME from '../../app/oauth2/oauth2-route';
 chai.use(sinonChai);
-const nock = require('nock');
-const CacheService = require('../../app/cache/cache-service');
+import nock from 'nock';
+import CacheService from '../../app/cache/cache-service';
 
 describe('logoutRoute', () => {
   const CLIENT_ID = 'ccd_gateway';
@@ -76,7 +76,7 @@ describe('logoutRoute', () => {
       assert.fail('Not all nock interceptors have completed');
     }
   });
- 
+
   it('should call IDAM OAuth 2 logout endpoint with JWT token', done => {
     response.status.callsFake(() => {
       try {

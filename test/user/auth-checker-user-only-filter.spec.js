@@ -1,8 +1,8 @@
-const chai = require('chai');
+import chai from 'chai';
 const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai').default;
+import proxyquire from 'proxyquire';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 
 describe('authCheckerUserOnlyFilter', () => {

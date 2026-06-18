@@ -1,7 +1,7 @@
-const chai = require('chai');
+import chai from 'chai';
 const expect = chai.expect;
-const request = require('supertest');
-const app = require('app');
+import request from 'supertest';
+import app from 'app';
 
 describe('health check', () => {
 

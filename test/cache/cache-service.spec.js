@@ -1,12 +1,12 @@
-const chai = require('chai');
+import chai from 'chai';
 const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
+import proxyquire from 'proxyquire';
+import sinon from 'sinon';
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai').default;
+import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
-const CacheService = require('../../app/cache/cache-service');
-const NodeCache = require('node-cache');
+import CacheService from '../../app/cache/cache-service.js';
+import NodeCache from 'node-cache';
 
 describe('CacheService', () => {
     const KEY = 'Key';

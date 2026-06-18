@@ -1,10 +1,10 @@
-const chai = require('chai');
-const proxyquire = require('proxyquire');
+import chai from 'chai';
+import proxyquire from 'proxyquire';
 const expect = chai.expect;
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai').default;
-const sinonExpressMock = require('sinon-express-mock');
-const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import sinonExpressMock from 'sinon-express-mock';
+import ACCESS_TOKEN_COOKIE_NAME from '../../app/oauth2/oauth2-route.js';
 const assert = sinon.assert;
 chai.use(sinonChai);
 

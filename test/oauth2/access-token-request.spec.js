@@ -1,11 +1,11 @@
-const chai = require('chai');
+import chai from 'chai';
 const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
+import proxyquire from 'proxyquire';
+import sinon from 'sinon';
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai').default;
-const sinonExpressMock = require('sinon-express-mock');
-const url = require('url');
+import sinonChai from 'sinon-chai';
+import sinonExpressMock from 'sinon-express-mock';
+import url from 'url';
 chai.use(sinonChai);
 
 describe('Access Token Request', () => {
