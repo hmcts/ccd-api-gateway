@@ -7,4 +7,4 @@ const getCachedUserDetails = (jwt) => {
     () => userResolver.getUserDetails(jwt));
 };
 
-export default getCachedUserDetails;
+export {getCachedUserDetails};

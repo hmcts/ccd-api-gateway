@@ -1,5 +1,4 @@
-import chai from 'chai';
-const expect = chai.expect;
+import { expect } from 'chai';
 import nock from 'nock';
 
 /* The line below turns off ESLints 'no-undef' for the chai 'fail' function */

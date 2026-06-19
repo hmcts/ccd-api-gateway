@@ -112,4 +112,4 @@ function containsScriptTag(obj) {
   return false;
 }
 
-module.exports = payloadGuard;
+export default payloadGuard;

@@ -44,4 +44,4 @@ const handleCors = (req, res, next) => {
     }
 };
 
-export {handleCors};
+export default handleCors;

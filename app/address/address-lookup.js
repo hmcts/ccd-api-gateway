@@ -51,4 +51,4 @@ function badResponse(res, body) {
   throw errorObj(`An error response was received from the Postcode Service. Status=${res.status}, Body=${body}`, res.status);
 }
 
-export {addressLookup};
+export default addressLookup;

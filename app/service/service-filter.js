@@ -26,4 +26,4 @@ const serviceFilter = (req, res, next) => {
     });
 };
 
-export {serviceFilter};
+export default serviceFilter;

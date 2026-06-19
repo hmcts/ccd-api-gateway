@@ -3,4 +3,4 @@ const handleHSTS = (req, res, next) => {
     next();
 };
 
-export {handleHSTS};
+export default handleHSTS;

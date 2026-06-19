@@ -26,4 +26,4 @@ const enableAppInsights = () => {
   }
 };
 
-export {enableAppInsights} ;
+export default enableAppInsights ;

@@ -11,4 +11,4 @@ const getUserDetails = (jwt) => {
   .then(res => res.json());
 };
 
-exports.getUserDetails = getUserDetails;
+export {getUserDetails};
