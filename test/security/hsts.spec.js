@@ -1,5 +1,5 @@
-import chai from 'chai';
-import proxyquire from 'proxyquire';
+import * as chai from 'chai';
+import esmock from 'esmock';
 import sinon from 'sinon';
 const assert = sinon.assert;
 import sinonChai from 'sinon-chai';
@@ -12,12 +12,12 @@ describe('HSTS', () => {
 
   let req, res, next, handleHSTS;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     req = sinonExpressMock.mockReq();
     res = sinonExpressMock.mockRes({});
     next = sinon.stub();
 
-    handleHSTS = proxyquire('../../app/security/hsts', {});
+    handleHSTS = await esmock('../../app/security/hsts.js', {});
   });
 
   it('should add STS header to response for data request', () => {

@@ -5,7 +5,7 @@
  */
 import config from 'config';
 import propertiesVolume from '@hmcts/properties-volume';
-import { app } from './app.js';
+import app from './app.js';
 import debugLib from 'debug';
 import http from 'node:http';
 import https from 'node:https';

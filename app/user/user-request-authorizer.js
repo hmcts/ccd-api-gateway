@@ -1,10 +1,10 @@
-import authorizedRolesExtractor from './authorised-roles-extractor';
-import COOKIE_ACCESS_TOKEN from '../oauth2/oauth2-route';
+import extract from './authorised-roles-extractor.js';
+import {COOKIE_ACCESS_TOKEN} from '../oauth2/oauth2-route.js';
 import config from 'config';
 
 const userResolver = config.get('cache.user_info_enabled')
-  ? require('./cached-user-resolver')
-  : require('./user-resolver');
+  ? await import('./cached-user-resolver.js')
+  : await import('./user-resolver.js');
 
 const AUTHORIZATION = 'Authorization';
 
@@ -67,7 +67,7 @@ const authorise = (request) => {
 
 const authorizeRoles = (request, user) => {
   if (request.originalUrl.includes('/caseworkers/')) {
-    const roles = authorizedRolesExtractor.extract(request);
+    const roles = extract(request);
 
     if (roles.length === 0 ||
       !roles.some(role => user.roles.includes(role))) {

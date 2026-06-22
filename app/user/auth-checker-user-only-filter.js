@@ -1,4 +1,4 @@
-import userRequestAuthorizer from './user-request-authorizer';
+import {authorise} from './user-request-authorizer.js';
 import { Logger } from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('authCheckerUserOnlyFilter');
@@ -6,8 +6,7 @@ const logger = Logger.getLogger('authCheckerUserOnlyFilter');
 const authCheckerUserOnlyFilter = (req, res, next) => {
   req.authentication = {};
 
-  userRequestAuthorizer
-    .authorise(req)
+  authorise(req)
     .then(user => {
       req.authentication.user = user;
       req.headers['user-id'] = user.uid;

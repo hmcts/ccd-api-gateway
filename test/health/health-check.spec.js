@@ -1,5 +1,4 @@
-import chai from 'chai';
-const expect = chai.expect;
+import { expect } from 'chai';
 import request from 'supertest';
 import app from 'app';
 

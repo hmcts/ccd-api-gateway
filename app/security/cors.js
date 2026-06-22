@@ -1,5 +1,5 @@
 import config from 'config';
-import sanitize from '../util/sanitize';
+import {sanitizeData} from '../util/sanitize.js';
 
 const WILDCARD = '*';
 
@@ -23,7 +23,7 @@ const handleCors = (req, res, next) => {
     if (corsOptions.allowOrigin) {
         const origin = req.get('origin');
         if (corsOptions.allowOrigin(origin)) {
-            res.set('Access-Control-Allow-Origin', sanitize.sanitizeData(origin));
+            res.set('Access-Control-Allow-Origin', sanitizeData(origin));
         }
     } else {
         res.set('Access-Control-Allow-Origin', '*');
@@ -34,7 +34,7 @@ const handleCors = (req, res, next) => {
     if (corsOptions.allowMethods) {
         res.set('Access-Control-Allow-Methods', corsOptions.allowMethods);
     }
-    res.set('Access-Control-Allow-Headers', sanitize.sanitizeData(req.get('Access-Control-Request-Headers')));
+    res.set('Access-Control-Allow-Headers', sanitizeData(req.get('Access-Control-Request-Headers')));
     if('OPTIONS' === req.method) {
         res
             .status(200)

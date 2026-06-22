@@ -1,6 +1,5 @@
-import chai from 'chai';
-const expect = chai.expect;
-import enableAppInsights from '../../app/app-insights/app-insights';
+import { expect } from 'chai';
+import enableAppInsights from '../../app/app-insights/app-insights.js';
 
 describe('Application insights', () => {
   it('should initialize properly', () => {

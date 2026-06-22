@@ -1,6 +1,8 @@
-import chai from 'chai';
-import proxyquire from 'proxyquire';
+import * as chai from 'chai';
+import esmock from 'esmock';
 import sinon from 'sinon';
+
+
 const assert = sinon.assert;
 import sinonChai from 'sinon-chai';
 import sinonExpressMock from 'sinon-express-mock';
@@ -15,7 +17,7 @@ describe('CORS', () => {
 
   let config, req, res, next, handleCors;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     config = {
       get: sinon.stub()
     };
@@ -30,7 +32,7 @@ describe('CORS', () => {
     res = sinonExpressMock.mockRes({});
     next = sinon.stub();
 
-    handleCors = proxyquire('../../app/security/cors.js', {
+    handleCors = await esmock('../../app/security/cors.js', {
       'config': config
     });
   });

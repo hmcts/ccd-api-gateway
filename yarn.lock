@@ -2376,6 +2376,7 @@ __metadata:
     dont-sniff-mimetype: "npm:^1.1.0"
     eslint: "npm:^10.4.1"
     eslint-plugin-mocha: "npm:^11.3.0"
+    esmock: "npm:^2.7.6"
     express: "npm:^5.2.1"
     fetch-mock: "npm:^12.6.0"
     form-data: "npm:^4.0.5"
@@ -3201,6 +3202,13 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: 10/5722bd0ec1a87f49ee4511c7549dcfa69df0076927b0290b0a3b145425fd357906ffe6dc1307214a0bd344131bf53795fa2cdebfd36ee9146c01d98147044679
+  languageName: node
+  linkType: hard
+
+"esmock@npm:^2.7.6":
+  version: 2.7.6
+  resolution: "esmock@npm:2.7.6"
+  checksum: 10/46563a047c6c745be7553b62ddb162422a05b180fb2f98257e5b15f0c76271c3a63e9952ed63138a55236f3868187871eccebfac7eb1db0326ce2ae96c1199ab
   languageName: node
   linkType: hard
 

@@ -1,4 +1,4 @@
-import accessTokenRequest from './access-token-request';
+import accessTokenRequest from './access-token-request.js';
 import config from 'config';
 const COOKIE_ACCESS_TOKEN = 'accessToken';
 

@@ -5,16 +5,16 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import { legacyCreateProxyMiddleware as proxy } from 'http-proxy-middleware';
 import config from 'config';
-import { Express as ExpressLogger, Logger } from '@hmcts/nodejs-logging';
-import {authCheckerUserOnlyFilter} from './app/user/auth-checker-user-only-filter.js';
-import {mapFetchErrors} from './app/user/auth-checker-user-only-filter.js';
+import loggingPkg from '@hmcts/nodejs-logging';
+const { Express: ExpressLogger, Logger } = loggingPkg;
+import {authCheckerUserOnlyFilter, mapFetchErrors} from './app/user/auth-checker-user-only-filter.js';
 import addressLookup from './app/address/address-lookup.js';
 import serviceFilter from './app/service/service-filter.js';
 import corsHandler from './app/security/cors.js';
 import handleTiming from './app/security/timing.js';
 import hstsHandler from './app/security/hsts.js';
 import healthcheck from '@hmcts/nodejs-healthcheck';
-import routes from '@hmcts/nodejs-healthcheck/healthcheck/routes';
+import routes from '@hmcts/nodejs-healthcheck/healthcheck/routes.js';
 import {oauth2Route} from './app/oauth2/oauth2-route.js';
 import {logoutRoute} from './app/oauth2/logout-route.js';
 import noCache from 'nocache';
@@ -22,7 +22,7 @@ import noSniff from 'dont-sniff-mimetype';
 
 enableAppInsights();
 
-let app = express();
+const app = express();
 const appHealth = express();
 const logger = Logger.getLogger('app');
 
@@ -176,7 +176,7 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  let status = isNaN(err.status) ? 500 : err.status;
+  let status = Number.isNaN(err.status) ? 500 : err.status;
   res.status(status);
   res.json({
     error: err.error || 'Unauthorized',

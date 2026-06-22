@@ -1,8 +1,8 @@
 import config from 'config';
 import fetch from 'node-fetch';
-import COOKIE_ACCESS_TOKEN from './oauth2-route';
+import {COOKIE_ACCESS_TOKEN} from './oauth2-route.js';
 const TOKEN_PLACEHOLDER = ':token';
-import { userInfoCache } from '../cache/cache-config';
+import { userInfoCache } from '../cache/cache-config.js';
 
 const logoutRoute = (req, res, next) => {
   const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];

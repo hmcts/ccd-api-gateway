@@ -1,7 +1,6 @@
 import config from 'config';
 import fetch from 'node-fetch';
-import HttpsProxyAgent from 'https-proxy-agent';
-import {from} from "form-data";
+import {HttpsProxyAgent} from 'https-proxy-agent';
 import { Logger } from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('addressLookup');
 import  crypto from 'crypto';

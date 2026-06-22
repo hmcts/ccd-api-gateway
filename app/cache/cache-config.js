@@ -1,4 +1,4 @@
-import CacheService from './cache-service';
+import CacheService from './cache-service.js';
 import config from'config';
 
 // TTL for userInfoCache should always be set to lower value than the actual token's TTL

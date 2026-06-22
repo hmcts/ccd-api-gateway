@@ -1,5 +1,6 @@
-import proxyquire from 'proxyquire';
-import chai from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import esmock from "esmock";
 import sinon from 'sinon';
 const expect = chai.expect;
 import sinonChai from  'sinon-chai';
@@ -28,7 +29,7 @@ describe('UserRequestAuthorizer', () => {
 
     let userRequestAuthorizer;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       request = {
         url: 'http://caseworkers/:uid/more/stuff',
         originalUrl: 'http://caseworkers/:uid/more/stuff',
@@ -42,9 +43,9 @@ describe('UserRequestAuthorizer', () => {
         extract: sinon.stub()
       };
 
-      delete require.cache[require.resolve('../../app/user/user-request-authorizer')];
+      delete require.cache[require.resolve('../../app/user/user-request-authorizer.js')];
 
-      userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
+      userRequestAuthorizer = await esmock('../../app/user/user-request-authorizer.js', {
         './cached-user-resolver': userResolver,
         './user-resolver': userResolver,
         './authorised-roles-extractor': authorizedRolesExtractor
@@ -198,7 +199,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     describe('static role protected paths', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         request = {
           url: '/print/probateManTypes',
           originalUrl: '/print/probateManTypes',
@@ -206,9 +207,9 @@ describe('UserRequestAuthorizer', () => {
           cookies: COOKIES
         };
 
-        delete require.cache[require.resolve('../../app/user/user-request-authorizer')];
+        delete require.cache[require.resolve('../../app/user/user-request-authorizer.js')];
 
-        userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
+        userRequestAuthorizer = await esmock('../../app/user/user-request-authorizer.js', {
           './cached-user-resolver': userResolver,
           './user-resolver': userResolver,
           './authorised-roles-extractor': authorizedRolesExtractor

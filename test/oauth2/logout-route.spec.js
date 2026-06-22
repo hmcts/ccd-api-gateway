@@ -1,14 +1,15 @@
-import chai from 'chai';
-import proxyquire from 'proxyquire';
+import * as chai from 'chai';
+ // import { expect } from 'chai';
+import esmock from 'esmock';
 import sinon from  'sinon';
 const assert = sinon.assert;
 const expect = chai.expect;
 import sinonChai from 'sinon-chai';
 import sinonExpressMock from 'sinon-express-mock';
-import ACCESS_TOKEN_COOKIE_NAME from '../../app/oauth2/oauth2-route';
+import {COOKIE_ACCESS_TOKEN} from '../../app/oauth2/oauth2-route.js';
 chai.use(sinonChai);
 import nock from 'nock';
-import CacheService from '../../app/cache/cache-service';
+import CacheService from '../../app/cache/cache-service.js';
 
 describe('logoutRoute', () => {
   const CLIENT_ID = 'ccd_gateway';
@@ -32,7 +33,7 @@ describe('logoutRoute', () => {
   let cachedUserResolver;
   let userInfoCache;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     config = {
       get: sinon.stub()
     };
@@ -40,8 +41,8 @@ describe('logoutRoute', () => {
     clock = sandbox.useFakeTimers();
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
-    cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', {
-      '../cache/cache-config': { userInfoCache }
+    cachedUserResolver = await esmock('../../app/user/cached-user-resolver.js', {
+      '../../app/cache/cache-config.js': {userInfoCache}
     });
 
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
@@ -50,7 +51,7 @@ describe('logoutRoute', () => {
 
     request = sinonExpressMock.mockReq({
       cookies: {
-        [ACCESS_TOKEN_COOKIE_NAME]: ACCESS_TOKEN
+        [COOKIE_ACCESS_TOKEN]: ACCESS_TOKEN
       }
     });
     response = sinonExpressMock.mockRes();
@@ -58,12 +59,12 @@ describe('logoutRoute', () => {
 
     fetchStub = sinon.stub();
     fetch = {
-      default: fetchStub.callsFake(function() {
+      default: fetchStub.callsFake(function () {
         return Promise.resolve({});
       })
     };
 
-    logoutRoute = proxyquire('../../app/oauth2/logout-route', {
+    logoutRoute = await esmock('../../app/oauth2/logout-route.js', {
       'config': config,
       'node-fetch': fetch
     }).logoutRoute;

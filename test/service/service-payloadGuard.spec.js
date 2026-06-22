@@ -1,17 +1,18 @@
-import proxyquire from 'proxyquire';
-import chai from 'chai';
-const expect = chai.expect;
+import * as chai from 'chai';
+import { expect } from 'chai';
+import esmock from "esmock";
+// const expect = chai.expect;
 import sinon from 'sinon';
 
 // Use CommonJS import for the ES module
 describe('service-payloadGuard middleware', () => {
   let payloadGuard, LoggerStub, loggerStub;
 
-  beforeEach(() => {
-    loggerStub = { warn: sinon.spy(), info: sinon.spy() };
-    LoggerStub = { getLogger: sinon.stub().returns(loggerStub) };
-    payloadGuard = proxyquire('../../app/service/service-payloadGuard', {
-      '@hmcts/nodejs-logging': { Logger: LoggerStub }
+  beforeEach(async () => {
+    loggerStub = {warn: sinon.spy(), info: sinon.spy()};
+    LoggerStub = {getLogger: sinon.stub().returns(loggerStub)};
+    payloadGuard = await esmock('../../app/service/service-payloadGuard.js', {
+      '@hmcts/nodejs-logging': {Logger: LoggerStub}
     });
   });
 

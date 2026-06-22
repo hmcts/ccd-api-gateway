@@ -19,4 +19,4 @@ const extract = (request) => {
   return [];
 };
 
-export {extract};
+export default extract;

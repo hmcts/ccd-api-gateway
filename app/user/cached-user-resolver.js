@@ -1,10 +1,10 @@
-import userResolver from './user-resolver';
-import { userInfoCache } from '../cache/cache-config';
-import jwtUtil from '../util/jwt';
+import {getUserDetails} from "./user-resolver.js"
+import { userInfoCache } from '../cache/cache-config.js';
+import { removeBearer } from '../util/jwt.js';
 
 const getCachedUserDetails = (jwt) => {
-  return userInfoCache.getOrElseUpdate(jwtUtil.removeBearer(jwt),
-    () => userResolver.getUserDetails(jwt));
+  return userInfoCache.getOrElseUpdate(removeBearer(jwt),
+    () => getUserDetails(jwt));
 };
 
 export {getCachedUserDetails};

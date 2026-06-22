@@ -1,4 +1,4 @@
-const {Logger} = require('@hmcts/nodejs-logging');
+import {Logger} from '@hmcts/nodejs-logging';
 
 function payloadGuard(opts) {
   const logger = Logger.getLogger('payloadGuard');

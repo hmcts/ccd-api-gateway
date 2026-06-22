@@ -1,10 +1,11 @@
-import chai from 'chai';
-import proxyquire from 'proxyquire';
+import * as chai from 'chai';
+// import { expect } from 'chai';
+import esmock from 'esmock';
 const expect = chai.expect;
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import sinonExpressMock from 'sinon-express-mock';
-import ACCESS_TOKEN_COOKIE_NAME from '../../app/oauth2/oauth2-route.js';
+import {COOKIE_ACCESS_TOKEN} from '../../app/oauth2/oauth2-route.js';
 const assert = sinon.assert;
 chai.use(sinonChai);
 
@@ -22,7 +23,7 @@ describe('oauth2Route', () => {
   let oauth2Route;
   let responseFromPromiseMock;
 
-  beforeEach(() => {
+  beforeEach(async () => {
 
     config = {
       get: sinon.stub()
@@ -38,10 +39,11 @@ describe('oauth2Route', () => {
     accessTokenRequest = sinon.stub();
     accessTokenRequest.withArgs(request).returns(Promise.resolve(responseFromPromiseMock));
 
-    oauth2Route = proxyquire('../../app/oauth2/oauth2-route', {
-      './access-token-request': accessTokenRequest,
-      'config': config
-    }).oauth2Route;
+    const oauth2Module = await esmock('../../app/oauth2/oauth2-route.js', {
+      '../../app/oauth2/access-token-request.js': { default: accessTokenRequest },
+      'config': { default: config }
+    });
+    oauth2Route = oauth2Module.oauth2Route;
   });
 
   it('should set an accessToken cookie with the "secure" flag enabled', done => {
@@ -54,7 +56,7 @@ describe('oauth2Route', () => {
 
         assert.calledWith(accessTokenRequest, request);
         assert.calledWith(config.get, 'security.secure_auth_cookie_enabled');
-        assert.calledWith(response.cookie, ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
+        assert.calledWith(response.cookie, COOKIE_ACCESS_TOKEN, TOKEN.access_token,
           { maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: true });
         assert.calledWith(response.status, 204);
         done();
@@ -75,7 +77,7 @@ describe('oauth2Route', () => {
       try {
         assert.calledWith(accessTokenRequest, request);
         assert.calledWith(config.get, 'security.secure_auth_cookie_enabled');
-        assert.calledWith(response.cookie, ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
+        assert.calledWith(response.cookie, COOKIE_ACCESS_TOKEN, TOKEN.access_token,
           { maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: false });
         assert.calledWith(response.status, 204);
         done();
@@ -87,20 +89,21 @@ describe('oauth2Route', () => {
     oauth2Route(request, response, next);
   });
 
-  it('should fail to obation an accessToken dude to unauthorized request.', done => {
+  it('should fail to obation an accessToken dude to unauthorized request.', async done => {
 
     let expectedError = {
       status: 502,
       message: 'Internal Server Error'
     };
 
-    let  unauthorizedAccessTokenRequest = sinon.stub();
+    let unauthorizedAccessTokenRequest = sinon.stub();
     unauthorizedAccessTokenRequest.withArgs(request).returns(Promise.resolve(expectedError));
 
-    let unauthorizedOauth2Route = proxyquire('../../app/oauth2/oauth2-route', {
-      './access-token-request': unauthorizedAccessTokenRequest,
-      'config': config
-    }).oauth2Route;
+    const unauthorizedOauth2Module = await esmock('../../app/oauth2/oauth2-route.js', {
+      './access-token-request.js': { default: unauthorizedAccessTokenRequest },
+      'config': { default: config }
+    });
+    const unauthorizedOauth2Route = unauthorizedOauth2Module.oauth2Route;
 
     next.callsFake((result) => {
       try {

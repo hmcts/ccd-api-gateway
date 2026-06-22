@@ -1,6 +1,6 @@
-import chai from 'chai';
-const expect = chai.expect;
-import proxyquire from 'proxyquire';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import esmock from "esmock";
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
@@ -17,15 +17,15 @@ describe('authCheckerUserOnlyFilter', () => {
   let userRequestAuthorizer;
   let filter;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     req = {
       headers: {}
     };
     res = {
-      status: function(statusInput) {
+      status: function (statusInput) {
         this.status = statusInput;
       },
-      json: function(jsonInput) {
+      json: function (jsonInput) {
         this.json = jsonInput;
       }
     };
@@ -34,8 +34,8 @@ describe('authCheckerUserOnlyFilter', () => {
       authorise: sinon.stub()
     };
 
-    filter = proxyquire('../../app/user/auth-checker-user-only-filter', {
-      './user-request-authorizer': userRequestAuthorizer
+    filter = await esmock('../../app/user/auth-checker-user-only-filter.js', {
+      '../../app/user/user-request-authorizer.js': userRequestAuthorizer
     });
   });
 
