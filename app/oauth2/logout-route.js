@@ -1,8 +1,9 @@
 import config from 'config';
 import fetch from 'node-fetch';
 import {COOKIE_ACCESS_TOKEN} from './oauth2-route.js';
+
 const TOKEN_PLACEHOLDER = ':token';
-import { userInfoCache } from '../cache/cache-config.js';
+import {userInfoCache} from '../cache/cache-config.js';
 
 const logoutRoute = (req, res, next) => {
   const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
@@ -12,8 +13,8 @@ const logoutRoute = (req, res, next) => {
       method: 'DELETE',
       headers: {
         'Authorization': 'Basic '
-        + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
-          .toString('base64'),
+          + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
+            .toString('base64'),
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     };

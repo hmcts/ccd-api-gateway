@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import { expect } from 'chai';
+import {expect} from 'chai';
 import esmock from 'esmock';
 import sinon from 'sinon';
 const assert = sinon.assert;

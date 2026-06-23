@@ -1,15 +1,17 @@
 import * as chai from 'chai';
- // import { expect } from 'chai';
+import {expect} from 'chai';
 import esmock from 'esmock';
 import sinon from  'sinon';
-const assert = sinon.assert;
-const expect = chai.expect;
+ const assert = sinon.assert;
 import sinonChai from 'sinon-chai';
 import sinonExpressMock from 'sinon-express-mock';
 import {COOKIE_ACCESS_TOKEN} from '../../app/oauth2/oauth2-route.js';
 chai.use(sinonChai);
 import nock from 'nock';
 import CacheService from '../../app/cache/cache-service.js';
+
+let logoutRoute;
+let getCachedUserDetails;
 
 describe('logoutRoute', () => {
   const CLIENT_ID = 'ccd_gateway';
@@ -23,14 +25,11 @@ describe('logoutRoute', () => {
   let response;
   let next;
   let config;
-  let logoutRoute;
   let fetchStub;
   let fetch;
   let userInfoCacheSpy;
   let sandbox;
   let clock;
-
-  let cachedUserResolver;
   let userInfoCache;
 
   beforeEach(async () => {
@@ -41,9 +40,10 @@ describe('logoutRoute', () => {
     clock = sandbox.useFakeTimers();
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
-    cachedUserResolver = await esmock('../../app/user/cached-user-resolver.js', {
-      '../../app/cache/cache-config.js': {userInfoCache}
-    });
+
+    ({ getCachedUserDetails } = await esmock('../../app/user/cached-user-resolver.js', {
+      '../../app/cache/cache-config.js': { userInfoCache }
+    }));
 
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
     config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
@@ -64,10 +64,11 @@ describe('logoutRoute', () => {
       })
     };
 
-    logoutRoute = await esmock('../../app/oauth2/logout-route.js', {
+    const result = await esmock('../../app/oauth2/logout-route.js', {
       'config': config,
       'node-fetch': fetch
-    }).logoutRoute;
+    });
+    logoutRoute = result.logoutRoute;  // ← Assign to outer scope
   });
 
   afterEach(() => {
@@ -83,12 +84,12 @@ describe('logoutRoute', () => {
       try {
         assert.calledWith(fetchStub, LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN));
         assert.notCalled(next);
-        assert.calledWith(response.clearCookie, ACCESS_TOKEN_COOKIE_NAME);
+        assert.calledWith(response.clearCookie, COOKIE_ACCESS_TOKEN);
 
-        cachedUserResolver.getUserDetails(TOKEN);
         clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
 
-        const result = cachedUserResolver.getUserDetails(TOKEN);
+        getCachedUserDetails(TOKEN);
+        const result = getCachedUserDetails(TOKEN);
         expect(JSON.stringify(result)).to.equal('{}');
         assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
         assert.calledTwice(userInfoCacheSpy);

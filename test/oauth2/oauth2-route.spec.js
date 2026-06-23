@@ -1,7 +1,6 @@
 import * as chai from 'chai';
-// import { expect } from 'chai';
+import {expect} from 'chai';
 import esmock from 'esmock';
-const expect = chai.expect;
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import sinonExpressMock from 'sinon-express-mock';
@@ -40,7 +39,7 @@ describe('oauth2Route', () => {
     accessTokenRequest.withArgs(request).returns(Promise.resolve(responseFromPromiseMock));
 
     const oauth2Module = await esmock('../../app/oauth2/oauth2-route.js', {
-      '../../app/oauth2/access-token-request.js': { default: accessTokenRequest },
+      './access-token-request.js': { default: accessTokenRequest },
       'config': { default: config }
     });
     oauth2Route = oauth2Module.oauth2Route;
@@ -78,7 +77,7 @@ describe('oauth2Route', () => {
         assert.calledWith(accessTokenRequest, request);
         assert.calledWith(config.get, 'security.secure_auth_cookie_enabled');
         assert.calledWith(response.cookie, COOKIE_ACCESS_TOKEN, TOKEN.access_token,
-          { maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: false });
+          {maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: false});
         assert.calledWith(response.status, 204);
         done();
       } catch (e) {
@@ -89,33 +88,27 @@ describe('oauth2Route', () => {
     oauth2Route(request, response, next);
   });
 
-  it('should fail to obation an accessToken dude to unauthorized request.', async done => {
+  it('should fail to obation an accessToken dude to unauthorized request.', done => {
+    const expectedError = { status: 502, message: 'Internal Server Error' };
 
-    let expectedError = {
-      status: 502,
-      message: 'Internal Server Error'
-    };
-
-    let unauthorizedAccessTokenRequest = sinon.stub();
+    const unauthorizedAccessTokenRequest = sinon.stub();
     unauthorizedAccessTokenRequest.withArgs(request).returns(Promise.resolve(expectedError));
 
-    const unauthorizedOauth2Module = await esmock('../../app/oauth2/oauth2-route.js', {
+    esmock('../../app/oauth2/oauth2-route.js', {
       './access-token-request.js': { default: unauthorizedAccessTokenRequest },
       'config': { default: config }
-    });
-    const unauthorizedOauth2Route = unauthorizedOauth2Module.oauth2Route;
+    }).then(({ oauth2Route: unauthorizedOauth2Route }) => {
+      next.callsFake((result) => {
+        try {
+          assert.calledWith(unauthorizedAccessTokenRequest, request);
+          expect(result).to.deep.equal(expectedError);
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
 
-    next.callsFake((result) => {
-      try {
-
-        assert.calledWith(unauthorizedAccessTokenRequest, request);
-        expect(result).to.deep.equal(expectedError);
-        done();
-      } catch (e) {
-        done(e);
-      }
-    });
-
-    unauthorizedOauth2Route(request, response, next);
+      unauthorizedOauth2Route(request, response, next);
+    }).catch(done);
   });
 });

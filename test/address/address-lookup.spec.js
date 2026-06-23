@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import {expect} from 'chai';
 import nock from 'nock';
 import addressLookup from '../../app/address/address-lookup.js';
 

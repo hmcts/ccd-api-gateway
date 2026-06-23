@@ -1,5 +1,5 @@
 import serviceTokenGenerator from './service-token-generator.js';
-import { Logger } from '@hmcts/nodejs-logging';
+import {Logger} from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('serviceFilter');
 

@@ -1,12 +1,12 @@
 import config from 'config';
 import fetch from 'node-fetch';
-import { URL } from 'url';
-import { Logger } from '@hmcts/nodejs-logging';
+import {URL} from 'url';
+import {Logger} from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('accessTokenRequest');
 
 const completeRedirectURI = (uri) => {
-  if (uri.startsWith('undefined')){
+  if (uri.startsWith('undefined')) {
     throw ERROR_INVALID_REDIRECT_URI;
   } else if (!uri.startsWith('http')) {
     return `https://${uri}`;
@@ -27,15 +27,15 @@ function accessTokenRequest(request) {
     headers: {
       'Authorization': 'Basic '
         + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
-        .toString('base64'),
+          .toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   };
 
   const oauthUrl = new URL(config.get('idam.oauth2.token_endpoint'));
-  oauthUrl.searchParams.append('code',request.query.code);
-  oauthUrl.searchParams.append('redirect_uri',completeRedirectURI(request.query.redirect_uri));
-  oauthUrl.searchParams.append('grant_type','authorization_code');
+  oauthUrl.searchParams.append('code', request.query.code);
+  oauthUrl.searchParams.append('redirect_uri', completeRedirectURI(request.query.redirect_uri));
+  oauthUrl.searchParams.append('grant_type', 'authorization_code');
 
   return fetch(oauthUrl.href, options)
     .then(response => {
@@ -50,4 +50,5 @@ function accessTokenRequest(request) {
       throw error;
     });
 }
+
 export default accessTokenRequest;

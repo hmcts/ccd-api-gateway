@@ -1,26 +1,27 @@
 import accessTokenRequest from './access-token-request.js';
 import config from 'config';
+
 const COOKIE_ACCESS_TOKEN = 'accessToken';
 
 const oauth2Route = (req, res, next) => {
   accessTokenRequest(req)
     .then(result => {
-      if( result.status === 200 ) {
+      if (result.status === 200) {
 
-        result.json().then ( jsonResult => {
+        result.json().then(jsonResult => {
 
-          res.cookie(COOKIE_ACCESS_TOKEN, jsonResult.access_token,
-            {
-              maxAge: jsonResult.expires_in * 1000,
-              httpOnly: true,
-              secure: config.get('security.secure_auth_cookie_enabled')
-            });
-          res.status(204).send();
+            res.cookie(COOKIE_ACCESS_TOKEN, jsonResult.access_token,
+              {
+                maxAge: jsonResult.expires_in * 1000,
+                httpOnly: true,
+                secure: config.get('security.secure_auth_cookie_enabled')
+              });
+            res.status(204).send();
           }
         );
       } else {
         next({
-          status:  502,
+          status: 502,
           message: 'Internal Server Error'
         });
       }

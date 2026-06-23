@@ -1,16 +1,17 @@
 import config from 'config';
 import fetch from 'node-fetch';
 import {HttpsProxyAgent} from 'https-proxy-agent';
-import { Logger } from '@hmcts/nodejs-logging';
+import {Logger} from '@hmcts/nodejs-logging';
+
 const logger = Logger.getLogger('addressLookup');
-import  crypto from 'crypto';
+import crypto from 'crypto';
 
 function addressLookup(postcode) {
 
   return fetch(
     config.address_lookup.url
-       .replace('${key}', config.get('secrets.ccd.postcode-info-address-lookup-token'))
-       .replace('${postcode}', postcode), getHttpConfig())
+      .replace('${key}', config.get('secrets.ccd.postcode-info-address-lookup-token'))
+      .replace('${postcode}', postcode), getHttpConfig())
     .then(res => res.status === 200 ? res : res.text().then(body => badResponse(res, body)))
     .then(res => res.text())
     .catch((e) => {

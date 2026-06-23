@@ -6,6 +6,9 @@ const userResolver = config.get('cache.user_info_enabled')
   ? await import('./cached-user-resolver.js')
   : await import('./user-resolver.js');
 
+const getUserDetails = userResolver.getUserDetails
+  || userResolver.default?.getUserDetails;
+
 const AUTHORIZATION = 'Authorization';
 
 const ERROR_TOKEN_MISSING = {
@@ -57,8 +60,7 @@ const authorise = (request) => {
     }
   }
 
-  return userResolver
-    .getUserDetails(bearerToken)
+  return getUserDetails(bearerToken)
     .then(userDetails => user = userDetails)
     .then(() => fillInUserId(request, user))
     .then(() => authorizeRoles(request, user))

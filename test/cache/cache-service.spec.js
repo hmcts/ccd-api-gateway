@@ -1,9 +1,11 @@
-import { expect } from 'chai';
+import {expect} from 'chai';
 import * as chai from 'chai';
 import esmock from 'esmock';
 import sinon from 'sinon';
+
 const assert = sinon.assert;
 import sinonChai from 'sinon-chai';
+
 chai.use(sinonChai);
 import CacheService from '../../app/cache/cache-service.js';
 import NodeCache from 'node-cache';

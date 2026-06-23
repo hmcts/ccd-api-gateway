@@ -1,5 +1,5 @@
 import {authorise} from './user-request-authorizer.js';
-import { Logger } from '@hmcts/nodejs-logging';
+import {Logger} from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('authCheckerUserOnlyFilter');
 

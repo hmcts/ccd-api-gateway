@@ -1,5 +1,5 @@
 import config from 'config';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import fetch from  '../util/fetch.js';
 import OTP from 'otp';
 

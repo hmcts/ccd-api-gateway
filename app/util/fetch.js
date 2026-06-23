@@ -1,4 +1,4 @@
-import { default as _fetch } from 'node-fetch';
+import {default as _fetch} from 'node-fetch';
 
 const fetch = (...args) => {
   return _fetch(...args)
