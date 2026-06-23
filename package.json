@@ -4,6 +4,7 @@
   "private": true,
   "engines": {
     "node": "^22.0.0"
+    //**
   },
   "scripts": {
     "start": "cross-env NODE_PATH=. yarn node server.js",
