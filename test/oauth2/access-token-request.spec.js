@@ -11,7 +11,7 @@ chai.use(sinonChai);
 describe('Access Token Request', () => {
   const CLIENT_ID = 'ccd_gateway';
   const CLIENT_SECRET = 'abc123def456';
-  const TOKEN_ENDPOINT = 'http://localhost:1234/oauth2/token';
+  const TOKEN_ENDPOINT = 'http://localhost:1234/o/token';
   const REDIRECT_URN = 'localhost/redirect/to';
   const REDIRECT_URL = 'https://localhost/redirect/to';
   const UNDEFINED_URI = 'undefined:///oauth2redirect';
@@ -82,7 +82,6 @@ describe('Access Token Request', () => {
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
         expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         let requestedUrl = url.parse(fetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -99,7 +98,6 @@ describe('Access Token Request', () => {
     accessTokenRequest(REQUEST)
       .then(() => {
         expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         let requestedUrl = url.parse(fetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -118,7 +116,6 @@ describe('Access Token Request', () => {
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
         expect(unsuccessfulFetch.called()).to.be.true;
-        expect(unsuccessfulFetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         let requestedUrl = url.parse(unsuccessfulFetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);

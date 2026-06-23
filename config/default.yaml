@@ -14,7 +14,7 @@ idam:
   s2s_url: http://localhost:4502
   service_name: ccd_gw
   oauth2:
-    token_endpoint: http://localhost:5000/oauth2/token
+    token_endpoint: http://localhost:5000/o/token
     logout_endpoint: http://localhost:5000/session/:token
     client_id: ccd_gateway
 address_lookup:

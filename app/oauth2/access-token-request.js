@@ -25,15 +25,14 @@ function accessTokenRequest(request) {
   const options = {
     method: 'POST',
     headers: {
-      'Authorization': 'Basic '
-        + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
-        .toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   };
 
   const oauthUrl = new URL(config.get('idam.oauth2.token_endpoint'));
   oauthUrl.searchParams.append('code',request.query.code);
+  oauthUrl.searchParams.append('client_id',config.get('idam.oauth2.client_id'));
+  oauthUrl.searchParams.append('client_secret',config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'));
   oauthUrl.searchParams.append('redirect_uri',completeRedirectURI(request.query.redirect_uri));
   oauthUrl.searchParams.append('grant_type','authorization_code');
 
