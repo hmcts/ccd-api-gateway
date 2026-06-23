@@ -37,8 +37,8 @@ describe('getCachedUserDetails', () => {
     nodeCacheSpy = sandbox.spy(NodeCache.prototype, 'set');
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     cachedUserResolver = await esmock('../../app/user/cached-user-resolver.js', {
-      '../../app/cache/cache-config.js': {userInfoCache},
-      '../../app/user/user-resolver.js': userResolver
+      '../../app/cache/cache-config.js': { userInfoCache },
+      '../../app/user/user-resolver.js': { getUserDetails: userResolver.getUserDetails }
     });
   });
 
