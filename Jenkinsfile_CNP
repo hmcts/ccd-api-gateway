@@ -5,7 +5,7 @@ properties(
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
 )
 
-@Library("Infrastructure")
+@Library("Infrastructure@cve-dashboard")
 
 def product = "ccd"
 def component = "api-gateway-web"
@@ -20,8 +20,8 @@ def secrets = [
     ]
 ]
 
-// Prevent Docker hub rate limit errors by ensuring that testcontainers uses images from hmctspublic ACR
-env.TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX = "hmctspublic.azurecr.io/imported/"
+// Prevent Docker hub rate limit errors by ensuring that testcontainers uses images from hmctsprod ACR
+env.TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX = "hmctsprod.azurecr.io/imported/"
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     [ $class: 'AzureKeyVaultSecret',
@@ -60,6 +60,7 @@ withPipeline("nodejs", product, component) {
 
     enableAksStagingDeployment()
     disableLegacyDeployment()
+    enableCveDashboardIngestion()
 
     afterAlways('checkOut') {
         sh "yarn cache clean"
