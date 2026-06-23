@@ -93,9 +93,9 @@
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
+    "picomatch": "^2.3.2"
     "brace-expansion": "^5.0.5",
     "path-to-regexp@npm:^8.0.0": "npm:8.4.1",
-    "picomatch": "^2.3.2",
     "protobufjs": "^7.6.1"
   },
   "overrides": {
