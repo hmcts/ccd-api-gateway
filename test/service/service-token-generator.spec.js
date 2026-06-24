@@ -1,6 +1,5 @@
-import * as chai from 'chai';
 import { expect } from 'chai';
-import esmock from "esmock";
+import esmock from 'esmock';
 import sinon from 'sinon';
 import nock from 'nock';
 import jwt from 'jsonwebtoken';

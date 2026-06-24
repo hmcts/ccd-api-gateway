@@ -1,7 +1,5 @@
-import * as chai from 'chai';
 import { expect } from 'chai';
-import esmock from "esmock";
-// const expect = chai.expect;
+import esmock from 'esmock';
 import sinon from 'sinon';
 
 // Use CommonJS import for the ES module

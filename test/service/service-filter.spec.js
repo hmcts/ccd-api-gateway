@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import { expect } from 'chai';
 import esmock from 'esmock';
 
 describe('service filter', () => {
@@ -19,11 +19,17 @@ describe('service filter', () => {
         '../../app/service/service-token-generator.js': {default : EnotFoundError}
       });
 
-    serviceFilter(request, reply, (error) => {
-      expect(error.status).to.equal(500);
-      expect(error.error).to.equal('Internal Server Error');
-      expect(error.message).to.equal('some error');
-      done();
+    await new Promise((resolve, reject) => {
+      serviceFilter(request, reply, (error) => {
+        try {
+          expect(error.status).to.equal(500);
+          expect(error.error).to.equal('Internal Server Error');
+          expect(error.message).to.equal('some error');
+          resolve();
+        } catch (assertionError) {
+          reject(assertionError);
+        }
+      });
     });
   });
 
@@ -37,9 +43,15 @@ describe('service filter', () => {
         '../../app/service/service-token-generator.js': ErrorWithNoStatus
       });
 
-    serviceFilter(request, reply, (error) => {
-      expect(error.status).to.equal(401);
-      done();
+    await new Promise((resolve, reject) => {
+      serviceFilter(request, reply, (error) => {
+        try {
+          expect(error.status).to.equal(401);
+          resolve();
+        } catch (assertionError) {
+          reject(assertionError);
+        }
+      });
     });
   });
 
@@ -55,9 +67,15 @@ describe('service filter', () => {
         '../../app/service/service-token-generator.js': ErrorWithStatus
       });
 
-    serviceFilter(request, reply, (error) => {
-      expect(error.status).to.equal(502);
-      done();
+    await new Promise((resolve, reject) => {
+      serviceFilter(request, reply, (error) => {
+        try {
+          expect(error.status).to.equal(502);
+          resolve();
+        } catch (assertionError) {
+          reject(assertionError);
+        }
+      });
     });
   });
 

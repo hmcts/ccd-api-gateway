@@ -14,7 +14,7 @@ import fs from 'node:fs';
 import log from '@hmcts/nodejs-logging';
 import { fileURLToPath } from 'node:url';
 
-propertiesVolume.addTo(config)
+propertiesVolume.addTo(config);
 
 const debug = debugLib('ccd-api-gateway-web:server');
 const logger = log.Logger.getLogger('server');
@@ -62,9 +62,9 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  const port = parseInt(val, 10);
+  const port = Number.parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (Number.isNaN(port)) {
     // named pipe
     return val;
   }
