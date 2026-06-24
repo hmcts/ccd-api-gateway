@@ -39,14 +39,18 @@ describe('UserRequestAuthorizer', () => {
         getUserDetails: sinon.stub().resolves(DETAILS),
         getCachedUserDetails: sinon.stub().resolves(DETAILS)
       };
+      // authorizedRolesExtractor = {
+      //   extract: sinon.stub()
+      // };
+
       authorizedRolesExtractor = {
-        extract: sinon.stub()
+        default: sinon.stub()
       };
 
       userRequestAuthorizer = await esmock('../../app/user/user-request-authorizer.js', {
-        './cached-user-resolver.js': userResolver,
-        './user-resolver.js': userResolver,
-        './authorised-roles-extractor.js': authorizedRolesExtractor
+        '../../app/user/cached-user-resolver.js': userResolver,
+        '../../app/user/user-resolver.js': userResolver,
+        '../../app/user/authorised-roles-extractor.js': authorizedRolesExtractor
       });
     });
 
@@ -75,7 +79,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should reject when roles do not match', done => {
-      authorizedRolesExtractor.extract.returns(['no-match']);
+      authorizedRolesExtractor.default.returns(['no-match']);
 
       userRequestAuthorizer.authorise(request)
         .then(() => done(new Error('Promise should have been rejected')))
@@ -86,7 +90,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should reject when no roles are extracted', done => {
-      authorizedRolesExtractor.extract.returns([]);
+      authorizedRolesExtractor.default.returns([]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => done(new Error('Promise should have been rejected')))
@@ -97,7 +101,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should fill in user ID placeholder in URL', done => {
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
@@ -110,7 +114,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should resolve with user details when all checks OK', done => {
       request.cookies = null;
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
@@ -122,7 +126,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should NOT reject missing Authorization header when AccessToken cookie present', done => {
       request.get.returns(null);
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => done())
@@ -134,7 +138,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should use the AccessToken cookie when present, to obtain user details', done => {
       request.get.returns(null);
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
@@ -147,7 +151,7 @@ describe('UserRequestAuthorizer', () => {
     it('should use the AccessToken cookie to set the Authorization header, when the header is missing', async () => {
       request.get.returns(null);
       request.headers = {'X_CUSTOM_HEADER': X_CUSTOM_HEADER};
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       await userRequestAuthorizer.authorise(request);
 
@@ -162,7 +166,7 @@ describe('UserRequestAuthorizer', () => {
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
-          expect(authorizedRolesExtractor.extract).not.to.have.been.called;
+          expect(authorizedRolesExtractor.default).not.to.have.been.called;
           expect(user).to.equal(DETAILS);
           done();
         })
@@ -175,7 +179,7 @@ describe('UserRequestAuthorizer', () => {
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
-          expect(authorizedRolesExtractor.extract).not.to.have.been.called;
+          expect(authorizedRolesExtractor.default).not.to.have.been.called;
           expect(user).to.equal(DETAILS);
           done();
         })
@@ -183,7 +187,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should resolve when user has at least one matching role', done => {
-      authorizedRolesExtractor.extract.returns([ROLE_1, 'other-role']);
+      authorizedRolesExtractor.default.returns([ROLE_1, 'other-role']);
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
@@ -203,9 +207,9 @@ describe('UserRequestAuthorizer', () => {
         };
 
         userRequestAuthorizer = await esmock('../../app/user/user-request-authorizer.js', {
-          './cached-user-resolver.js': userResolver,
-          './user-resolver.js': userResolver,
-          './authorised-roles-extractor.js': authorizedRolesExtractor
+          '../../app/user/cached-user-resolver.js': userResolver,
+          '../../app/user/user-resolver.js': userResolver,
+          '../../app/user/authorised-roles-extractor.js': authorizedRolesExtractor
         });
       });
 
