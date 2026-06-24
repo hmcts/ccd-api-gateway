@@ -13,8 +13,8 @@ const logoutRoute = (req, res, next) => {
       method: 'DELETE',
       headers: {
         'Authorization': 'Basic '
-          + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
-            .toString('base64'),
+        + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
+          .toString('base64'),
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     };

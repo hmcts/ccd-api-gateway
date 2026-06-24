@@ -10,8 +10,8 @@ function addressLookup(postcode) {
 
   return fetch(
     config.address_lookup.url
-      .replace('${key}', config.get('secrets.ccd.postcode-info-address-lookup-token'))
-      .replace('${postcode}', postcode), getHttpConfig())
+       .replace('${key}', config.get('secrets.ccd.postcode-info-address-lookup-token'))
+       .replace('${postcode}', postcode), getHttpConfig())
     .then(res => res.status === 200 ? res : res.text().then(body => badResponse(res, body)))
     .then(res => res.text())
     .catch((e) => {

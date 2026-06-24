@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import {expect} from 'chai';
 import esmock from 'esmock';
 import sinon from  'sinon';
- const assert = sinon.assert;
+const assert = sinon.assert;
 import sinonChai from 'sinon-chai';
 import sinonExpressMock from 'sinon-express-mock';
 import {COOKIE_ACCESS_TOKEN} from '../../app/oauth2/oauth2-route.js';
@@ -68,7 +68,7 @@ describe('logoutRoute', () => {
       'config': config,
       'node-fetch': fetch
     });
-    logoutRoute = result.logoutRoute;  // ← Assign to outer scope
+    logoutRoute = result.logoutRoute;
   });
 
   afterEach(() => {

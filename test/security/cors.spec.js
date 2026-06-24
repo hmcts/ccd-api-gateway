@@ -2,7 +2,6 @@ import * as chai from 'chai';
 import esmock from 'esmock';
 import sinon from 'sinon';
 
-
 const assert = sinon.assert;
 import sinonChai from 'sinon-chai';
 import sinonExpressMock from 'sinon-express-mock';

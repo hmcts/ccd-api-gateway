@@ -39,9 +39,6 @@ describe('UserRequestAuthorizer', () => {
         getUserDetails: sinon.stub().resolves(DETAILS),
         getCachedUserDetails: sinon.stub().resolves(DETAILS)
       };
-      // authorizedRolesExtractor = {
-      //   extract: sinon.stub()
-      // };
 
       authorizedRolesExtractor = {
         default: sinon.stub()
@@ -67,7 +64,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should reject when user cannot be resolved', done => {
-      const ERROR = {error: 'oops', status: 401};
+      const ERROR = { error: 'oops', status: 401 };
       userResolver.getUserDetails.returns(Promise.reject(ERROR));
 
       userRequestAuthorizer.authorise(request)

@@ -22,10 +22,10 @@ describe('authCheckerUserOnlyFilter', () => {
       headers: {}
     };
     res = {
-      status: function (statusInput) {
+      status: function(statusInput) {
         this.status = statusInput;
       },
-      json: function (jsonInput) {
+      json: function(jsonInput) {
         this.json = jsonInput;
       }
     };

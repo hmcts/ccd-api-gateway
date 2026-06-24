@@ -32,15 +32,15 @@ describe('CacheService', () => {
         let cache;
 
         beforeEach(async () => {
-          getStub = sinon.stub();
-          setStub = sinon.stub();
-          deleteStub = sinon.stub();
+            getStub = sinon.stub();
+            setStub = sinon.stub();
+            deleteStub = sinon.stub();
 
-          MockNodeCache = {
-            get: getStub,
-            set: setStub,
-            del: deleteStub
-          };
+            MockNodeCache = {
+                get: getStub,
+                set: setStub,
+                del: deleteStub
+            };
 
           nodeCacheSpy = sinon.spy(function () {
             return MockNodeCache;
