@@ -39,8 +39,8 @@ describe('oauth2Route', () => {
     accessTokenRequest.withArgs(request).returns(Promise.resolve(responseFromPromiseMock));
 
     const oauth2Module = await esmock('../../app/oauth2/oauth2-route.js', {
-      './access-token-request.js': { default: accessTokenRequest },
-      'config': { default: config }
+      '../../app/oauth2/access-token-request.js': { default: accessTokenRequest },
+      config: { default: config }
     });
     oauth2Route = oauth2Module.oauth2Route;
   });
@@ -95,8 +95,8 @@ describe('oauth2Route', () => {
     unauthorizedAccessTokenRequest.withArgs(request).returns(Promise.resolve(expectedError));
 
     esmock('../../app/oauth2/oauth2-route.js', {
-      './access-token-request.js': { default: unauthorizedAccessTokenRequest },
-      'config': { default: config }
+      '../../app/oauth2/access-token-request.js': { default: unauthorizedAccessTokenRequest },
+      config: { default: config }
     }).then(({ oauth2Route: unauthorizedOauth2Route }) => {
       next.callsFake((result) => {
         try {
