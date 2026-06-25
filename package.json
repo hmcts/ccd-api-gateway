@@ -93,5 +93,5 @@
   "resolutions": {
     "@opentelemetry/core": "2.8.0"
   },
-  "packageManager": "yarn@4.16.0"
+  "packageManager": "yarn@4.17.0"
 }
