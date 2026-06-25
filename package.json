@@ -80,10 +80,18 @@
   },
   "type": "module",
   "c8": {
-    "include": ["app/**/*.js"],
-    "reporter": ["lcov", "text-summary"],
+    "include": [
+      "app/**/*.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
     "report-dir": "coverage",
     "all": true
+  },
+  "resolutions": {
+    "@opentelemetry/core": "2.8.0"
   },
   "packageManager": "yarn@4.16.0"
 }
