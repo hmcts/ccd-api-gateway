@@ -9,47 +9,56 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-export default defineConfig([{
+export default defineConfig([
+  {
+    ignores: [
+      "**/config/*",
+      "**/node_modules/*",
+      "yarn.lock",
+      ".yarn/**",
+      "yarn-audit-known-issues",
+      "**/*.properties",
+    ],
+  },
+  {
+    files: ["**/*.js", "**/*.spec.js"],
     extends: compat.extends("eslint:recommended"),
 
-    ignores: [
-        '.yarn/**',
-        'eslint.config.mjs'
-    ],
-
     plugins: {
-        mocha,
+      mocha,
+      js,
     },
 
     languageOptions: {
-        globals: {
-            ...globals.browser,
-            ...globals.node,
-            ...globals.jquery,
-            ...globals.mocha,
-            actor: true,
-            Feature: true,
-            Scenario: true,
-            codecept_helper: true,
-        },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.jquery,
+        ...globals.mocha,
+        actor: true,
+        Feature: true,
+        Scenario: true,
+        codecept_helper: true,
+      },
 
-        ecmaVersion: 2017,
-        sourceType: "module",
+      ecmaVersion: 2019,
+      sourceType: "module",
     },
 
     rules: {
-        "no-console": 0,
-        "linebreak-style": ["error", "unix"],
-        quotes: ["error", "single"],
-        semi: ["error", "always"],
-        "comma-dangle": ["error", "never"],
-        eqeqeq: "error",
-        "require-yield": "off",
-        "mocha/no-exclusive-tests": "error",
+      "no-console": "error",
+      "linebreak-style": ["error", "unix"],
+      quotes: ["error", "single"],
+      semi: ["error", "always"],
+      "comma-dangle": ["error", "never"],
+      eqeqeq: "error",
+      "require-yield": "off",
+      "mocha/no-exclusive-tests": "error",
     },
-}]);
+  },
+]);
