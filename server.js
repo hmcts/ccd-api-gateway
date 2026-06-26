@@ -5,6 +5,7 @@
  */
 import config from 'config';
 import propertiesVolume from '@hmcts/properties-volume';
+propertiesVolume.addTo(config);
 import app from './app.js';
 import debugLib from 'debug';
 import http from 'node:http';
@@ -13,8 +14,6 @@ import path from 'node:path';
 import fs from 'node:fs';
 import log from '@hmcts/nodejs-logging';
 import { fileURLToPath } from 'node:url';
-
-propertiesVolume.addTo(config);
 
 const debug = debugLib('ccd-api-gateway-web:server');
 const logger = log.Logger.getLogger('server');
