@@ -3,8 +3,8 @@
 /**
  * Module dependencies.
  */
-import config from 'config';
-import propertiesVolume from '@hmcts/properties-volume';
+import * as config from 'config';
+import * as propertiesVolume from '@hmcts/properties-volume';
 propertiesVolume.addTo(config);
 import app from './app.js';
 import debugLib from 'debug';
