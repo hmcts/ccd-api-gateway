@@ -1,6 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const nock = require('nock');
+const proxyquire = require('proxyquire');
 
 /* The line below turns off ESLints 'no-undef' for the chai 'fail' function */
 /*global fail */
@@ -52,6 +53,57 @@ describe('Address Lookup', () => {
       done();
     });
 
+    it('Should configure HTTPS proxy agent when proxy detection is enabled', (done) => {
+      const existingProxy = process.env.https_proxy;
+      process.env.https_proxy = 'http://proxy.example:8080';
+      let capturedConfig;
+      const restoreProxy = () => {
+        if (existingProxy === undefined) {
+          delete process.env.https_proxy;
+        } else {
+          process.env.https_proxy = existingProxy;
+        }
+      };
+
+      function HttpsProxyAgent(proxyUrl) {
+        this.proxyUrl = proxyUrl;
+      }
+
+      const proxiedAddressLookup = proxyquire('../../app/address/address-lookup', {
+        config: {
+          address_lookup: {
+            detect_proxy: true,
+            url: 'https://api.os.uk/search?key=${key}&postcode=${postcode}'
+          },
+          get: () => 'AA'
+        },
+        'node-fetch': (url, httpConfig) => {
+          expect(url).to.contain('P5TCDE');
+          capturedConfig = httpConfig;
+          return Promise.resolve({
+            status: 200,
+            text: () => Promise.resolve('JSONArray')
+          });
+        },
+        'https-proxy-agent': { HttpsProxyAgent }
+      });
+
+      proxiedAddressLookup('P5TCDE').then((body) => {
+        try {
+          expect(body).to.equal('JSONArray');
+          expect(capturedConfig.agent).to.be.instanceOf(HttpsProxyAgent);
+          expect(capturedConfig.agent.proxyUrl).to.equal('http://proxy.example:8080');
+          restoreProxy();
+          done();
+        } catch (e) {
+          restoreProxy();
+          done(e);
+        }
+      }).catch((e) => {
+        restoreProxy();
+        done(e);
+      });
+    });
+
   }
 );
-
