@@ -2321,7 +2321,7 @@ __metadata:
     http-proxy-middleware: "npm:^3.0.5"
     https-proxy-agent: "npm:^9.0.0"
     istanbul: "npm:^0.4.5"
-    js-yaml: "npm:^4.1.1"
+    js-yaml: "npm:4.2.0"
     jsonwebtoken: "npm:^9.0.0"
     jwt-decode: "npm:^2.2.0"
     lodash: "npm:^4.18.1"
@@ -2344,6 +2344,7 @@ __metadata:
     sinon-express-mock: "npm:^2.0.0"
     sonar-scanner: "npm:^3.1.0"
     supertest: "npm:^6.3.3"
+    uuid: "npm:12.0.1"
   languageName: unknown
   linkType: soft
 
@@ -6528,6 +6529,15 @@ __metadata:
   dependencies:
     inherits: "npm:2.0.3"
   checksum: 10/1200a1ca2b474758342b3a0c5261c56f14ef09ad7eeaec3e6f449f5776ecdfce09a153cad62652b823e74647cdcfd2918552eadd2434783dfb58dabc5061803a
+  languageName: node
+  linkType: hard
+
+"uuid@npm:12.0.1":
+  version: 12.0.1
+  resolution: "uuid@npm:12.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 10/949407b5ef655432b94a445a66ddfa6b063e5a2efa70e73dbb3ac53a784dd4dfb3b4b18075d5f9ea028130af4aacf6f6307bc5078e705d28c0d98af67c3f0812
   languageName: node
   linkType: hard
 
