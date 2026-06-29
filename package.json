@@ -36,7 +36,7 @@
     "formidable": "^3.5.4",
     "handlebars": "^4.7.7",
     "http-proxy-middleware": "^3.0.5",
-    "https-proxy-agent": "^2.2.3",
+    "https-proxy-agent": "^9.0.0",
     "js-yaml": "^4.1.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.18.1",
