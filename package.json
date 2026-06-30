@@ -10,9 +10,9 @@
     "setup": "cross-env NODE_PATH=. yarn node --version",
     "lint": "NODE_PATH=. eslint --ignore-pattern coverage .",
     "test": "yarn test:unit",
-    "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-api-gateway --recursive",
+    "test:unit": "NODE_ENV=test NODE_PATH=. mocha --loader=esmock 'test/**/*.spec.js' --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-api-gateway --recursive",
     "test:specific": "NODE_ENV=test LOG_LEVEL=DEBUG NODE_PATH=. mocha --recursive ",
-    "test:coverage": "NODE_ENV=test NODE_PATH=. nyc mocha 'test/**/*.spec.js' --recursive",
+    "test:coverage": "NODE_ENV=test NODE_PATH=. c8 mocha 'test/**/*.spec.js' --recursive",
     "fortifyScan": "./test/java/gradlew -p test/java fortifyScan",
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
@@ -54,10 +54,12 @@
     "otp": "^0.1.3"
   },
   "devDependencies": {
+    "c8": "^11.0.0",
     "chai": "^6.2.2",
     "chai-http": "^5.1.2",
     "eslint": "^10.4.1",
     "eslint-plugin-mocha": "^11.3.0",
+    "esmock": "^2.7.6",
     "fetch-mock": "^12.6.0",
     "git-message": "^2.0.2",
     "istanbul": "^0.4.5",
@@ -76,12 +78,10 @@
     "sonar-scanner": "^3.1.0",
     "supertest": "^7.2.2"
   },
-  "nyc": {
-    "extension": [
-      ".js"
-    ],
+  "type": "module",
+  "c8": {
     "include": [
-      "app"
+      "app/**/*.js"
     ],
     "reporter": [
       "lcov",
@@ -89,6 +89,9 @@
     ],
     "report-dir": "coverage",
     "all": true
+  },
+  "resolutions": {
+    "@opentelemetry/core": "2.8.0"
   },
   "packageManager": "yarn@4.17.0"
 }

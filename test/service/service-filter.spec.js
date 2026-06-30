@@ -1,13 +1,12 @@
-const proxyquire = require('proxyquire');
-const chai = require('chai');
-const expect = chai.expect;
+import { expect } from 'chai';
+import esmock from 'esmock';
 
 describe('service filter', () => {
 
   const request = {};
   const reply = {};
 
-  it('should return a 500 error in case of FetchError', done => {
+  it('should return a 500 error in case of FetchError', async () => {
     const EnotFoundError = () => {
       return Promise.reject({
         name: 'FetchError',
@@ -15,51 +14,69 @@ describe('service filter', () => {
       });
     };
 
-    const serviceFilter = proxyquire('../../app/service/service-filter',
+    const serviceFilter = await esmock('../../app/service/service-filter.js',
       {
-        './service-token-generator': EnotFoundError
+        '../../app/service/service-token-generator.js': {default : EnotFoundError}
       });
 
+    await new Promise((resolve, reject) => {
       serviceFilter(request, reply, (error) => {
-        expect(error.status).to.equal(500);
-        expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal('some error');
-        done();
+        try {
+          expect(error.status).to.equal(500);
+          expect(error.error).to.equal('Internal Server Error');
+          expect(error.message).to.equal('some error');
+          resolve();
+        } catch (assertionError) {
+          reject(assertionError);
+        }
       });
+    });
   });
 
-  it('should return a 401 error when s2s call fails with no error status', done => {
+  it('should return a 401 error when s2s call fails with no error status', async () => {
     const ErrorWithNoStatus = () => {
       return Promise.reject({});
     };
 
-    const serviceFilter = proxyquire('../../app/service/service-filter',
+    const serviceFilter = await esmock('../../app/service/service-filter.js',
       {
-        './service-token-generator': ErrorWithNoStatus
+        '../../app/service/service-token-generator.js': ErrorWithNoStatus
       });
 
+    await new Promise((resolve, reject) => {
       serviceFilter(request, reply, (error) => {
-        expect(error.status).to.equal(401);
-        done();
+        try {
+          expect(error.status).to.equal(401);
+          resolve();
+        } catch (assertionError) {
+          reject(assertionError);
+        }
       });
+    });
   });
 
-  it('should return the error status when s2s call fails with an error status', done => {
+  it('should return the error status when s2s call fails with an error status', async () => {
     const ErrorWithStatus = () => {
       return Promise.reject({
         status: 502
       });
     };
 
-    const serviceFilter = proxyquire('../../app/service/service-filter',
+    const serviceFilter = await esmock('../../app/service/service-filter.js',
       {
-        './service-token-generator': ErrorWithStatus
+        '../../app/service/service-token-generator.js': ErrorWithStatus
       });
 
+    await new Promise((resolve, reject) => {
       serviceFilter(request, reply, (error) => {
-        expect(error.status).to.equal(502);
-        done();
+        try {
+          expect(error.status).to.equal(502);
+          resolve();
+        } catch (assertionError) {
+          reject(assertionError);
+        }
       });
+    });
   });
 
 

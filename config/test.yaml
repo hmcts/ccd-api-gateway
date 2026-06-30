@@ -2,6 +2,8 @@ appInsights:
   enabled: false
 idam:
   base_url: http://test-idam:1234
+  cache:
+    user_info_enabled: false
 secrets:
   ccd:
     ccd-api-gateway-oauth2-client-secret: ccd_gateway_secret

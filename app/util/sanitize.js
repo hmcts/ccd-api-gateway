@@ -8,4 +8,5 @@ const sanitizeData = (data) => {
   return sanitizedData;
 };
 
-exports.sanitizeData = sanitizeData;
+export {sanitizeData};
+

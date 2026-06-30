@@ -1,16 +1,15 @@
-const chai = require('chai');
-const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
-const nock = require('nock');
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
+import { expect } from 'chai';
+import esmock from 'esmock';
+import sinon from 'sinon';
+import nock from 'nock';
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 describe('service token generator', () => {
 
   let serviceTokenGenerator;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     let config = {
       get: sinon.stub()
     };
@@ -18,11 +17,11 @@ describe('service token generator', () => {
     config.get.withArgs('idam.s2s_url').returns('http://localhost:9999');
     config.get.withArgs('appInsights.enabled').returns(false);
 
-    serviceTokenGenerator = proxyquire('../../app/service/service-token-generator', {
+    serviceTokenGenerator = await esmock('../../app/service/service-token-generator', {
       'config': config
     });
 
-    proxyquire('../../app/app-insights/app-insights', {
+    await esmock('../../app/app-insights/app-insights', {
       'config': config
     });
   });

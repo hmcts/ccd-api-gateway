@@ -1,12 +1,14 @@
-const chai = require('chai');
-const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
+import {expect} from 'chai';
+import * as chai from 'chai';
+import esmock from 'esmock';
+import sinon from 'sinon';
+
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai').default;
+import sinonChai from 'sinon-chai';
+
 chai.use(sinonChai);
-const CacheService = require('../../app/cache/cache-service');
-const NodeCache = require('node-cache');
+import CacheService from '../../app/cache/cache-service.js';
+import NodeCache from 'node-cache';
 
 describe('CacheService', () => {
     const KEY = 'Key';
@@ -29,7 +31,7 @@ describe('CacheService', () => {
 
         let cache;
 
-        beforeEach(() => {
+        beforeEach(async () => {
             getStub = sinon.stub();
             setStub = sinon.stub();
             deleteStub = sinon.stub();
@@ -40,10 +42,12 @@ describe('CacheService', () => {
                 del: deleteStub
             };
 
-            nodeCacheSpy = sinon.spy(function () { return MockNodeCache; });
+          nodeCacheSpy = sinon.spy(function () {
+            return MockNodeCache;
+          });
 
-            StubbedCacheService = proxyquire('../../app/cache/cache-service', { 'node-cache': nodeCacheSpy });
-            cache = new StubbedCacheService('TestCache', CACHE_TTL_SECONDS, 120);
+          StubbedCacheService = await esmock('../../app/cache/cache-service', {'node-cache': nodeCacheSpy});
+          cache = new StubbedCacheService('TestCache', CACHE_TTL_SECONDS, 120);
         });
 
         it('should get existing cache value', async () => {

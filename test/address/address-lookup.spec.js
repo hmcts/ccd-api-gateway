@@ -1,16 +1,11 @@
-const chai = require('chai');
-const expect = chai.expect;
-const nock = require('nock');
+import {expect} from 'chai';
+import nock from 'nock';
+import addressLookup from '../../app/address/address-lookup.js';
 
 /* The line below turns off ESLints 'no-undef' for the chai 'fail' function */
 /*global fail */
 describe('Address Lookup', () => {
 
-  let addressLookup;
-
-  before(function(){
-    addressLookup = require('../../app/address/address-lookup');
-  });
 
   it('Should expect key and postcode placed holders to be substituted', (done) => {
 

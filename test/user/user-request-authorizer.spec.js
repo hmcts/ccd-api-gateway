@@ -1,11 +1,12 @@
-const proxyquire =  require('proxyquire');
-const chai = require('chai');
-const sinon = require('sinon');
-const expect = chai.expect;
-const sinonChai = require('sinon-chai').default;
+import * as chai from 'chai';
+import {expect} from 'chai';
+import esmock from 'esmock';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+
 chai.use(sinonChai);
-const userReqAuth = require('../../app/user/user-request-authorizer');
-const COOKIE_ACCESS_TOKEN = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
+import {AUTHORIZATION} from '../../app/user/user-request-authorizer.js';
+import {COOKIE_ACCESS_TOKEN} from '../../app/oauth2/oauth2-route.js';
 
 describe('UserRequestAuthorizer', () => {
   describe('authorize', () => {
@@ -25,10 +26,9 @@ describe('UserRequestAuthorizer', () => {
     let request;
     let userResolver;
     let authorizedRolesExtractor;
-
     let userRequestAuthorizer;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       request = {
         url: 'http://caseworkers/:uid/more/stuff',
         originalUrl: 'http://caseworkers/:uid/more/stuff',
@@ -36,18 +36,18 @@ describe('UserRequestAuthorizer', () => {
         cookies: COOKIES
       };
       userResolver = {
-        getUserDetails: sinon.stub().returns(Promise.resolve(DETAILS))
+        getUserDetails: sinon.stub().resolves(DETAILS),
+        getCachedUserDetails: sinon.stub().resolves(DETAILS)
       };
+
       authorizedRolesExtractor = {
-        extract: sinon.stub()
+        default: sinon.stub()
       };
 
-      delete require.cache[require.resolve('../../app/user/user-request-authorizer')];
-
-      userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
-        './cached-user-resolver': userResolver,
-        './user-resolver': userResolver,
-        './authorised-roles-extractor': authorizedRolesExtractor
+      userRequestAuthorizer = await esmock('../../app/user/user-request-authorizer.js', {
+        '../../app/user/cached-user-resolver.js': userResolver,
+        '../../app/user/user-resolver.js': userResolver,
+        '../../app/user/authorised-roles-extractor.js': authorizedRolesExtractor
       });
     });
 
@@ -76,7 +76,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should reject when roles do not match', done => {
-      authorizedRolesExtractor.extract.returns(['no-match']);
+      authorizedRolesExtractor.default.returns(['no-match']);
 
       userRequestAuthorizer.authorise(request)
         .then(() => done(new Error('Promise should have been rejected')))
@@ -87,7 +87,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should reject when no roles are extracted', done => {
-      authorizedRolesExtractor.extract.returns([]);
+      authorizedRolesExtractor.default.returns([]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => done(new Error('Promise should have been rejected')))
@@ -98,7 +98,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should fill in user ID placeholder in URL', done => {
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
@@ -111,7 +111,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should resolve with user details when all checks OK', done => {
       request.cookies = null;
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
@@ -123,7 +123,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should NOT reject missing Authorization header when AccessToken cookie present', done => {
       request.get.returns(null);
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => done())
@@ -135,7 +135,7 @@ describe('UserRequestAuthorizer', () => {
 
     it('should use the AccessToken cookie when present, to obtain user details', done => {
       request.get.returns(null);
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
       userRequestAuthorizer.authorise(request)
         .then(() => {
@@ -145,19 +145,16 @@ describe('UserRequestAuthorizer', () => {
         .catch(() => done(new Error('Promise should have been resolved')));
     });
 
-    it('should use the AccessToken cookie to set the Authorization header, when the header is missing', done => {
+    it('should use the AccessToken cookie to set the Authorization header, when the header is missing', async () => {
       request.get.returns(null);
       request.headers = {'X_CUSTOM_HEADER': X_CUSTOM_HEADER};
-      authorizedRolesExtractor.extract.returns([ROLE_1]);
+      authorizedRolesExtractor.default.returns([ROLE_1]);
 
-      userRequestAuthorizer.authorise(request)
-        .then(() => {
-          expect(request.headers).not.to.be.undefined;
-          expect(request.headers[userReqAuth.AUTHORIZATION]).to.equal('Bearer ' + COOKIES[COOKIE_ACCESS_TOKEN]);
-          expect(request.headers['X_CUSTOM_HEADER']).to.equal(X_CUSTOM_HEADER);
-          done();
-        })
-        .catch(() => done(new Error('Promise should have been resolved')));
+      await userRequestAuthorizer.authorise(request);
+
+      expect(request.headers).not.to.be.undefined;
+      expect(request.headers[AUTHORIZATION]).to.equal('Bearer ' + COOKIES[COOKIE_ACCESS_TOKEN]);
+      expect(request.headers['X_CUSTOM_HEADER']).to.equal(X_CUSTOM_HEADER);
     });
 
     it('should NOT check roles and resolve when URL does not contain /caseworkers/', done => {
@@ -166,7 +163,7 @@ describe('UserRequestAuthorizer', () => {
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
-          expect(authorizedRolesExtractor.extract).not.to.have.been.called;
+          expect(authorizedRolesExtractor.default).not.to.have.been.called;
           expect(user).to.equal(DETAILS);
           done();
         })
@@ -179,7 +176,7 @@ describe('UserRequestAuthorizer', () => {
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
-          expect(authorizedRolesExtractor.extract).not.to.have.been.called;
+          expect(authorizedRolesExtractor.default).not.to.have.been.called;
           expect(user).to.equal(DETAILS);
           done();
         })
@@ -187,7 +184,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     it('should resolve when user has at least one matching role', done => {
-      authorizedRolesExtractor.extract.returns([ROLE_1, 'other-role']);
+      authorizedRolesExtractor.default.returns([ROLE_1, 'other-role']);
 
       userRequestAuthorizer.authorise(request)
         .then(user => {
@@ -198,7 +195,7 @@ describe('UserRequestAuthorizer', () => {
     });
 
     describe('static role protected paths', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         request = {
           url: '/print/probateManTypes',
           originalUrl: '/print/probateManTypes',
@@ -206,12 +203,10 @@ describe('UserRequestAuthorizer', () => {
           cookies: COOKIES
         };
 
-        delete require.cache[require.resolve('../../app/user/user-request-authorizer')];
-
-        userRequestAuthorizer = proxyquire('../../app/user/user-request-authorizer', {
-          './cached-user-resolver': userResolver,
-          './user-resolver': userResolver,
-          './authorised-roles-extractor': authorizedRolesExtractor
+        userRequestAuthorizer = await esmock('../../app/user/user-request-authorizer.js', {
+          '../../app/user/cached-user-resolver.js': userResolver,
+          '../../app/user/user-resolver.js': userResolver,
+          '../../app/user/authorised-roles-extractor.js': authorizedRolesExtractor
         });
       });
 
@@ -274,20 +269,17 @@ describe('UserRequestAuthorizer', () => {
           });
       });
 
-      it('should reject with UNAUTHORISED_ROLE when user has no roles for /print/probateManTypes', done => {
-        userResolver.getUserDetails.returns(Promise.resolve({
-          uid: USER_ID,
-          roles: []
-        }));
+      it('should reject with UNAUTHORISED_ROLE when user has no roles for /print/probateManTypes', async () => {
+        userResolver.getUserDetails.resolves({ uid: USER_ID, roles: [] });
 
-        userRequestAuthorizer.authorise(request)
-          .then(() => done(new Error('Promise should have been rejected')))
-          .catch(error => {
-            expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORISED_ROLE);
-            expect(error.status).to.equal(403);
-            expect(error.error).to.equal('Unauthorised role');
-            done();
-          });
+        try {
+          await userRequestAuthorizer.authorise(request);
+          throw new Error('Promise should have been rejected');
+        } catch (error) {
+          expect(error).to.equal(userRequestAuthorizer.ERROR_UNAUTHORISED_ROLE);
+          expect(error.status).to.equal(403);
+          expect(error.error).to.equal('Unauthorised role');
+        }
       });
 
       it('should resolve for a path that does not match any static protected path', done => {

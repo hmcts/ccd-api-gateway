@@ -3,22 +3,29 @@
 /**
  * Module dependencies.
  */
+import config from 'config';
+import * as propertiesVolume from '@hmcts/properties-volume';
+import debugLib from 'debug';
+import http from 'node:http';
+import https from 'node:https';
+import path from 'node:path';
+import fs from 'node:fs';
+import log from '@hmcts/nodejs-logging';
+import { fileURLToPath } from 'node:url';
 
-require('@hmcts/properties-volume').addTo(require('config'));
-let app = require('./app');
-let debug = require('debug')('ccd-api-gateway-web:server');
-let http = require('http');
-let https = require('https');
-let path = require('path');
-let fs = require('fs');
-let log = require('@hmcts/nodejs-logging');
-
+const debug = debugLib('ccd-api-gateway-web:server');
 const logger = log.Logger.getLogger('server');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+propertiesVolume.addTo(config);
+const { default: app } = await import('./app.js');
+
 /**
  * Get port from environment and store in Express.
  */
-
-let port = normalizePort(process.env.PORT || '3453');
+const port = normalizePort(process.env.PORT || '3453');
 logger.info('Starting on port ' + port);
 app.set('port', port);
 
@@ -26,7 +33,7 @@ app.set('port', port);
  * Create HTTPS or HTTP server, depending on whether this is a local dev environment or not.
  */
 
-let server = createServer(app);
+const server = createServer(app);
 
 function createServer(app) {
   if (process.env.ENV === 'localdev') {
@@ -56,9 +63,9 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  let port = parseInt(val, 10);
+  const port = Number.parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (Number.isNaN(port)) {
     // named pipe
     return val;
   }
@@ -80,7 +87,7 @@ function onError(error) {
     throw error;
   }
 
-  let bind = typeof port === 'string'
+  const bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -104,8 +111,8 @@ function onError(error) {
  */
 
 function onListening() {
-  let addr = server.address();
-  let bind = typeof addr === 'string'
+  const addr = server.address();
+  const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);

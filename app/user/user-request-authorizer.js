@@ -1,9 +1,13 @@
-const authorizedRolesExtractor = require('./authorised-roles-extractor');
-const COOKIE_ACCESS_TOKEN = require('../oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
-const config = require('config');
+import extract from './authorised-roles-extractor.js';
+import {COOKIE_ACCESS_TOKEN} from '../oauth2/oauth2-route.js';
+import config from 'config';
+
 const userResolver = config.get('cache.user_info_enabled')
-  ? require('./cached-user-resolver')
-  : require('./user-resolver');
+  ? await import('./cached-user-resolver.js')
+  : await import('./user-resolver.js');
+
+const getUserDetails = userResolver.getUserDetails
+  || userResolver.default?.getUserDetails;
 
 const AUTHORIZATION = 'Authorization';
 
@@ -50,14 +54,13 @@ const authorise = (request) => {
   // Use AccessToken cookie as Authorization header
   if (!request.get(AUTHORIZATION) && bearerToken) {
     if (!request.headers) {
-      request.headers = { [AUTHORIZATION]: `Bearer ${bearerToken}` };
+      request.headers = {[AUTHORIZATION]: `Bearer ${bearerToken}`};
     } else {
       request.headers[AUTHORIZATION] = `Bearer ${bearerToken}`;
     }
   }
 
-  return userResolver
-    .getUserDetails(bearerToken)
+  return getUserDetails(bearerToken)
     .then(userDetails => user = userDetails)
     .then(() => fillInUserId(request, user))
     .then(() => authorizeRoles(request, user))
@@ -66,7 +69,7 @@ const authorise = (request) => {
 
 const authorizeRoles = (request, user) => {
   if (request.originalUrl.includes('/caseworkers/')) {
-    const roles = authorizedRolesExtractor.extract(request);
+    const roles = extract(request);
 
     if (roles.length === 0 ||
       !roles.some(role => user.roles.includes(role))) {
@@ -97,8 +100,10 @@ const fillInUserId = (request, user) => {
   request.originalUrl = request.originalUrl.replace(USER_ID_PLACEHOLDER, user.uid);
 };
 
-exports.ERROR_TOKEN_MISSING = ERROR_TOKEN_MISSING;
-exports.ERROR_UNAUTHORISED_ROLE = ERROR_UNAUTHORISED_ROLE;
-exports.ERROR_UNAUTHORISED_USER_ID = ERROR_UNAUTHORISED_USER_ID;
-exports.AUTHORIZATION = AUTHORIZATION;
-exports.authorise = authorise;
+export {
+  ERROR_TOKEN_MISSING,
+  ERROR_UNAUTHORISED_ROLE,
+  ERROR_UNAUTHORISED_USER_ID,
+  AUTHORIZATION,
+  authorise
+};

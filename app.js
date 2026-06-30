@@ -1,27 +1,28 @@
-const enableAppInsights = require('./app/app-insights/app-insights');
+import enableAppInsights from './app/app-insights/app-insights.js';
+import payloadGuard from './app/service/service-payloadGuard.js';
+
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import { legacyCreateProxyMiddleware as proxy } from 'http-proxy-middleware';
+import config from 'config';
+import loggingPkg from '@hmcts/nodejs-logging';
+const { Express: ExpressLogger, Logger } = loggingPkg;
+import {authCheckerUserOnlyFilter, mapFetchErrors} from './app/user/auth-checker-user-only-filter.js';
+import addressLookup from './app/address/address-lookup.js';
+import serviceFilter from './app/service/service-filter.js';
+import corsHandler from './app/security/cors.js';
+import handleTiming from './app/security/timing.js';
+import hstsHandler from './app/security/hsts.js';
+import healthcheck from '@hmcts/nodejs-healthcheck';
+import routes from '@hmcts/nodejs-healthcheck/healthcheck/routes.js';
+import {oauth2Route} from './app/oauth2/oauth2-route.js';
+import {logoutRoute} from './app/oauth2/logout-route.js';
+import noCache from 'nocache';
+import noSniff from 'dont-sniff-mimetype';
 
 enableAppInsights();
 
-let express = require('express');
-let cookieParser = require('cookie-parser');
-const { legacyCreateProxyMiddleware: proxy } = require('http-proxy-middleware');
-const config = require('config');
-const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
-const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
-const {mapFetchErrors} = require('./app/user/auth-checker-user-only-filter');
-const addressLookup = require('./app/address/address-lookup');
-const serviceFilter = require('./app/service/service-filter');
-const corsHandler = require('./app/security/cors');
-const handleTiming = require('./app/security/timing');
-const hstsHandler = require('./app/security/hsts');
-const healthcheck = require('@hmcts/nodejs-healthcheck');
-const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
-const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
-const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
-const noCache = require('nocache');
-const noSniff = require('dont-sniff-mimetype');
-
-let app = express();
+const app = express();
 const appHealth = express();
 const logger = Logger.getLogger('app');
 
@@ -76,6 +77,18 @@ app.use(authCheckerUserOnlyFilter);
 app.get('/logout', logoutRoute);
 
 app.use(serviceFilter);
+
+// parsing + basic size limits (protects DoS)
+app.use('/data', express.json({ limit: '1mb', strict: true }));
+app.use('/data', express.urlencoded({ limit: '1mb', extended: false }));
+
+// lightweight safety/validation middleware
+app.use('/data', payloadGuard({
+  allowContentTypes: ['application/json'],
+  maxArrayLength: 10000,           // sanity cap
+  rejectPathTraversal: true,
+  rejectObviousScriptTags: true
+}));
 
 app.get('/addresses',(req, res, next) => {
   addressLookup(req.query.postcode)
@@ -163,7 +176,7 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  let status = isNaN(err.status) ? 500 : err.status;
+  let status = Number.isNaN(err.status) ? 500 : err.status;
   res.status(status);
   res.json({
     error: err.error || 'Unauthorized',
@@ -172,4 +185,4 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   });
 });
 
-module.exports = app;
+export default app;

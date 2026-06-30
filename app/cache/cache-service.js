@@ -1,11 +1,12 @@
-const NodeCache = require('node-cache');
-const { Logger } = require('@hmcts/nodejs-logging');
+import NodeCache from 'node-cache';
+import {Logger} from '@hmcts/nodejs-logging';
+
 const logger = Logger.getLogger('CacheService');
 
 class Cache {
 
   constructor(name, ttlSeconds, checkPeriodSeconds) {
-    this.cache = new NodeCache({ stdTTL: ttlSeconds, checkperiod: checkPeriodSeconds });
+    this.cache = new NodeCache({stdTTL: ttlSeconds, checkperiod: checkPeriodSeconds});
     this.name = name;
   }
 
@@ -41,4 +42,4 @@ class Cache {
   }
 }
 
-module.exports = Cache;
+export default Cache;

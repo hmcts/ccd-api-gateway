@@ -1,7 +1,7 @@
-const config = require('config');
-const fetch = require('node-fetch').default;
-const { URL } = require('url');
-const { Logger } = require('@hmcts/nodejs-logging');
+import config from 'config';
+import fetch from 'node-fetch';
+import {URL} from 'url';
+import {Logger} from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('accessTokenRequest');
 
@@ -50,4 +50,4 @@ function accessTokenRequest(request) {
       throw error;
     });
 }
-module.exports = accessTokenRequest;
+export default accessTokenRequest;

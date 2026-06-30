@@ -1,7 +1,5 @@
-const config = require('config');
-const appInsights = require('applicationinsights');
-
-const enabled = config.get('appInsights.enabled');
+import config from 'config';
+import appInsights from 'applicationinsights';
 
 function fineGrainedSampling(envelope) {
   // activity data is not interesting and should not really be going through this proxy anyway
@@ -9,11 +7,11 @@ function fineGrainedSampling(envelope) {
   if (['RequestData', 'RemoteDependencyData'].includes(envelope.data.baseType) && (envelope.data.baseData.name.includes('/activity') || envelope.data.baseData.name.includes('/health'))) {
     envelope.sampleRate = 1;
   }
-
   return true;
 }
 
-const enableAppInsights = () => {
+export default function enableAppInsights(){
+  const enabled = config.get('appInsights.enabled');
   if (enabled) {
     const appInsightsKey = config.get('secrets.ccd.AppInsightsInstrumentationKey');
     const appInsightsRoleName = config.get('appInsights.roleName');
@@ -25,5 +23,3 @@ const enableAppInsights = () => {
     appInsights.start();
   }
 };
-
-module.exports = enableAppInsights;

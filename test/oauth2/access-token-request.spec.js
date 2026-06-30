@@ -1,11 +1,11 @@
-const chai = require('chai');
-const expect = chai.expect;
-const proxyquire = require('proxyquire');
-const sinon = require('sinon');
+import * as chai from 'chai';
+import {expect} from 'chai';
+import esmock from 'esmock';
+import sinon from 'sinon';
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai').default;
-const sinonExpressMock = require('sinon-express-mock');
-const url = require('url');
+import sinonChai from 'sinon-chai';
+import sinonExpressMock from 'sinon-express-mock';
+import url from 'url';
 chai.use(sinonChai);
 
 describe('Access Token Request', () => {
@@ -58,35 +58,35 @@ describe('Access Token Request', () => {
   let accessTokenRequest;
   let unsuccessfulAccessTokenRequest;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     config = {
       get: sinon.stub()
     };
 
     successStub = sinon.stub();
     fetch = {
-      default: successStub.callsFake(function(...args) {
+      default: successStub.callsFake(function (...args) {
         let requestedUrl = url.parse(args[0], true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         return Promise.resolve(SUCCESSFUL_RESPONSE);
       })
     };
-    accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
+    accessTokenRequest = await esmock('../../app/oauth2/access-token-request.js', {
       'config': config,
       'node-fetch': fetch
     });
 
     unsuccessfulStub = sinon.stub();
     unsuccessfulFetch = {
-      default: unsuccessfulStub.callsFake(function(...args) {
+      default: unsuccessfulStub.callsFake(function (...args) {
         let requestedUrl = url.parse(args[0], true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         return Promise.resolve(UNSUCCESSFUL_RESPONSE);
       })
     };
-    unsuccessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
+    unsuccessfulAccessTokenRequest = await esmock('../../app/oauth2/access-token-request.js', {
       'config': config,
       'node-fetch': unsuccessfulFetch
     });

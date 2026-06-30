@@ -1,7 +1,6 @@
-const chai = require('chai');
-const expect = chai.expect;
-const request = require('supertest');
-const app = require('app');
+import {expect} from 'chai';
+import request from 'supertest';
+import app from '../../app.js';
 
 describe('health check', () => {
 
@@ -25,19 +24,19 @@ describe('health check', () => {
 
   it('should return 200 OK for liveness health check', async () => {
     await request(app)
-    .get('/health/liveness')
-    .expect(res => {
-      expect(res.status).equal(200);
-      expect(res.body.status).equal('UP');
-    });
+      .get('/health/liveness')
+      .expect(res => {
+        expect(res.status).equal(200);
+        expect(res.body.status).equal('UP');
+      });
   });
 
   it('should return 200 OK for readiness health check', async () => {
     await request(app)
-    .get('/health/readiness')
-    .expect(res => {
-      expect(res.status).equal(200);
-      expect(res.body.status).equal('UP');
-    });
+      .get('/health/readiness')
+      .expect(res => {
+        expect(res.status).equal(200);
+        expect(res.body.status).equal('UP');
+      });
   });
 });
