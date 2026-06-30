@@ -21,7 +21,7 @@ const logoutRoute = (req, res, next) => {
     fetch(config.get('idam.oauth2.logout_endpoint').replace(TOKEN_PLACEHOLDER, accessToken), options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
-        userInfoCache.del(accessToken);
+        userInfoCache().del(accessToken);
         res.status(204).send();
       })
       .catch(err => next(err));

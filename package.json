@@ -10,7 +10,7 @@
     "setup": "cross-env NODE_PATH=. yarn node --version",
     "lint": "NODE_PATH=. eslint --ignore-pattern coverage .",
     "test": "yarn test:unit",
-    "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-api-gateway --recursive",
+    "test:unit": "NODE_ENV=test NODE_PATH=. mocha --loader=esmock 'test/**/*.spec.js' --reporter mochawesome --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=ccd-api-gateway --recursive",
     "test:specific": "NODE_ENV=test LOG_LEVEL=DEBUG NODE_PATH=. mocha --recursive ",
     "test:coverage": "NODE_ENV=test NODE_PATH=. c8 mocha 'test/**/*.spec.js' --recursive",
     "fortifyScan": "./test/java/gradlew -p test/java fortifyScan",

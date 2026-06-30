@@ -30,7 +30,7 @@ describe('logoutRoute', () => {
   let userInfoCacheSpy;
   let sandbox;
   let clock;
-  let userInfoCache;
+  let userInfoCacheInstance;
 
   beforeEach(async () => {
     config = {
@@ -38,11 +38,11 @@ describe('logoutRoute', () => {
     };
     sandbox = sinon.createSandbox();
     clock = sandbox.useFakeTimers();
-    userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
-    userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
+    userInfoCacheInstance = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
+    userInfoCacheSpy = sandbox.spy(userInfoCacheInstance, 'getOrElseUpdate');
 
     ({ getCachedUserDetails } = await esmock('../../app/user/cached-user-resolver.js', {
-      '../../app/cache/cache-config.js': { userInfoCache }
+      '../../app/cache/cache-config.js':  { userInfoCache: () => userInfoCacheInstance }
     }));
 
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);

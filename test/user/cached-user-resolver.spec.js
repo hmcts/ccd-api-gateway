@@ -22,7 +22,7 @@ describe('getCachedUserDetails', () => {
   let clock;
   let userResolver;
   let cachedUserResolver;
-  let userInfoCache;
+  let userInfoCacheInstance;
 
   beforeEach(async () => {
     sandbox = sinon.createSandbox();
@@ -35,9 +35,9 @@ describe('getCachedUserDetails', () => {
     userResolver.getUserDetails.withArgs(ERROR_TOKEN).returns(Promise.reject(new Error('User details error')));
     clock = sandbox.useFakeTimers();
     nodeCacheSpy = sandbox.spy(NodeCache.prototype, 'set');
-    userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
+    userInfoCacheInstance = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     cachedUserResolver = await esmock('../../app/user/cached-user-resolver.js', {
-      '../../app/cache/cache-config.js': { userInfoCache },
+      '../../app/cache/cache-config.js':  { userInfoCache: () => userInfoCacheInstance },
       '../../app/user/user-resolver.js': { getUserDetails: userResolver.getUserDetails }
     });
   });

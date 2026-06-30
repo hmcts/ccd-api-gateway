@@ -3,10 +3,8 @@
 /**
  * Module dependencies.
  */
-import * as config from 'config';
+import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
-propertiesVolume.addTo(config);
-import app from './app.js';
 import debugLib from 'debug';
 import http from 'node:http';
 import https from 'node:https';
@@ -19,6 +17,10 @@ const debug = debugLib('ccd-api-gateway-web:server');
 const logger = log.Logger.getLogger('server');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+propertiesVolume.addTo(config);
+const { default: app } = await import('./app.js');
 
 /**
  * Get port from environment and store in Express.
