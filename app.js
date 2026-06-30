@@ -63,7 +63,7 @@ process.env.PACKAGES_NAME = 'gateway';
 
 let healthConfig = {
   checks: {
-    'idam-api': basicHealthCheck('idam.base_url'),
+    'idam-hmcts-access': basicHealthCheck('idam.hmcts_access_url'),
     's2s': basicHealthCheck('idam.s2s_url')
   }
 };

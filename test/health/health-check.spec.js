@@ -5,13 +5,13 @@ const app = require('app');
 const config = require('config');
 const mock = require('nock');
 
-const idamApiBaseUrl = config.get('idam.base_url');
+const hmctsAccessUrl = config.get('idam.hmcts_access_url');
 const s2sAuthServiceBaseUrl = config.get('idam.s2s_url');
 
 describe('health check', () => {
 
   beforeEach(() => {
-    mock(idamApiBaseUrl).get('/health').reply(200, { status: 'UP' });
+    mock(hmctsAccessUrl).get('/health').reply(200, { status: 'UP' });
     mock(s2sAuthServiceBaseUrl).get('/health').reply(200, { status: 'UP' });
   });
 

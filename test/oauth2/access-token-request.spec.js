@@ -11,7 +11,8 @@ chai.use(sinonChai);
 describe('Access Token Request', () => {
   const CLIENT_ID = 'ccd_gateway';
   const CLIENT_SECRET = 'abc123def456';
-  const TOKEN_ENDPOINT = 'http://localhost:1234/o/token';
+  const HMCTS_ACCESS_URL = 'http://localhost:1234';
+  const TOKEN_ENDPOINT = HMCTS_ACCESS_URL + '/o/token';
   const REDIRECT_URN = 'localhost/redirect/to';
   const REDIRECT_URL = 'https://localhost/redirect/to';
   const UNDEFINED_URI = 'undefined:///oauth2redirect';
@@ -72,12 +73,13 @@ describe('Access Token Request', () => {
       'config': config,
       'node-fetch': unsuccessfulFetch
     });
+
+    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
+    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
+    config.get.withArgs('idam.hmcts_access_url').returns(HMCTS_ACCESS_URL);
   });
 
   it('should call the IdAM OAuth 2 token endpoint with the correct headers and query string parameters', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
@@ -91,9 +93,6 @@ describe('Access Token Request', () => {
   });
 
   it('should add `https://` prefix', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST)
       .then(() => {
@@ -109,10 +108,6 @@ describe('Access Token Request', () => {
 
   it('should handle unsuccessful responses.', done => {
 
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
-
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
         expect(unsuccessfulFetch.called()).to.be.true;
@@ -126,9 +121,6 @@ describe('Access Token Request', () => {
   });
 
   it('should reject undefined uri requests.', async () => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
     try {
       await accessTokenRequest(REQUEST_UNDEFINED_URI);
     } catch (error) {

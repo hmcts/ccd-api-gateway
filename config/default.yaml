@@ -10,12 +10,10 @@ proxy:
   refdata: http://localhost:8090/refdata
   mv_annotations: http://localhost:4623
 idam:
-  base_url: http://localhost:5000
+  hmcts_access_url: http://localhost:9002
   s2s_url: http://localhost:4502
   service_name: ccd_gw
   oauth2:
-    token_endpoint: http://localhost:5000/o/token
-    logout_endpoint: http://localhost:5000/session/:token
     client_id: ccd_gateway
 address_lookup:
   detect_proxy: false
