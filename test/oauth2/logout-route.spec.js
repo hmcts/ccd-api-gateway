@@ -15,7 +15,8 @@ describe('logoutRoute', () => {
   const CLIENT_ID = 'ccd_gateway';
   const CLIENT_SECRET = 'abc123def456';
   const ACCESS_TOKEN = 'eycdjc7hf3478g4f37';
-  const LOGOUT_END_POINT = 'http://localhost/session/:token';
+  const HMCTS_ACCESS_URL = 'http://localhost:4321';
+  const LOGOUT_END_POINT = HMCTS_ACCESS_URL + '/o/endSession?token=' + ACCESS_TOKEN;
   const CACHE_TTL_SECONDS = 1800;
   const TOKEN = 'TOKEN';
   const USER_DETAILS = { user: 'Details' };
@@ -49,7 +50,7 @@ describe('logoutRoute', () => {
 
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
     config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_END_POINT);
+    config.get.withArgs('idam.hmcts_access_url').returns(HMCTS_ACCESS_URL);
 
     request = sinonExpressMock.mockReq({
       cookies: {
@@ -59,7 +60,7 @@ describe('logoutRoute', () => {
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
 
-    fetch = fetchMock.sandbox().delete(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN), {});
+    fetch = fetchMock.sandbox().get(LOGOUT_END_POINT, {});
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
@@ -104,7 +105,7 @@ describe('logoutRoute', () => {
 
     expect(config.get).to.be.calledWith('idam.oauth2.client_id');
     expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
-    expect(config.get).to.be.calledWith('idam.oauth2.logout_endpoint');
+    expect(config.get).to.be.calledWith('idam.hmcts_access_url');
   });
 
   it('should return 400 error when cookies missing', () => {

@@ -10,12 +10,10 @@ proxy:
   refdata: PROXY_REFDATA
   mv_annotations: PROXY_MV_ANNOTATIONS_API_URL
 idam:
-  base_url: IDAM_BASE_URL
+  hmcts_access_url: HMCTS_ACCESS_URL
   s2s_url: IDAM_S2S_URL
   service_name: IDAM_SERVICE_NAME
   oauth2:
-    token_endpoint: IDAM_OAUTH2_TOKEN_ENDPOINT
-    logout_endpoint: IDAM_OAUTH2_LOGOUT_ENDPOINT
     client_id: IDAM_OAUTH2_CLIENT_ID
 address_lookup:
   detect_proxy: ADDRESS_LOOKUP_DETECT_PROXY
