@@ -2,8 +2,22 @@ const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
 const app = require('app');
+const config = require('config');
+const mock = require('nock');
+
+const hmctsAccessUrl = config.get('idam.hmcts_access_url');
+const s2sAuthServiceBaseUrl = config.get('idam.s2s_url');
 
 describe('health check', () => {
+
+  beforeEach(() => {
+    mock(hmctsAccessUrl).get('/health').reply(200, { status: 'UP' });
+    mock(s2sAuthServiceBaseUrl).get('/health').reply(200, { status: 'UP' });
+  });
+
+  afterEach(() => {
+    mock.cleanAll();
+  });
 
   it('should return health check status with 200 OK for default domain URL', async () => {
     await request(app)
