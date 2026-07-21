@@ -22,7 +22,7 @@
     "@hmcts/nodejs-healthcheck": "^1.8.0",
     "@hmcts/nodejs-logging": "^4.0.4",
     "@hmcts/properties-volume": "^0.0.14",
-    "applicationinsights": "3.14.0",
+    "applicationinsights": "3.15.0",
     "body-parser": "^2.0.0",
     "brace-expansion": "^5.0.5",
     "config": "^4.0.0",
@@ -94,10 +94,13 @@
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
     "brace-expansion": "^5.0.5",
-    "picomatch": "^2.3.2"
+    "path-to-regexp@npm:^8.0.0": "npm:8.4.1",
+    "picomatch": "2.3.2",
+    "protobufjs": "^7.6.1"
   },
   "overrides": {
-    "picomatch": "^2.3.2"
+    "picomatch": "2.3.2",
+    "protobufjs": "^7.6.1"
   },
-  "packageManager": "yarn@4.16.0"
+  "packageManager": "yarn@4.17.1"
 }
