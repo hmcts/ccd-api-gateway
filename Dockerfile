@@ -1,5 +1,5 @@
 ARG PLATFORM=""
-FROM hmctsprod.azurecr.io/base/node${PLATFORM}:18-alpine AS base
+FROM hmctsprod.azurecr.io/base/node${PLATFORM}:22-alpine AS base
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -10,7 +10,8 @@ RUN corepack enable
 COPY --chown=hmcts:hmcts . .
 
 USER hmcts
-RUN yarn workspaces focus --all --production && rm -rf $(yarn cache clean)
+RUN node .yarn/releases/yarn-4.17.0.cjs workspaces focus --all --production \
+  && node .yarn/releases/yarn-4.17.0.cjs cache clean
 
 # ---- Build Image ----
 FROM base AS build
@@ -24,13 +25,14 @@ RUN apk update \
 
 USER hmcts
 
-RUN sleep 1 && yarn install && yarn cache clean
+RUN sleep 1 && node .yarn/releases/yarn-4.17.0.cjs install \
+  && node .yarn/releases/yarn-4.17.0.cjs cache clean
 
 COPY --chown=hmcts:hmcts package.json yarn.lock ./
 
 
 # ---- Runtime Image ----
-FROM hmctsprod.azurecr.io/base/node${PLATFORM}:18-alpine AS runtime
+FROM hmctsprod.azurecr.io/base/node${PLATFORM}:22-alpine AS runtime
 COPY --from=build $WORKDIR .
 
 ENV PORT=3453
