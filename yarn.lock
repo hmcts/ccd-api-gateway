@@ -2310,7 +2310,7 @@ __metadata:
     jsonwebtoken: "npm:^9.0.0"
     jwt-decode: "npm:^2.2.0"
     lodash: "npm:^4.18.1"
-    mem: "npm:^6.0.0"
+    mem: "npm:^10.0.0"
     mocha: "npm:^5.2.0"
     moment: "npm:^2.29.4"
     nocache: "npm:^2.1.0"
@@ -4752,13 +4752,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mem@npm:^6.0.0":
-  version: 6.1.1
-  resolution: "mem@npm:6.1.1"
+"mem@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "mem@npm:10.0.0"
   dependencies:
     map-age-cleaner: "npm:^0.1.3"
-    mimic-fn: "npm:^3.0.0"
-  checksum: 10/1715876faa47907683baffa55eb302eb254fad3e3fdd1716535108c434498cb0d15dbb4261c29f28e8a712ac3568b70c0849048a5d113da57536e1508410422f
+    mimic-fn: "npm:^4.0.0"
+  checksum: 10/9f725ea48cc355393a532c93b7c897ac5b9894cf47fbb12df6fc93ae7547ca7ade64f4bb2f5796205e95ec0475e2dff4e98b180507b8f85814e9dd45291c41d8
   languageName: node
   linkType: hard
 
@@ -4834,10 +4834,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mimic-fn@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "mimic-fn@npm:3.1.0"
-  checksum: 10/f7b167f9115b8bbdf2c3ee55dce9149d14be9e54b237259c4bc1d8d0512ea60f25a1b323f814eb1fe8f5a541662804bcfcfff3202ca58df143edb986849d58db
+"mimic-fn@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "mimic-fn@npm:4.0.0"
+  checksum: 10/995dcece15ee29aa16e188de6633d43a3db4611bcf93620e7e62109ec41c79c0f34277165b8ce5e361205049766e371851264c21ac64ca35499acb5421c2ba56
   languageName: node
   linkType: hard
 
