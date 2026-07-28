@@ -4,11 +4,12 @@ enableAppInsights();
 
 let express = require('express');
 let cookieParser = require('cookie-parser');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
+const {mapFetchErrors} = require('./app/user/auth-checker-user-only-filter');
 const addressLookup = require('./app/address/address-lookup');
-const { applyProxy } = require('./app/proxy/apply-proxy');
 const serviceFilter = require('./app/service/service-filter');
 const corsHandler = require('./app/security/cors');
 const handleTiming = require('./app/security/timing');
@@ -30,6 +31,56 @@ app.use(cookieParser());
 const poweredByHeader = 'x-powered-by';
 app.disable(poweredByHeader);
 appHealth.disable(poweredByHeader);
+
+const prefixMountedPath = (prefix, path) => {
+  if (path === '/') {
+    return prefix;
+  }
+
+  if (path.startsWith('/?')) {
+    return `${prefix}${path.substring(1)}`;
+  }
+
+  return `${prefix}${path}`;
+};
+
+const relativePathFilters = (source, filters) => filters.map(filter => {
+  return filter.startsWith(source) ? filter.substring(source.length) || '/' : filter;
+});
+
+const applyProxy = (app, proxyConfig) => {
+  const options = {
+    target: proxyConfig.target,
+    changeOrigin: true,
+    on: {
+      error: function onError(err) {
+        console.error(err);
+      }
+    }
+  };
+
+  if (proxyConfig.filter) {
+    options.pathFilter = relativePathFilters(proxyConfig.source, proxyConfig.filter);
+  }
+
+  if (proxyConfig.rewrite === false) {
+    options.pathRewrite = path => prefixMountedPath(proxyConfig.source, path);
+  } else if (proxyConfig.rewriteUrl) {
+    options.pathRewrite = path => prefixMountedPath(proxyConfig.rewriteUrl, path);
+  }
+
+  const proxyMiddleware = createProxyMiddleware(options);
+
+  app.use(proxyConfig.source, (req, res, next) => {
+    proxyMiddleware(req, res, err => {
+      if (err) {
+        mapFetchErrors(err, res, next);
+      } else {
+        next();
+      }
+    });
+  });
+};
 
 let healthConfig = {
   checks: {}
