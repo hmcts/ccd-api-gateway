@@ -5,12 +5,14 @@ const app = require('app');
 const config = require('config');
 const mock = require('nock');
 
+const webPublicUrl = config.get('idam.web_public_url');
 const hmctsAccessUrl = config.get('idam.hmcts_access_url');
 const s2sAuthServiceBaseUrl = config.get('idam.s2s_url');
 
 describe('health check', () => {
 
   beforeEach(() => {
+    mock(webPublicUrl).get('/health').reply(200, { status: 'UP' });
     mock(hmctsAccessUrl).get('/health').reply(200, { status: 'UP' });
     mock(s2sAuthServiceBaseUrl).get('/health').reply(200, { status: 'UP' });
   });

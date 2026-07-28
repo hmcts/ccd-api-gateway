@@ -10,7 +10,8 @@ proxy:
   refdata: PROXY_REFDATA
   mv_annotations: PROXY_MV_ANNOTATIONS_API_URL
 idam:
-  hmcts_access_url: HMCTS_ACCESS_URL
+  web_public_url: IDAM_WEB_PUBLIC_URL
+  hmcts_access_url: IDAM_HMCTS_ACCESS_URL
   s2s_url: IDAM_S2S_URL
   service_name: IDAM_SERVICE_NAME
   oauth2:

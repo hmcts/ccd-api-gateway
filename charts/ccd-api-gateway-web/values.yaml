@@ -15,7 +15,8 @@ nodejs:
     SECURE_AUTH_COOKIE_ENABLED: true
     TIMING-ALLOW-ORIGIN: https://ccd-case-management-web-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal,https://ccd-case-management-web-{{ .Values.global.environment }}-staging.service.core-compute-{{ .Values.global.environment }}.internal
     UV_THREADPOOL_SIZE: 64
-    HMCTS_ACCESS_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
+    IDAM_WEB_PUBLIC_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
+    IDAM_HMCTS_ACCESS_URL: https://hmcts-access.{{ .Values.global.environment }}.platform.hmcts.net
     IDAM_S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     CORS_ORIGIN_WHITELIST: https://ccd-case-management-web-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal,https://ccd-case-management-web-{{ .Values.global.environment }}-staging.service.core-compute-{{ .Values.global.environment }}.internal,https://www-ccd.{{ .Values.global.environment }}.platform.hmcts.net,https://www-ccd.nonprod.platform.hmcts.net,https://www.ccd.platform.hmcts.net
     CACHE_USER_INFO_ENABLED: true

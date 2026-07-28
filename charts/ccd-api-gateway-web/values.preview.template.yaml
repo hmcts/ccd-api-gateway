@@ -2,7 +2,8 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    HMCTS_ACCESS_URL: https://idam-web-public.aat.platform.hmcts.net
+    IDAM_WEB_PUBLIC_URL: https://idam-web-public.aat.platform.hmcts.net
+    IDAM_HMCTS_ACCESS_URL: https://hmcts-access.aat.platform.hmcts.net
     CORS_ORIGIN_WHITELIST: "*"
     TIMING-ALLOW-ORIGIN: "*"
     PROXY_MV_ANNOTATIONS_API_URL: https://em-anno-aat.service.core-compute-aat.internal

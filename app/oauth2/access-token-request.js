@@ -29,7 +29,7 @@ function accessTokenRequest(request) {
     }
   };
 
-  const oauthUrl = new URL(config.get('idam.hmcts_access_url') + '/o/token');
+  const oauthUrl = new URL(config.get('idam.web_public_url') + '/o/token');
   oauthUrl.searchParams.append('code',request.query.code);
   oauthUrl.searchParams.append('client_id',config.get('idam.oauth2.client_id'));
   oauthUrl.searchParams.append('client_secret',config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'));

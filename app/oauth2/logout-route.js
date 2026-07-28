@@ -16,7 +16,7 @@ const logoutRoute = (req, res, next) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     };
-    fetch(config.get('idam.hmcts_access_url') + '/o/endSession?token=' + accessToken, options)
+    fetch(config.get('idam.web_public_url') + '/o/endSession?token=' + accessToken, options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         userInfoCache.del(accessToken);

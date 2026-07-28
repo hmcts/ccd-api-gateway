@@ -1,6 +1,7 @@
 appInsights:
   enabled: false
 idam:
+  web_public_url: http://test-idam:1234
   hmcts_access_url: http://test-idam:1234
 secrets:
   ccd:

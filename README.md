@@ -38,7 +38,8 @@ The following environment variables are required:
 | PROXY_DOCUMENT_MANAGEMENT | Base URL of the remote Document Management API gateway. |
 | PROXY_PRINT_SERVICE | Base URL of the CCD Case Data Print Service. `http://localhost:3100` for the dockerised local instance. |
 | PROXY_CASE_ACTIVITY | Base URL of the CCD Case Activity API. `http://localhost:3460` for the non-dockerised local instance. |
-| HMCTS_ACCESS_URL | Base URL for IdAM's User API service (idam-app). `http://localhost:9002` for the dockerised local instance or tunnelled `dev` instance. |
+| IDAM_HMCTS_ACCESS_URL | http://localhost:9002 Base URL for IdAM's HMCTS Acccess service (idam-hmcts-access). default for the dockerised local instance or tunnelled `dev` instance.              |
+| IDAM_PUBLIC_WEB_URL  | http://localhost:9002 Base URL for IdAM's public web service (idam-public-web). default for the dockerised local instance or tunnelled `dev` instance.                   |
 | IDAM_S2S_URL | Base URL for IdAM's S2S API service (service-auth-provider). `http://localhost:4502` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_SERVICE_KEY | API Gateway's IDAM S2S micro-service secret key. This must match the IDAM instance it's being run against. |
 | IDAM_OAUTH2_CLIENT_SECRET | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against. |
