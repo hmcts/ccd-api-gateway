@@ -5,7 +5,7 @@ properties(
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
 )
 
-@Library("Infrastructure@cve-dashboard")
+@Library("Infrastructure@cve-dashboard-v2")
 
 def product = "ccd"
 def component = "api-gateway-web"
