@@ -4,12 +4,11 @@ enableAppInsights();
 
 let express = require('express');
 let cookieParser = require('cookie-parser');
-const { legacyCreateProxyMiddleware: proxy } = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
-const {mapFetchErrors} = require('./app/user/auth-checker-user-only-filter');
 const addressLookup = require('./app/address/address-lookup');
+const { applyProxy } = require('./app/proxy/apply-proxy');
 const serviceFilter = require('./app/service/service-filter');
 const corsHandler = require('./app/security/cors');
 const handleTiming = require('./app/security/timing');
@@ -31,30 +30,6 @@ app.use(cookieParser());
 const poweredByHeader = 'x-powered-by';
 app.disable(poweredByHeader);
 appHealth.disable(poweredByHeader);
-
-const applyProxy = (app, config) => {
-  let options = {
-    target: config.target,
-    changeOrigin: true,
-    onError: function onError(err, req, res) {
-      console.error(err);
-      mapFetchErrors(err, res);
-    },
-    logLevel: 'warn'
-  };
-
-  if (false !== config.rewrite) {
-    options.pathRewrite = {
-      [`^${config.source}`]: config.rewriteUrl || ''
-    };
-  }
-
-  if (config.filter) {
-    app.use(config.source, proxy(config.filter, options));
-  } else {
-    app.use(config.source, proxy(options));
-  }
-};
 
 let healthConfig = {
   checks: {}
