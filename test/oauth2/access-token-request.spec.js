@@ -15,7 +15,9 @@ describe('Access Token Request', () => {
   const REDIRECT_URN = 'localhost/redirect/to';
   const REDIRECT_URL = 'https://localhost/redirect/to';
   const UNDEFINED_URI = 'undefined:///oauth2redirect';
+  const DISALLOWED_URI = 'https://attacker.com/steal';
   const AUTH_CODE = 'xyz789';
+  const REDIRECT_ALLOWLIST = 'localhost';
 
   const REQUEST = sinonExpressMock.mockReq({
     query: {
@@ -60,6 +62,7 @@ describe('Access Token Request', () => {
     config = {
       get: sinon.stub()
     };
+    config.get.withArgs('idam.oauth2.redirect_uri_allowlist').returns(REDIRECT_ALLOWLIST);
 
     fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
@@ -134,10 +137,28 @@ describe('Access Token Request', () => {
     config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
     try {
       await accessTokenRequest(REQUEST_UNDEFINED_URI);
+      expect.fail('Expected error to be thrown');
     } catch (error) {
         expect(error.status).to.deep.equal(400);
         expect(error.error).to.deep.equal('Bad Request');
-        expect(error.message).to.deep.equal('Redirect URI cannot start with undefined');
+        expect(error.message).to.deep.equal('Redirect URI is not permitted');
+    }
+  });
+
+  it('should reject redirect URIs with disallowed hosts.', async () => {
+    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
+    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
+    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
+    const REQUEST_DISALLOWED = sinonExpressMock.mockReq({
+      query: { code: AUTH_CODE, redirect_uri: DISALLOWED_URI }
+    });
+    try {
+      await accessTokenRequest(REQUEST_DISALLOWED);
+      expect.fail('Expected error to be thrown');
+    } catch (error) {
+        expect(error.status).to.deep.equal(400);
+        expect(error.error).to.deep.equal('Bad Request');
+        expect(error.message).to.deep.equal('Redirect URI is not permitted');
     }
   });
 });
