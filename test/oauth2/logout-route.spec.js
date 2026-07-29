@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const fetchMock = require('fetch-mock');
+const fetchMock = require('fetch-mock').default;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = sinon.assert;
@@ -28,6 +28,7 @@ describe('logoutRoute', () => {
   let config;
   let logoutRoute;
   let fetch;
+  let fetchMockInstance;
   let userInfoCacheSpy;
   let sandbox;
   let clock;
@@ -59,7 +60,8 @@ describe('logoutRoute', () => {
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
 
-    fetch = fetchMock.sandbox().delete(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN), {});
+    fetchMockInstance = fetchMock.createInstance().delete(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN), {});
+    fetch = fetchMockInstance.fetchHandler;
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
@@ -78,8 +80,9 @@ describe('logoutRoute', () => {
   it('should call IDAM OAuth 2 logout endpoint with JWT token', done => {
     response.status.callsFake(() => {
       try {
-        expect(fetch.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
+        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         expect(next).not.to.be.called;
         expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
 
