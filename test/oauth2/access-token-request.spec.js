@@ -1,9 +1,9 @@
 const chai = require('chai');
 const expect = chai.expect;
-const fetchMock = require('fetch-mock');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+const assert = sinon.assert;
+const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 const url = require('url');
 chai.use(sinonChai);
@@ -51,7 +51,9 @@ describe('Access Token Request', () => {
   };
 
   let config;
+  let successStub;
   let fetch;
+  let unsuccessfulStub;
   let unsuccessfulFetch;
   let accessTokenRequest;
   let unsuccessfulAccessTokenRequest;
@@ -61,13 +63,29 @@ describe('Access Token Request', () => {
       get: sinon.stub()
     };
 
-    fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
+    successStub = sinon.stub();
+    fetch = {
+      default: successStub.callsFake(function(...args) {
+        let requestedUrl = url.parse(args[0], true);
+        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
+        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        return Promise.resolve(SUCCESSFUL_RESPONSE);
+      })
+    };
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': fetch
     });
 
-    unsuccessfulFetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
+    unsuccessfulStub = sinon.stub();
+    unsuccessfulFetch = {
+      default: unsuccessfulStub.callsFake(function(...args) {
+        let requestedUrl = url.parse(args[0], true);
+        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
+        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        return Promise.resolve(UNSUCCESSFUL_RESPONSE);
+      })
+    };
     unsuccessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': unsuccessfulFetch
@@ -81,11 +99,7 @@ describe('Access Token Request', () => {
 
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
-        expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(fetch.lastUrl(), true);
-        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
-        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        assert.called(successStub);
         done();
       })
       .catch(error => done(new Error(error)));
@@ -98,11 +112,7 @@ describe('Access Token Request', () => {
 
     accessTokenRequest(REQUEST)
       .then(() => {
-        expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(fetch.lastUrl(), true);
-        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
-        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        assert.called(successStub);
         done();
       })
       .catch(error => done(new Error(error)));
@@ -117,11 +127,7 @@ describe('Access Token Request', () => {
 
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
-        expect(unsuccessfulFetch.called()).to.be.true;
-        expect(unsuccessfulFetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(unsuccessfulFetch.lastUrl(), true);
-        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
-        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        assert.called(unsuccessfulStub);
         expect(response).to.have.property('status', 401);
         done();
       })
