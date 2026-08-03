@@ -9,7 +9,6 @@ let app = require('./app');
 let debug = require('debug')('ccd-api-gateway-web:server');
 let http = require('http');
 let https = require('https');
-let path = require('path');
 let fs = require('fs');
 
 /**
@@ -28,10 +27,17 @@ let server = createServer(app);
 
 function createServer(app) {
   if (process.env.ENV === 'localdev') {
-    const sslDirectory = path.join(__dirname, '..', 'app', 'resources', 'localhost-ssl');
+    const certificatePath = process.env.HTTPS_CERT_PATH;
+    const keyPath = process.env.HTTPS_KEY_PATH;
+    if (!certificatePath && !keyPath) {
+      return http.createServer(app);
+    }
+    if (!certificatePath || !keyPath) {
+      throw new Error('HTTPS_CERT_PATH and HTTPS_KEY_PATH must both be set for local HTTPS');
+    }
     const sslOptions = {
-      cert: fs.readFileSync(path.join(sslDirectory, 'localhost.crt')),
-      key: fs.readFileSync(path.join(sslDirectory, 'localhost.key')),
+      cert: fs.readFileSync(certificatePath),
+      key: fs.readFileSync(keyPath),
       secureProtocol: 'TLS_method'
     };
     return https.createServer(sslOptions, app);
