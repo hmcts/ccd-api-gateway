@@ -47,6 +47,10 @@ The following environment variables are required:
 | ADDRESS_LOOKUP_TOKEN | Token for use with the MoJ Address Lookup service. |
 | CORS_ORIGIN_WHITELIST | Comma-separated list of authorised origins for Cross-Origin requests. `http://localhost:3451,http://localhost:3452` for the local instances of CCD |
 | APPINSIGHTS_INSTRUMENTATIONKEY | Secret for Microsoft Insights logging, can be a dummy string in local. |
+| HTTPS_CERT_PATH | Optional path to a locally generated HTTPS certificate. Used with `HTTPS_KEY_PATH` when `ENV=localdev`. |
+| HTTPS_KEY_PATH | Optional path to the matching locally generated HTTPS private key. Never commit the key to the repository. |
+
+For local development, the gateway uses HTTP by default. To enable HTTPS, set `ENV=localdev` and provide both `HTTPS_CERT_PATH` and `HTTPS_KEY_PATH` pointing to files generated outside the repository. Both variables must be set together.
 
 **Note:** To support large document uploads via the api gateway, the maximum allowed length for request content is 
 configured via *maxAllowedContentLength* property for request filter in **web.config** (config file within source repository). 
