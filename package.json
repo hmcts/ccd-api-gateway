@@ -37,7 +37,7 @@
     "handlebars": "^4.7.7",
     "http-proxy-middleware": "^3.0.5",
     "https-proxy-agent": "^2.2.3",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "4.3.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.18.1",
     "mem": "^6.0.0",
@@ -73,7 +73,7 @@
   "resolutions": {
     "@opentelemetry/core": "^2.8.0",
     "form-data": "^4.0.4",
-    "js-yaml": "3.14.2",
+    "js-yaml": "4.3.1",
     "lodash": "^4.18.1",
     "handlebars": "^4.7.7",
     "mem": "^6.0.0",
@@ -89,12 +89,13 @@
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
     "qs": "^6.14.1",
-    "@babel/traverse": "7.29.7",
-    "@babel/core": "^7.28.5",
+    "@babel/traverse": "8.0.4",
+    "@babel/core": "^8.0.0",
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
-    "path-to-regexp@npm:^8.0.0": "npm:8.4.1",
+    "brace-expansion": "^5.0.5",
+    "path-to-regexp@npm:^8.0.0": "npm:path-to-regexp@8.4.2",
     "picomatch": "2.3.2",
     "protobufjs": "^7.6.1"
   },
@@ -102,5 +103,5 @@
     "picomatch": "2.3.2",
     "protobufjs": "^7.6.1"
   },
-  "packageManager": "yarn@4.17.0"
+  "packageManager": "yarn@4.17.1"
 }
