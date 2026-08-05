@@ -21,7 +21,7 @@ Remove the tracked private key and externalise runtime credentials while preserv
 Remediation status: the tracked key has now been removed from this branch. Local HTTPS uses `HTTPS_CERT_PATH` and `HTTPS_KEY_PATH`; no live credential rotation was performed.
 
 - `app/resources/localhost-ssl/localhost.key` is a tracked PEM RSA private key, added in history on 2018-03-17 during open sourcing.
-- `server.js` reads the bundled `localhost.crt` and `localhost.key` for local HTTPS.
+- `server.js` reads externally supplied certificate and key paths for local HTTPS; it no longer reads bundled key material.
 - Existing secret-to-environment mappings include `IDAM_OAUTH2_CLIENT_SECRET`, `ADDRESS_LOOKUP_TOKEN`, `IDAM_SERVICE_KEY`, and `APPINSIGHTS_INSTRUMENTATIONKEY`.
 - Prior history includes secret-removal work, but not evidence of private-key rotation.
 
