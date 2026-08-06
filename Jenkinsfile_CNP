@@ -5,7 +5,7 @@ properties(
          pipelineTriggers([[$class: 'GitHubPushTrigger']])]
 )
 
-@Library("Infrastructure@cve-dashboard-v2")
+@Library("Infrastructure@2.4.4")
 
 def product = "ccd"
 def component = "api-gateway-web"
@@ -60,7 +60,7 @@ withPipeline("nodejs", product, component) {
 
     enableAksStagingDeployment()
     disableLegacyDeployment()
-    enableCveDashboardIngestion()
+    //enableCveDashboardIngestion()
 
     afterAlways('checkOut') {
         sh "yarn cache clean"
