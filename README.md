@@ -73,7 +73,7 @@ Simply run:
 yarn start
 ```
 
-to start the API gateway on [http://localhost:3453](http://localhost:3453).
+to start the API gateway on [http://localhost:3453](http://localhost:3453) by default. When local HTTPS is configured, use `https://localhost:3453` instead.
 
 #### Docker
 

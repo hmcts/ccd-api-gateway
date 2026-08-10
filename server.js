@@ -50,10 +50,14 @@ function createServer(app) {
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.setTimeout(300000);
-server.on('error', onError);
-server.on('listening', onListening);
+if (require.main === module) {
+  server.listen(port);
+  server.setTimeout(300000);
+  server.on('error', onError);
+  server.on('listening', onListening);
+}
+
+module.exports = { createServer };
 
 /**
  * Normalize a port into a number, string, or false.
