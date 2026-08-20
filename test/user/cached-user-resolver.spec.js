@@ -115,8 +115,8 @@ describe('getCachedUserDetails', () => {
     try {
       result = await cachedUserResolver.getUserDetails(TOKEN);
     } catch(error) {
-      expect(error).to.not.equal(undefined);
-      expect(result).to.equal(undefined);
+      expect(error).to.not.be.undefined;
+      expect(result).to.be.undefined;
       assert.calledOnce(userInfoCacheSpy);
       assert.notCalled(nodeCacheSpy);
       return;

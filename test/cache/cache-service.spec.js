@@ -181,16 +181,15 @@ describe('CacheService', () => {
             assert.calledOnce(delSpy);
         });
 
-        it('should not cache any value when store function errors', async (done) => {
+        it('should not cache any value when store function errors', async () => {
             let result;
             try {
                 result = await cache.getOrElseUpdate(KEY, () => new Error());
             } catch(error) {
-                expect(error).to.not.equal(undefined);
-                expect(result).to.equal(undefined);
+                expect(error).to.not.be.undefined;
+                expect(result).to.be.undefined;
                 assert.calledOnce(getSpy);
                 assert.notCalled(setSpy);
-                done();
             }
         });
     });

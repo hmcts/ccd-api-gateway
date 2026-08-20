@@ -7,11 +7,9 @@ const userResolver = config.get('cache.user_info_enabled')
 
 const AUTHORIZATION = 'Authorization';
 
-const ERROR_TOKEN_MISSING = {
-  error: 'Bearer token missing',
-  status: 401,
-  message: 'You are not authorized to access this resource'
-};
+const ERROR_TOKEN_MISSING = new Error('You are not authorized to access this resource');
+ERROR_TOKEN_MISSING.status = 401;
+ERROR_TOKEN_MISSING.error = 'Bearer token missing';
 
 class UnauthorisedRoleError extends Error {
   constructor() {

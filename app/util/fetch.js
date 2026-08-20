@@ -8,7 +8,9 @@ const fetch = (...args) => {
           return res;
       }
 
-      return Promise.reject(res);
+      const error = new Error(`HTTP Error: ${res.status}`);
+      error.response = res;
+      throw error;
     });
 };
 

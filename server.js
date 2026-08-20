@@ -7,10 +7,10 @@
 require('@hmcts/properties-volume').addTo(require('config'));
 let app = require('./app');
 let debug = require('debug')('ccd-api-gateway-web:server');
-let http = require('http');
-let https = require('https');
-let path = require('path');
-let fs = require('fs');
+let http = require('node:http');
+let https = require('node:https');
+let path = require('node:path');
+let fs = require('node:fs');
 
 /**
  * Get port from environment and store in Express.
@@ -54,9 +54,9 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  let port = parseInt(val, 10);
+  let port = Number.parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (Number.isNaN(port)) {
     // named pipe
     return val;
   }

@@ -27,7 +27,7 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
 };
 
 const isBadGatewayError = (error) => {
-  return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') || 
+  return error.message !== undefined && (error.message.includes('getaddrinfo ENOTFOUND') ||
   error.message.includes('socket hang up') ||
   error.message.includes('getaddrinfo EAI_AGAIN') ||
   error.message.includes('connect ETIMEOUT') ||
@@ -39,35 +39,33 @@ const mapFetchErrors = (error, res, next) => {
   if (next !== undefined){
     if (isBadGatewayError(error)){
       next({
-      error: 'Bad Gateway',
-      status: 502,
-      message: error.message
-      });
-    }
-    else {
-      next({
-      error: 'Internal Server Error',
-      status: 500,
-      message: error.message
-      });
-    }
-  } else {
-    if (isBadGatewayError(error)) {
-      res.status(502);
-      res.json({
         error: 'Bad Gateway',
         status: 502,
         message: error.message
       });
     }
     else {
-      res.status(500);
-      res.json({
-        error: 'Error when connecting to remote server',
-        status: 504,
+      next({
+        error: 'Internal Server Error',
+        status: 500,
         message: error.message
       });
     }
+  } else if (isBadGatewayError(error)) {
+    res.status(502);
+    res.json({
+      error: 'Bad Gateway',
+      status: 502,
+      message: error.message
+    });
+  }
+  else {
+    res.status(500);
+    res.json({
+      error: 'Error when connecting to remote server',
+      status: 504,
+      message: error.message
+    });
   }
 };
 
