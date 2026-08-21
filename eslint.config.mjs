@@ -38,7 +38,7 @@ export default defineConfig([{
             codecept_helper: true,
         },
 
-        ecmaVersion: 2017,
+        ecmaVersion: 2020,
         sourceType: "module",
     },
 
