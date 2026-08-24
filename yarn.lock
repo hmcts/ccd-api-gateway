@@ -2282,7 +2282,7 @@ __metadata:
     cross-env: "npm:^10.0.0"
     debug: "npm:~4.4.0"
     dont-sniff-mimetype: "npm:^1.1.0"
-    eslint: "npm:^9.39.4"
+    eslint: "npm:^9.39.5"
     eslint-plugin-mocha: "npm:^6.1.1"
     express: "npm:^5.0.0"
     fetch-mock: "npm:^6.5.2"
@@ -3101,7 +3101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.39.4":
+"eslint@npm:^9.39.5":
   version: 9.39.5
   resolution: "eslint@npm:9.39.5"
   dependencies:
