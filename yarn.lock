@@ -4827,12 +4827,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^6.0.0":
-  version: 6.2.3
-  resolution: "minimatch@npm:6.2.3"
+"minimatch@npm:^4.0.0":
+  version: 4.2.6
+  resolution: "minimatch@npm:4.2.6"
   dependencies:
-    brace-expansion: "npm:^2.0.1"
-  checksum: 10/7cfe32074e60f49b2df49d2a99c495b17819f115d5124cd5545375136acecea3fabc9456cd896a33127416a780121e807b219d9511a69336f4ed440a190659a8
+    brace-expansion: "npm:^1.1.7"
+  checksum: 10/2f68ec7fe10196740f0e07304b54e1ed539b00977c23443e0efda2d70f5fe1208c36cca3eadeac6c2ef71474e3ba4b0ae121bfe0a7f46d3e3106d1c785fac930
   languageName: node
   linkType: hard
 
