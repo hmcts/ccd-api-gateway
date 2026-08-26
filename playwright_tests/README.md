@@ -5,7 +5,9 @@ These Playwright tests send black-box HTTP requests to the gateway identified by
 Use these tags to select the CI phase:
 
 - `@smoke` for fast, non-destructive checks that run after every deployment.
-- `@functional` for authenticated or stateful endpoint scenarios.
+- `@functional` for broader endpoint contract and authentication scenarios.
+
+The initial deployed suite contains 10 scenarios: one smoke test and nine functional tests covering health, OAuth validation, logout validation and authentication enforcement across five proxy groups.
 
 Run all deployed tests locally against an available environment:
 

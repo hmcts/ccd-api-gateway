@@ -22,4 +22,14 @@ test.describe('Gateway readiness @functional', () => {
       status: 'UP'
     });
   });
+
+  test('GET /health/liveness reports that the deployed gateway is live', async ({ request }) => {
+    const response = await request.get('/health/liveness');
+
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain('application/json');
+    expect(await response.json()).toMatchObject({
+      status: 'UP'
+    });
+  });
 });
