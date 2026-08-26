@@ -5,7 +5,7 @@ const TOKEN_PLACEHOLDER = ':token';
 const { userInfoCache } = require('../cache/cache-config');
 
 const logoutRoute = (req, res, next) => {
-  const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
+  const accessToken = req.cookies?.[COOKIE_ACCESS_TOKEN];
 
   if (accessToken) {
     const options = {

@@ -163,7 +163,7 @@ app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  let status = isNaN(err.status) ? 500 : err.status;
+  let status = Number.isNaN(err.status) ? 500 : err.status;
   res.status(status);
   res.json({
     error: err.error || 'Unauthorized',

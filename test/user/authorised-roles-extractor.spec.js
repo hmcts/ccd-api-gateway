@@ -12,7 +12,7 @@ describe('Authorised roles extractor', () => {
 
           let roles = authorisedRolesExtractor.extract(request);
 
-          expect(roles.length).to.equal(0);
+          expect(roles).to.have.lengthOf(0);
       });
 
       it('should return lower case user group as role when jurisdiction cannot be found', () => {
@@ -22,7 +22,7 @@ describe('Authorised roles extractor', () => {
           let roles = authorisedRolesExtractor.extract(request);
 
           expect(roles).to.contain('caseworker');
-          expect(roles.length).to.equal(1);
+          expect(roles).to.have.lengthOf(1);
       });
 
       it('should extract correct lowercase role from url', () => {
@@ -32,7 +32,7 @@ describe('Authorised roles extractor', () => {
           let roles = authorisedRolesExtractor.extract(request);
 
           expect(roles).to.contain('caseworker-test');
-          expect(roles.length).to.equal(1);
+          expect(roles).to.have.lengthOf(1);
       });
     });
 });

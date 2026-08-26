@@ -63,6 +63,12 @@ yarn install
 
 ### Running
 
+For local HTTPS, generate locally managed key and certificate files:
+
+```bash
+source ./bin/setup-local-certs.sh
+```
+
 Simply run:
 
 ```

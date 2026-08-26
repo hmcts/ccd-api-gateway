@@ -58,6 +58,7 @@ describe('UserRequestAuthorizer', () => {
       userRequestAuthorizer.authorise(request)
         .then(() => done(new Error('Promise should have been rejected')))
         .catch(error => {
+          expect(error).to.be.an.instanceOf(Error);
           expect(error).to.equal(userRequestAuthorizer.ERROR_TOKEN_MISSING);
           done();
         });

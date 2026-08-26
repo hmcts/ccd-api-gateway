@@ -1,6 +1,6 @@
 const config = require('config');
 const fetch = require('node-fetch');
-const { URL } = require('url');
+const { URL } = require('node:url');
 const { Logger } = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('accessTokenRequest');

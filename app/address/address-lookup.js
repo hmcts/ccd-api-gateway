@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const HttpsProxyAgent = require('https-proxy-agent');
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('addressLookup');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 
 function addressLookup(postcode) {
 

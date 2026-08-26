@@ -63,3 +63,5 @@ yarn-audit-issues
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+app/resources/localhost-ssl/*.key
+app/resources/localhost-ssl/*.crt

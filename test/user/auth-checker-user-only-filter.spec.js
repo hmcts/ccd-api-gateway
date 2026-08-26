@@ -223,7 +223,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal(undefined);
+        expect(error.message).to.be.undefined;
         done();
       });
     });
@@ -372,7 +372,7 @@ describe('authCheckerUserOnlyFilter', () => {
       expect(res.status).to.equal(500);
       expect(res.json.error).to.equal('Error when connecting to remote server');
       expect(res.json.status).to.equal(504);
-      expect(res.json.message).to.equal(undefined);
+      expect(res.json.message).to.be.undefined;
       done();
     });
 
