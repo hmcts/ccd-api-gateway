@@ -2,6 +2,8 @@
 
 These Playwright tests send black-box HTTP requests to the gateway identified by `TEST_URL`. They must not import `app.js` or replace downstream services with in-process mocks because their purpose is to prove the deployed release.
 
+The shared fixture uses `@hmcts/playwright-common` for its `ApiClient`, redacted structured logging, correlation IDs and sanitized API-call attachments. Use the same package's `IdamUtils` and `ServiceAuthUtils` when adding authenticated endpoint scenarios rather than implementing local authentication clients.
+
 Use these tags to select the CI phase:
 
 - `@smoke` for fast, non-destructive checks that run after every deployment.

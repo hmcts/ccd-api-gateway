@@ -15,7 +15,7 @@ const outputRoot = process.env.PLAYWRIGHT_OUTPUT_DIR || 'functional-output';
 
 module.exports = defineConfig({
   testDir: './playwright_tests',
-  testMatch: '**/*.spec.js',
+  testMatch: '**/*.spec.mjs',
   outputDir: `${outputRoot}/test-results`,
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
