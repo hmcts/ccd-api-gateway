@@ -114,6 +114,6 @@ Deployed-instance API tests use Playwright's API request client. Set `TEST_URL` 
 TEST_URL=https://ccd-api-gateway-web.example.test yarn test:deployed
 ```
 
-The CNP pipeline supplies `TEST_URL` after deploying the Helm release. `yarn test:smoke` runs tests tagged `@smoke` and writes JUnit and HTML evidence under `smoke-output`. `yarn test:functional` runs tests tagged `@functional` and writes its evidence under `functional-output`. These locations match the HMCTS Jenkins pipeline's standard result and artifact collection paths.
+The CNP pipeline supplies `TEST_URL` after deploying the Helm release. `yarn test:smoke` runs tests tagged `@smoke` and writes JUnit and HTML evidence under `smoke-output`. `yarn test:functional` runs tests tagged `@functional` and writes its evidence under `functional-output`. These locations match the HMCTS Jenkins pipeline's standard result and artifact collection paths. Jenkins publishes the JUnit results and adds separate Playwright HTML report links for Preview and AAT smoke and functional stages.
 
 The deployed API suite does not require Playwright browser binaries. Add browser installation to CI only when a scenario, such as a complete OAuth browser journey, needs a real browser.
