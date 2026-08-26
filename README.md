@@ -105,3 +105,15 @@ yarn test:unit
 | Movement | +13 route groups | +76.5 percentage points |
 
 Endpoint coverage measures routes or proxy groups exercised over HTTP. It is separate from NYC source-code coverage.
+
+## Deployed API tests
+
+Deployed-instance API tests use Playwright's API request client. Set `TEST_URL` to the base URL of a running gateway before executing them:
+
+```bash
+TEST_URL=https://ccd-api-gateway-web.example.test yarn test:deployed
+```
+
+The CNP pipeline supplies `TEST_URL` after deploying the Helm release. `yarn test:smoke` runs tests tagged `@smoke` and writes JUnit and HTML evidence under `smoke-output`. `yarn test:functional` runs tests tagged `@functional` and writes its evidence under `functional-output`. These locations match the HMCTS Jenkins pipeline's standard result and artifact collection paths.
+
+The deployed API suite does not require Playwright browser binaries. Add browser installation to CI only when a scenario, such as a complete OAuth browser journey, needs a real browser.

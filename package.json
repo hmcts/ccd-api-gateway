@@ -13,8 +13,9 @@
     "test:unit": "NODE_ENV=test NODE_PATH=. mocha 'test/**/*.spec.js' --reporter spec --recursive",
     "test:coverage": "NODE_ENV=test NODE_PATH=. nyc --include 'app/**/*.js' --exclude 'test/**' --exclude 'node_modules/**' --reporter=lcov --reporter=text --report-dir=coverage mocha 'test/**/*.spec.js' --recursive",
     "fortifyScan": "./test/java/gradlew -p test/java fortifyScan",
-    "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
-    "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
+    "test:deployed": "PLAYWRIGHT_OUTPUT_DIR=functional-output playwright test",
+    "test:smoke": "PLAYWRIGHT_OUTPUT_DIR=smoke-output playwright test --grep @smoke",
+    "test:functional": "PLAYWRIGHT_OUTPUT_DIR=functional-output playwright test --grep @functional --pass-with-no-tests",
     "test:a11y": "NODE_PATH=.",
     "sonar-scan": "NODE_PATH=. sonar-scanner -X"
   },
@@ -49,6 +50,7 @@
     "otp": "^0.1.3"
   },
   "devDependencies": {
+    "@playwright/test": "1.59.1",
     "chai": "^6.0.0",
     "chai-http": "^5.0.0",
     "eslint": "^9.39.4",
