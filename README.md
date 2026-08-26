@@ -87,10 +87,21 @@ docker-compose up
 
 As a result, the API gateway will be started and made available on port `3453`.
 
-## Integration tests
+## Endpoint tests
 
-The integration tests are mavenized and can be run using:
+The endpoint scenarios run as part of the existing unit-test suite. They exercise the assembled Express application over
+HTTP with controlled IdAM and downstream services, covering OAuth, logout, health checks and representative proxy groups.
 
 ```bash
-yarn integration
+yarn test:unit
 ```
+
+### Endpoint coverage
+
+| Measure | Route groups covered | Coverage |
+|---|---:|---:|
+| Baseline | 4 of 17 | 23.5% |
+| Current | 17 of 17 | 100.0% |
+| Movement | +13 route groups | +76.5 percentage points |
+
+Endpoint coverage measures routes or proxy groups exercised over HTTP. It is separate from NYC source-code coverage.
