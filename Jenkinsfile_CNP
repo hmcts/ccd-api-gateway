@@ -39,6 +39,21 @@ def vaultOverrides = [
 
 env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
+def publishPlaywrightReport = { String outputDirectory, String reportName ->
+    steps.archiveArtifacts(
+        allowEmptyArchive: true,
+        artifacts: "${outputDirectory}/playwright-report/**/*"
+    )
+    publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "${outputDirectory}/playwright-report",
+        reportFiles          : 'index.html',
+        reportName           : reportName
+    ]
+}
+
 withPipeline("nodejs", product, component) {
     onMaster {
         enableSlackNotifications('#ccd-master-builds')
@@ -68,6 +83,22 @@ withPipeline("nodejs", product, component) {
 
     afterAlways('build') {
         sh "yarn --check-cache"
+    }
+
+    afterAlways('smoketest:preview') {
+        publishPlaywrightReport('smoke-output', 'PREVIEW Playwright Smoke Tests')
+    }
+
+    afterAlways('smoketest:aat') {
+        publishPlaywrightReport('smoke-output', 'AAT Playwright Smoke Tests')
+    }
+
+    afterAlways('functionalTest:preview') {
+        publishPlaywrightReport('functional-output', 'PREVIEW Playwright Functional Tests')
+    }
+
+    afterAlways('functionalTest:aat') {
+        publishPlaywrightReport('functional-output', 'AAT Playwright Functional Tests')
     }
 
 }

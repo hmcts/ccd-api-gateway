@@ -87,10 +87,33 @@ docker-compose up
 
 As a result, the API gateway will be started and made available on port `3453`.
 
-## Integration tests
+## Endpoint tests
 
-The integration tests are mavenized and can be run using:
+The endpoint scenarios run as part of the existing unit-test suite. They exercise the assembled Express application over
+HTTP with controlled IdAM and downstream services, covering OAuth, logout, health checks and representative proxy groups.
 
 ```bash
-yarn integration
+yarn test:unit
 ```
+
+### Endpoint coverage
+
+| Measure | Route groups covered | Coverage |
+|---|---:|---:|
+| Baseline | 4 of 17 | 23.5% |
+| Current | 17 of 17 | 100.0% |
+| Movement | +13 route groups | +76.5 percentage points |
+
+Endpoint coverage measures routes or proxy groups exercised over HTTP. It is separate from NYC source-code coverage.
+
+## Deployed API tests
+
+Deployed-instance API tests use Playwright's API request client. Set `TEST_URL` to the base URL of a running gateway before executing them:
+
+```bash
+TEST_URL=https://ccd-api-gateway-web.example.test yarn test:deployed
+```
+
+The CNP pipeline supplies `TEST_URL` after deploying the Helm release. `yarn test:smoke` runs tests tagged `@smoke` and writes JUnit and HTML evidence under `smoke-output`. `yarn test:functional` runs tests tagged `@functional` and writes its evidence under `functional-output`. These locations match the HMCTS Jenkins pipeline's standard result and artifact collection paths. Jenkins publishes the JUnit results and adds separate Playwright HTML report links for Preview and AAT smoke and functional stages.
+
+The deployed API suite does not require Playwright browser binaries. Add browser installation to CI only when a scenario, such as a complete OAuth browser journey, needs a real browser.
