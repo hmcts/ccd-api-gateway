@@ -17,6 +17,9 @@ def gatewayApiDevelopPr = "PR-332" // This doesn't change frequently, but when i
 def secrets = [
     'ccd-${env}': [
         secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
+        secret('ccd-caseworker-autotest-email', 'CCD_CASEWORKER_AUTOTEST_EMAIL'),
+        secret('ccd-caseworker-autotest-password', 'CCD_CASEWORKER_AUTOTEST_PASSWORD'),
+        secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET'),
     ]
 ]
 
@@ -38,6 +41,15 @@ def vaultOverrides = [
 ]
 
 env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+def configureAatIdamForPlaywright = {
+    // Preview gateway deployments use AAT IDAM, as does the AAT test stage.
+    env.IDAM_WEB_URL = 'https://idam-web-public.aat.platform.hmcts.net'
+    env.IDAM_TESTING_SUPPORT_URL = 'https://idam-testing-support-api.aat.platform.hmcts.net'
+    env.IDAM_OAUTH2_CLIENT_ID = 'ccd_gateway'
+    env.IDAM_OAUTH2_SCOPE = 'openid profile roles'
+    env.IDAM_OAUTH2_REDIRECT_URI = 'https://www-ccd.aat.platform.hmcts.net/oauth2redirect'
+}
 
 def publishPlaywrightReport = { String outputDirectory, String reportName ->
     steps.archiveArtifacts(
@@ -91,6 +103,14 @@ withPipeline("nodejs", product, component) {
 
     afterAlways('smoketest:aat') {
         publishPlaywrightReport('smoke-output', 'AAT Playwright Smoke Tests')
+    }
+
+    before('functionalTest:preview') {
+        configureAatIdamForPlaywright()
+    }
+
+    before('functionalTest:aat') {
+        configureAatIdamForPlaywright()
     }
 
     afterAlways('functionalTest:preview') {
