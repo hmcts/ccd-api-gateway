@@ -9,7 +9,7 @@ Use these tags to select the CI phase:
 - `@smoke` for fast, non-destructive checks that run after every deployment.
 - `@functional` for broader endpoint contract and authentication scenarios.
 
-The deployed suite contains 11 scenarios: one smoke test and ten functional tests covering health, OAuth validation, logout validation, authentication enforcement across five proxy groups and one successful authenticated `/aggregated` request.
+The deployed suite contains 13 scenarios: one smoke test and twelve functional tests covering health, OAuth validation, logout validation, authentication enforcement across five proxy groups and successful authenticated requests through `/aggregated`, `/data` and `/definition_import`.
 
 ## Authenticated scenarios
 
@@ -44,7 +44,7 @@ CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET
 
 Optional overrides are `IDAM_OAUTH2_CLIENT_ID`, `IDAM_OAUTH2_SCOPE` and `IDAM_OAUTH2_REDIRECT_URI`. Defaults are suitable for the `ccd_gateway` client except for the environment-specific redirect URI.
 
-The first CI verification uses this fixture to request `/aggregated/caseworkers/:uid/jurisdictions?access=read`. It expects a successful response containing `AUTOTEST1`, which verifies the configured identity's `caseworker` and `caseworker-autotest1` access as well as gateway user-ID substitution, S2S injection and downstream proxying.
+The positive CI verifications use this fixture for read-only requests through `/aggregated`, `/data` and `/definition_import`. The Data Store requests expect `AUTOTEST1`, verifying the configured identity's `caseworker` and `caseworker-autotest1` access as well as gateway user-ID substitution, S2S injection and downstream proxying. The Definition Store request verifies its JSON response contract without importing or changing definitions.
 
 Example usage:
 
