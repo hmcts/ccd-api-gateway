@@ -62,6 +62,20 @@ async function useApiClient({ playwright, use, testInfo, defaultHeaders = {} }) 
     defaultHeaders: Object.assign({
       accept: 'application/json'
     }, defaultHeaders),
+    redaction: {
+      patterns: [
+        /token/i,
+        /secret/i,
+        /password/i,
+        /authorization/i,
+        /api[-_]?key/i,
+        /x[-_]?xsrf[-_]?token/i,
+        /cookie/i,
+        /set[-_]?cookie/i,
+        /session/i,
+        /^code$/i
+      ]
+    },
     captureRawBodies: false,
     requestFactory: () => playwright.request.newContext({
       ignoreHTTPSErrors: process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS === 'true'

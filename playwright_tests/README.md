@@ -18,9 +18,9 @@ Do not mix positive and negative scenarios in the same spec file. This keeps CI 
 
 Keep helper functions out of `*.spec.mjs` files. Put response parsing, data builders and reusable request lifecycle logic under `playwright_tests/helpers`, leaving specs focused on scenarios and assertions.
 
-The deployed suite contains 20 scenarios: two smoke tests and eighteen functional tests covering health, OAuth validation, positive and negative logout, address lookup, authentication enforcement across five proxy groups, successful authenticated requests through `/aggregated`, `/data`, `/definition_import` and `/documents`, and downstream health through `/activity`, `/print` and `/refdata`.
+The deployed suite contains 21 scenarios: two smoke tests and nineteen functional tests covering health, positive OAuth authorization-code exchange, OAuth validation, positive and negative logout, address lookup, authentication enforcement across five proxy groups, successful authenticated requests through `/aggregated`, `/data`, `/definition_import` and `/documents`, and downstream health through `/activity`, `/print` and `/refdata`.
 
-Positive deployed coverage now covers 13 of the 17 endpoint routes or groups (76.5%), an increase of 53.0 percentage points from the 23.5% baseline: `/`, `/health`, `/health/readiness`, `/health/liveness`, `/logout`, `/addresses`, `/aggregated`, `/data`, `/definition_import`, `/documents`, `/activity`, `/print` and `/refdata`. Successful `/oauth2`, `/em-anno`, `/payments` and `/pay-bulkscan` scenarios still require an authorization-code browser flow or dedicated resource fixtures and roles.
+Positive deployed coverage now covers 14 of the 17 endpoint routes or groups (82.4%), an increase of 58.9 percentage points from the 23.5% baseline: `/`, `/health`, `/health/readiness`, `/health/liveness`, `/oauth2`, `/logout`, `/addresses`, `/aggregated`, `/data`, `/definition_import`, `/documents`, `/activity`, `/print` and `/refdata`. Successful `/em-anno`, `/payments` and `/pay-bulkscan` scenarios still require dedicated resource fixtures and roles.
 
 ## Authenticated scenarios
 
