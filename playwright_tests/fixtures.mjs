@@ -94,7 +94,8 @@ const test = base.extend({
       use,
       testInfo,
       defaultHeaders: {
-        Authorization: `Bearer ${idamAccessToken}`
+        Authorization: `Bearer ${idamAccessToken}`,
+        'content-type': 'application/json'
       }
     });
   }

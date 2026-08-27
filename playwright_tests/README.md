@@ -13,7 +13,7 @@ The deployed suite contains 11 scenarios: one smoke test and ten functional test
 
 ## Authenticated scenarios
 
-The shared fixtures expose `authenticatedApiClient` for positive deployed-instance scenarios. It obtains an IDAM access token with `IdamUtils` and adds it as a bearer token to gateway requests. The fixture is lazy: existing health and negative-authentication tests do not require credentials.
+The shared fixtures expose `authenticatedApiClient` for positive deployed-instance scenarios. It obtains an IDAM access token with `IdamUtils` and adds it as a bearer token to gateway requests. It also sends `Content-Type: application/json`, which the aggregated Data Store endpoint requires even for its GET request. The fixture is lazy: existing health and negative-authentication tests do not require credentials.
 
 Jenkins reads the test identity and OAuth client secret from the environment-specific `ccd-${env}` Key Vault. Preview is deliberately mapped to AAT because Preview gateway deployments use AAT IDAM.
 
