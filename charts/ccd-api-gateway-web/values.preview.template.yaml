@@ -13,6 +13,6 @@ nodejs:
     PROXY_AGGREGATED: http://ccd-data-store-api-aat.service.core-compute-aat.internal
     PROXY_CASE_ACTIVITY: http://ccd-case-activity-api-aat.service.core-compute-aat.internal
     PROXY_DATA: http://ccd-data-store-api-aat.service.core-compute-aat.internal
-    PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
+    PROXY_PRINT_SERVICE: https://return-case-doc-ccd.aat.platform.hmcts.net
     PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api-aat.service.core-compute-aat.internal
     PROXY_REFDATA: http://rd-professional-api-aat.service.core-compute-aat.internal
