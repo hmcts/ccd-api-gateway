@@ -94,6 +94,22 @@ const test = base.extend({
   freshIdamAccessToken: async ({ browserName }, use) => {
     await use(await generateIdamAccessToken(browserName));
   },
+  authenticatedRequestContext: async ({ idamAccessToken, playwright }, use) => {
+    const requestContext = await playwright.request.newContext({
+      baseURL: process.env.TEST_URL,
+      ignoreHTTPSErrors: process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS === 'true',
+      extraHTTPHeaders: {
+        accept: 'application/json',
+        Authorization: `Bearer ${idamAccessToken}`
+      }
+    });
+
+    try {
+      await use(requestContext);
+    } finally {
+      await requestContext.dispose();
+    }
+  },
   authenticatedApiClient: async ({ idamAccessToken, playwright }, use, testInfo) => {
     await useApiClient({
       playwright,
