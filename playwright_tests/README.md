@@ -9,11 +9,20 @@ Use these tags to select the CI phase:
 - `@smoke` for fast, non-destructive checks that run after every deployment.
 - `@functional` for broader endpoint contract and authentication scenarios.
 
-The deployed suite contains 13 scenarios: one smoke test and twelve functional tests covering health, OAuth validation, logout validation, authentication enforcement across five proxy groups and successful authenticated requests through `/aggregated`, `/data` and `/definition_import`.
+Name deployed test files by scenario intent:
+
+- `*.positive.spec.mjs` for successful responses and expected business contracts.
+- `*.negative.spec.mjs` for authentication, validation, error and failure responses.
+
+Do not mix positive and negative scenarios in the same spec file. This keeps CI failures and report evidence easy to classify.
+
+The deployed suite contains 19 scenarios: two smoke tests and seventeen functional tests covering health, OAuth validation, positive and negative logout, address lookup, authentication enforcement across five proxy groups, successful authenticated requests through `/aggregated`, `/data` and `/definition_import`, and downstream health through `/activity`, `/print` and `/refdata`.
+
+Positive deployed coverage now covers 12 of the 17 endpoint routes or groups (70.6%), an increase of 47.1 percentage points from the 23.5% baseline: `/`, `/health`, `/health/readiness`, `/health/liveness`, `/logout`, `/addresses`, `/aggregated`, `/data`, `/definition_import`, `/activity`, `/print` and `/refdata`. Successful `/oauth2`, `/documents`, `/em-anno`, `/payments` and `/pay-bulkscan` scenarios still require an authorization-code browser flow or dedicated resource fixtures and roles.
 
 ## Authenticated scenarios
 
-The shared fixtures expose `authenticatedApiClient` for positive deployed-instance scenarios. It obtains an IDAM access token with `IdamUtils` and adds it as a bearer token to gateway requests. It also sends `Content-Type: application/json`, which the aggregated Data Store endpoint requires even for its GET request. The fixture is lazy: existing health and negative-authentication tests do not require credentials.
+The shared fixtures expose `authenticatedApiClient` for positive deployed-instance scenarios. It obtains an IDAM access token with `IdamUtils` and adds it as a bearer token to gateway requests. It also sends `Content-Type: application/json`, which the aggregated Data Store endpoint requires even for its GET request. The `freshIdamAccessToken` fixture issues a test-scoped token for logout so invalidating it cannot affect the worker-scoped token used by other tests. The fixtures are lazy: health and negative-authentication tests do not require credentials.
 
 Jenkins reads the test identity and OAuth client secret from the environment-specific `ccd-${env}` Key Vault. Preview is deliberately mapped to AAT because Preview gateway deployments use AAT IDAM.
 
@@ -44,7 +53,7 @@ CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET
 
 Optional overrides are `IDAM_OAUTH2_CLIENT_ID`, `IDAM_OAUTH2_SCOPE` and `IDAM_OAUTH2_REDIRECT_URI`. Defaults are suitable for the `ccd_gateway` client except for the environment-specific redirect URI.
 
-The positive CI verifications use this fixture for read-only requests through `/aggregated`, `/data` and `/definition_import`. The Data Store requests expect `AUTOTEST1`, verifying the configured identity's `caseworker` and `caseworker-autotest1` access as well as gateway user-ID substitution, S2S injection and downstream proxying. The Definition Store request verifies its JSON response contract without importing or changing definitions.
+The positive CI verifications use these fixtures for read-only requests through `/addresses`, `/aggregated`, `/data`, `/definition_import`, `/activity`, `/print` and `/refdata`, plus a token-isolated logout request. The Data Store requests expect `AUTOTEST1`, verifying the configured identity's `caseworker` and `caseworker-autotest1` access as well as gateway user-ID substitution, S2S injection and downstream proxying. The Definition Store request verifies its JSON response contract without importing or changing definitions. The downstream health checks prove gateway authentication, S2S generation, path rewriting and connectivity without depending on mutable case or payment data.
 
 Example usage:
 

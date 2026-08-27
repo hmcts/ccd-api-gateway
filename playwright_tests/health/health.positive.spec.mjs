@@ -1,6 +1,16 @@
 import { expect, test } from '../fixtures.mjs';
 
 test.describe('Gateway health @smoke', () => {
+  test('GET / reports that the deployed gateway is up', async ({ apiClient }) => {
+    const response = await apiClient.get('/');
+
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toContain('application/json');
+    expect(response.data).toMatchObject({
+      status: 'UP'
+    });
+  });
+
   test('GET /health reports that the deployed gateway is up', async ({ apiClient }) => {
     const response = await apiClient.get('/health');
 
