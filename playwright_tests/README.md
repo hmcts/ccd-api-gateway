@@ -76,6 +76,12 @@ Run all deployed tests locally against an available environment:
 TEST_URL=https://ccd-api-gateway-web.example.test yarn test:deployed
 ```
 
+The positive OAuth authorization-code scenario uses Playwright's `page` fixture to complete the IDAM login journey. Install the matching Chromium binary before running functional tests on a new machine or CI agent:
+
+```bash
+yarn playwright install chromium
+```
+
 Unauthenticated tests can therefore run against a local gateway, a disposable stub server, Preview or AAT. Authenticated tests must use credentials and IDAM URLs belonging to the same backing environment as the deployed gateway. Never commit those values to an `.env` file.
 
 Set `PLAYWRIGHT_IGNORE_HTTPS_ERRORS=true` only for an environment that deliberately uses an untrusted test certificate. TLS verification remains enabled by default.
