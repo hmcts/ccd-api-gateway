@@ -62,4 +62,17 @@ test.describe('Proxy authentication @functional', () => {
       });
     });
   });
+
+  test('GET /print/probateManTypes rejects an authenticated user without a Probate role', async ({ authenticatedApiClient }) => {
+    const response = await authenticatedApiClient.get('/print/probateManTypes', {
+      throwOnError: false
+    });
+
+    expect(response.status).toBe(403);
+    expect(response.data).toMatchObject({
+      error: 'Unauthorised role',
+      status: 403,
+      message: 'You are not authorized to access this resource'
+    });
+  });
 });
