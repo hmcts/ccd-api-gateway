@@ -25,7 +25,8 @@ test.describe('OAuth authorization code @functional', () => {
         '/aggregated/caseworkers/:uid/jurisdictions',
         {
           headers: {
-            cookie: `accessToken=${accessToken}`
+            cookie: `accessToken=${accessToken}`,
+            'content-type': 'application/json'
           },
           query: { access: 'read' }
         }
