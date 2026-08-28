@@ -2,7 +2,7 @@ import { expect, test } from '../fixtures.mjs';
 import { accessTokenCookie, obtainAuthorizationCode } from '../helpers/oauth-flow.mjs';
 
 test.describe('OAuth authorization code @functional', () => {
-  test('GET /oauth2 exchanges an authorization code and sets the access-token cookie', async ({ apiClient, request }) => {
+  test('GET /oauth2 sets a cookie that authenticates a proxy request', async ({ apiClient, request }) => {
     const authorizationCode = await obtainAuthorizationCode(request);
     let accessToken;
 
@@ -20,6 +20,23 @@ test.describe('OAuth authorization code @functional', () => {
       expect(response.headers['set-cookie']).toContain('accessToken=');
       expect(response.headers['set-cookie']).toContain('HttpOnly');
       expect(accessToken).toBeTruthy();
+
+      const proxyResponse = await apiClient.get(
+        '/aggregated/caseworkers/:uid/jurisdictions',
+        {
+          headers: {
+            cookie: `accessToken=${accessToken}`
+          },
+          query: { access: 'read' }
+        }
+      );
+
+      expect(proxyResponse.status).toBe(200);
+      expect(proxyResponse.data).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 'AUTOTEST1' })
+        ])
+      );
     } finally {
       if (accessToken) {
         const logoutResponse = await apiClient.get('/logout', {

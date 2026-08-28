@@ -77,7 +77,7 @@ Run all deployed tests locally against an available environment:
 TEST_URL=https://ccd-api-gateway-web.example.test yarn test:deployed
 ```
 
-The positive OAuth scenario obtains a real one-time authorization code from the IDAM API and exchanges it through the deployed gateway. The deployed suite uses Playwright's API request client throughout, so it does not require a browser installation.
+The positive OAuth scenario obtains a real one-time authorization code from the IDAM API, exchanges it through the deployed gateway, and uses the returned `accessToken` cookie for an authenticated `/aggregated` request. The deployed suite uses Playwright's API request client throughout, so it does not require a browser installation.
 
 Unauthenticated tests can therefore run against a local gateway, a disposable stub server, Preview or AAT. Authenticated tests must use credentials and IDAM URLs belonging to the same backing environment as the deployed gateway. Never commit those values to an `.env` file.
 
