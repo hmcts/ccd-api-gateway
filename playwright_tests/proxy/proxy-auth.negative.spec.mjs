@@ -2,6 +2,10 @@ import { expect, test } from '../fixtures.mjs';
 
 const protectedProxyScenarios = [
   {
+    name: 'address lookup',
+    path: '/addresses?postcode=SW1A1AA'
+  },
+  {
     name: 'aggregated',
     path: '/aggregated/playwright-test'
   },
@@ -20,6 +24,26 @@ const protectedProxyScenarios = [
   {
     name: 'payments',
     path: '/payments/card-payments/playwright-test'
+  },
+  {
+    name: 'annotations',
+    path: '/em-anno/playwright-test'
+  },
+  {
+    name: 'case print',
+    path: '/print/playwright-test'
+  },
+  {
+    name: 'case activity',
+    path: '/activity/playwright-test'
+  },
+  {
+    name: 'bulk-scan payments',
+    path: '/pay-bulkscan/cases/playwright-test'
+  },
+  {
+    name: 'professional reference data',
+    path: '/refdata/playwright-test'
   }
 ];
 
