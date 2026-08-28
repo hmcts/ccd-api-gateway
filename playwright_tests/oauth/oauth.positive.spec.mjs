@@ -2,10 +2,8 @@ import { expect, test } from '../fixtures.mjs';
 import { accessTokenCookie, obtainAuthorizationCode } from '../helpers/oauth-flow.mjs';
 
 test.describe('OAuth authorization code @functional', () => {
-  test.setTimeout(60000);
-
-  test('GET /oauth2 exchanges an authorization code and sets the access-token cookie', async ({ apiClient, page }) => {
-    const authorizationCode = await obtainAuthorizationCode(page);
+  test('GET /oauth2 exchanges an authorization code and sets the access-token cookie', async ({ apiClient, request }) => {
+    const authorizationCode = await obtainAuthorizationCode(request);
     let accessToken;
 
     try {
