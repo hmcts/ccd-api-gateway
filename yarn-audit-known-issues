@@ -1,5 +1,24 @@
-{"value":"browserslist","children":{"ID":1153171,"Issue":"Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM","URL":"https://github.com/advisories/GHSA-c83g-rgw3-j3cx","Severity":"high","Vulnerable Versions":"<=4.28.6","Tree Versions":["4.28.2"],"Dependents":["@babel/helper-compilation-targets@npm:8.0.0"]}}
-{"value":"browserslist","children":{"ID":1153172,"Issue":"Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)","URL":"https://github.com/advisories/GHSA-73wf-gq98-2v4g","Severity":"high","Vulnerable Versions":"<=4.28.6","Tree Versions":["4.28.2"],"Dependents":["@babel/helper-compilation-targets@npm:8.0.0"]}}
-{"value":"glob","children":{"ID":"glob (deprecation)","Issue":"Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me","Severity":"moderate","Vulnerable Versions":"7.2.3","Tree Versions":["7.2.3"],"Dependents":["nyc@npm:15.1.0"]}}
-{"value":"inflight","children":{"ID":"inflight (deprecation)","Issue":"This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.","Severity":"moderate","Vulnerable Versions":"1.0.6","Tree Versions":["1.0.6"],"Dependents":["glob@npm:7.2.3"]}}
-{"value":"rimraf","children":{"ID":"rimraf (deprecation)","Issue":"Rimraf versions prior to v4 are no longer supported","Severity":"moderate","Vulnerable Versions":"3.0.2","Tree Versions":["3.0.2"],"Dependents":["nyc@npm:15.1.0"]}}
+[91m➤[39m YN0001: RequestError: Timeout awaiting 'socket' for 60000ms
+    at ClientRequest.<anonymous> (/home/runner/work/ccd-api-gateway/ccd-api-gateway/.yarn/releases/yarn-4.18.0.cjs:148:14230)
+    at Object.onceWrapper (node:events:634:26)
+    at ClientRequest.emit (node:events:531:35)
+    at l.emit (/home/runner/work/ccd-api-gateway/ccd-api-gateway/.yarn/releases/yarn-4.18.0.cjs:143:22975)
+    at emitErrorEvent (node:_http_client:108:11)
+    at TLSSocket.socketErrorListener (node:_http_client:575:5)
+    at TLSSocket.emit (node:events:519:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at A (/home/runner/work/ccd-api-gateway/ccd-api-gateway/.yarn/releases/yarn-4.18.0.cjs:144:15329)
+    at ClientRequest.w (/home/runner/work/ccd-api-gateway/ccd-api-gateway/.yarn/releases/yarn-4.18.0.cjs:144:15573)
+    at Object.onceWrapper (node:events:633:28)
+    at ClientRequest.emit (node:events:531:35)
+    at l.emit (/home/runner/work/ccd-api-gateway/ccd-api-gateway/.yarn/releases/yarn-4.18.0.cjs:143:22975)
+    at TLSSocket.emitRequestTimeout (node:_http_client:931:9)
+    at Object.onceWrapper (node:events:633:28)
+    at TLSSocket.emit (node:events:531:35)
+    at Socket._onTimeout (node:net:605:8)
+    at listOnTimeout (node:internal/timers:585:17)
+
+[91m➤[39m Errors happened when preparing the environment required to run this command.
+[91m➤[39m This might be caused by packages being missing from the lockfile, in which case running "yarn install" might help.
