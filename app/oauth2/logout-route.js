@@ -1,8 +1,12 @@
 const config = require('config');
 const fetch = require('node-fetch');
+const { Logger } = require('@hmcts/nodejs-logging');
 const COOKIE_ACCESS_TOKEN = require('./oauth2-route').COOKIE_ACCESS_TOKEN;
 const TOKEN_PLACEHOLDER = ':token';
 const { userInfoCache } = require('../cache/cache-config');
+const { getBasicAuthHeader, redactAuthorizationHeader } = require('./client-auth');
+
+const logger = Logger.getLogger('logoutRoute');
 
 const logoutRoute = (req, res, next) => {
   const accessToken = req.cookies && req.cookies[COOKIE_ACCESS_TOKEN];
@@ -11,9 +15,7 @@ const logoutRoute = (req, res, next) => {
     const options = {
       method: 'DELETE',
       headers: {
-        'Authorization': 'Basic '
-        + Buffer.from(config.get('idam.oauth2.client_id') + ':' + config.get('secrets.ccd.ccd-api-gateway-oauth2-client-secret'))
-          .toString('base64'),
+        'Authorization': getBasicAuthHeader(),
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     };
@@ -23,7 +25,11 @@ const logoutRoute = (req, res, next) => {
         userInfoCache.del(accessToken);
         res.status(204).send();
       })
-      .catch(err => next(err));
+      .catch(err => {
+        logger.error('Failed to logout due to an error:', err);
+        logger.error('Request headers:', redactAuthorizationHeader(options.headers));
+        next(err);
+      });
   } else {
     next({
       error: 'No auth token',
