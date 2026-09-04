@@ -559,7 +559,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^3.3.6":
+"@eslint/eslintrc@npm:^3.3.7":
   version: 3.3.7
   resolution: "@eslint/eslintrc@npm:3.3.7"
   dependencies:
@@ -2210,7 +2210,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"brace-expansion@npm:^5.0.8":
+"brace-expansion@npm:^5.0.8, brace-expansion@npm:^5.0.9":
   version: 5.0.9
   resolution: "brace-expansion@npm:5.0.9"
   dependencies:
@@ -2344,30 +2344,30 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ccd-api-gateway-web@workspace:."
   dependencies:
-    "@eslint/eslintrc": "npm:^3.3.6"
+    "@eslint/eslintrc": "npm:^3.3.7"
     "@eslint/js": "npm:^10.0.1"
     "@hmcts/nodejs-healthcheck": "npm:^1.8.6"
     "@hmcts/nodejs-logging": "npm:^4.0.4"
     "@hmcts/properties-volume": "npm:^1.4.1"
     applicationinsights: "npm:3.16.0"
     body-parser: "npm:^2.3.0"
-    brace-expansion: "npm:^5.0.8"
+    brace-expansion: "npm:^5.0.9"
     chai: "npm:^6.2.2"
     chai-http: "npm:^5.1.2"
     config: "npm:^4.4.2"
-    cookie: "npm:^2.0.0"
+    cookie: "npm:^2.0.1"
     cookie-parser: "npm:~1.4.7"
     cross-env: "npm:^10.1.0"
     debug: "npm:~4.4.3"
     dont-sniff-mimetype: "npm:^1.1.0"
-    eslint: "npm:^10.8.0"
+    eslint: "npm:^10.9.1"
     eslint-plugin-mocha: "npm:^11.3.0"
     express: "npm:^5.2.1"
     fetch-mock: "npm:^12.6.0"
     form-data: "npm:^4.0.6"
     formidable: "npm:^3.5.4"
     git-message: "npm:^2.0.2"
-    globals: "npm:^17.8.0"
+    globals: "npm:^17.12.0"
     handlebars: "npm:^4.7.9"
     http-proxy-middleware: "npm:^3.0.7"
     https-proxy-agent: "npm:^9.1.0"
@@ -2377,11 +2377,11 @@ __metadata:
     jwt-decode: "npm:^4.0.0"
     lodash: "npm:^4.18.1"
     mem: "npm:^10.0.0"
-    mocha: "npm:^11.7.6"
+    mocha: "npm:^11.8.0"
     mochawesome: "npm:^7.1.4"
     moment: "npm:^2.30.1"
     nocache: "npm:^4.0.0"
-    nock: "npm:^14.0.16"
+    nock: "npm:^14.0.17"
     node-cache: "npm:^5.1.2"
     node-fetch: "npm:^3.3.2"
     nyc: "npm:^18.0.0"
@@ -2660,7 +2660,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:^2.0.0":
+"cookie@npm:^2.0.1":
   version: 2.0.1
   resolution: "cookie@npm:2.0.1"
   checksum: 10/9fd785e98334f78e6337f4aafd5a3558a2ff49931b92c9cd9f1f3f042819532dc7f0730d55bd1666bb1d82b86090581d690388764aab1b84dfcd47eb0b959361
@@ -3134,7 +3134,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.8.0":
+"eslint@npm:^10.9.1":
   version: 10.9.1
   resolution: "eslint@npm:10.9.1"
   dependencies:
@@ -3799,7 +3799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.8.0":
+"globals@npm:^17.12.0":
   version: 17.12.0
   resolution: "globals@npm:17.12.0"
   checksum: 10/833291560517dbb510c6d12359ba87eb8b8f282e9775b0474c6e19e0bea043b61f6b52732d4b1bb275888d1813564e40653e0d5faccef3083dc603cfbf0a3271
@@ -4936,7 +4936,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha@npm:^11.7.6":
+"mocha@npm:^11.8.0":
   version: 11.8.0
   resolution: "mocha@npm:11.8.0"
   dependencies:
@@ -5083,7 +5083,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nock@npm:^14.0.16":
+"nock@npm:^14.0.17":
   version: 14.0.17
   resolution: "nock@npm:14.0.17"
   dependencies:
