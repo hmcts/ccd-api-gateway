@@ -2303,7 +2303,7 @@ __metadata:
     mem: "npm:^6.0.0"
     mocha: "npm:^5.2.0"
     moment: "npm:^2.29.4"
-    nocache: "npm:^2.1.0"
+    nocache: "npm:^4.0.0"
     nock: "npm:^13.3.2"
     node-cache: "npm:^5.1.0"
     node-fetch: "npm:^2.6.7"
@@ -4948,10 +4948,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nocache@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "nocache@npm:2.1.0"
-  checksum: 10/cea7277b22a8113243991b2bd4516db2b7de8013750b7634eb34c3debb04575021aa6c20eb9f8cdea7b7060036b969463eeab6c507a3c1961c6e12f85b2b644b
+"nocache@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "nocache@npm:4.0.0"
+  checksum: 10/5b018b7900fbc580c327b1a87decb20e8d9d233face8b8dfa286a54304f2cc11bfaea9828d0d4b635ca55a73539269a6b64a85185c4a363cc288fd706f6e3825
   languageName: node
   linkType: hard
 
