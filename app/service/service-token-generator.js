@@ -1,7 +1,6 @@
-const otp = require('otp');
+const OTP = require('otp');
 const config = require('config');
-const jwtDecodeModule = require('jwt-decode');
-const jwtDecode = jwtDecodeModule.jwtDecode || jwtDecodeModule;
+const { jwtDecode } = require('jwt-decode');
 const fetch = require('../util/fetch');
 
 const idamS2SUrl = config.get('idam.s2s_url');
@@ -18,7 +17,7 @@ const serviceTokenGenerator = () => {
         && currentTime < cache[serviceName].expiresAt) {
       return Promise.resolve(cache[serviceName].token);
     } else {
-      const oneTimePassword = otp({secret: secret}).totp();
+      const oneTimePassword = new OTP({ secret }).totp(currentTime);
       const form = {
         microservice: serviceName,
         oneTimePassword
