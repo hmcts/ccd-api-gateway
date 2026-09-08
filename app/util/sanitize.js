@@ -2,7 +2,7 @@ const sanitizeData = (data) => {
   let sanitizedData = '';
 
   if (data) {
-    sanitizedData = data.replace('\n', '').replace('\r', '');
+    sanitizedData = data.replaceAll('\n', '').replaceAll('\r', '');
   }
 
   return sanitizedData;
