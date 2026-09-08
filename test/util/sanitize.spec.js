@@ -32,6 +32,10 @@ describe('sanitizeData', () => {
     expect(sanitize.sanitizeData()).to.equal('');
   });
 
+  it('returns an empty string for null input', () => {
+    expect(sanitize.sanitizeData(null)).to.equal('');
+  });
+
   it('returns an empty string for empty input', () => {
     expect(sanitize.sanitizeData('')).to.equal('');
   });
