@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const fetchMock = require('fetch-mock');
+const fetchMock = require('fetch-mock').default;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
@@ -52,7 +52,9 @@ describe('Access Token Request', () => {
 
   let config;
   let fetch;
+  let fetchMockInstance;
   let unsuccessfulFetch;
+  let unsuccessfulFetchMockInstance;
   let accessTokenRequest;
   let unsuccessfulAccessTokenRequest;
 
@@ -61,13 +63,15 @@ describe('Access Token Request', () => {
       get: sinon.stub()
     };
 
-    fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
+    fetchMockInstance = fetchMock.createInstance().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
+    fetch = fetchMockInstance.fetchHandler;
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': fetch
     });
 
-    unsuccessfulFetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
+    unsuccessfulFetchMockInstance = fetchMock.createInstance().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
+    unsuccessfulFetch = unsuccessfulFetchMockInstance.fetchHandler;
     unsuccessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': unsuccessfulFetch
@@ -81,9 +85,10 @@ describe('Access Token Request', () => {
 
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
-        expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(fetch.lastUrl(), true);
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called()).to.be.true;
+        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        let requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         done();
@@ -98,9 +103,10 @@ describe('Access Token Request', () => {
 
     accessTokenRequest(REQUEST)
       .then(() => {
-        expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(fetch.lastUrl(), true);
+        const lastCall = fetchMockInstance.callHistory.lastCall();
+        expect(fetchMockInstance.callHistory.called()).to.be.true;
+        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        let requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         done();
@@ -117,9 +123,10 @@ describe('Access Token Request', () => {
 
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
-        expect(unsuccessfulFetch.called()).to.be.true;
-        expect(unsuccessfulFetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(unsuccessfulFetch.lastUrl(), true);
+        const lastCall = unsuccessfulFetchMockInstance.callHistory.lastCall();
+        expect(unsuccessfulFetchMockInstance.callHistory.called()).to.be.true;
+        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        let requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
         expect(response).to.have.property('status', 401);
