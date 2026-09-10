@@ -16,7 +16,7 @@
     "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
     "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
     "test:a11y": "NODE_PATH=.",
-    "sonar-scan": "NODE_PATH=. sonar-scanner -X"
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.javascript.lcov.reportPaths=$PWD/coverage/lcov.info"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.8.0",
