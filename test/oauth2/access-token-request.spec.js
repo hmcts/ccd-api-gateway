@@ -16,6 +16,7 @@ describe('Access Token Request', () => {
   const REDIRECT_URL = 'https://localhost/redirect/to';
   const UNDEFINED_URI = 'undefined:///oauth2redirect';
   const AUTH_CODE = 'xyz789';
+  const BASIC_AUTH_HEADER = 'Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64');
 
   const REQUEST = sinonExpressMock.mockReq({
     query: {
@@ -55,34 +56,39 @@ describe('Access Token Request', () => {
   let unsuccessfulFetch;
   let accessTokenRequest;
   let unsuccessfulAccessTokenRequest;
+  let clientAuth;
 
   beforeEach(() => {
     config = {
       get: sinon.stub()
     };
+    clientAuth = {
+      getBasicAuthHeader: sinon.stub().returns(BASIC_AUTH_HEADER)
+    };
 
     fetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
-      'node-fetch': fetch
+      'node-fetch': fetch,
+      './client-auth': clientAuth
     });
 
     unsuccessfulFetch = fetchMock.sandbox().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
     unsuccessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
-      'node-fetch': unsuccessfulFetch
+      'node-fetch': unsuccessfulFetch,
+      './client-auth': clientAuth
     });
   });
 
   it('should call the IdAM OAuth 2 token endpoint with the correct headers and query string parameters', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
         expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        expect(fetch.lastOptions().headers['Authorization']).to.equal(BASIC_AUTH_HEADER);
+        expect(clientAuth.getBasicAuthHeader).to.have.been.calledOnce;
         let requestedUrl = url.parse(fetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -92,14 +98,13 @@ describe('Access Token Request', () => {
   });
 
   it('should add `https://` prefix', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST)
       .then(() => {
         expect(fetch.called()).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        expect(fetch.lastOptions().headers['Authorization']).to.equal(BASIC_AUTH_HEADER);
+        expect(clientAuth.getBasicAuthHeader).to.have.been.calledOnce;
         let requestedUrl = url.parse(fetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -111,14 +116,13 @@ describe('Access Token Request', () => {
 
   it('should handle unsuccessful responses.', done => {
 
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
         expect(unsuccessfulFetch.called()).to.be.true;
-        expect(unsuccessfulFetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        expect(unsuccessfulFetch.lastOptions().headers['Authorization']).to.equal(BASIC_AUTH_HEADER);
+        expect(clientAuth.getBasicAuthHeader).to.have.been.calledOnce;
         let requestedUrl = url.parse(unsuccessfulFetch.lastUrl(), true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -129,8 +133,6 @@ describe('Access Token Request', () => {
   });
 
   it('should reject undefined uri requests.', async () => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
     try {
       await accessTokenRequest(REQUEST_UNDEFINED_URI);

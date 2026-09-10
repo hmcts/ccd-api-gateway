@@ -31,6 +31,7 @@ describe('logoutRoute', () => {
   let userInfoCacheSpy;
   let sandbox;
   let clock;
+  let clientAuth;
 
   let cachedUserResolver;
   let userInfoCache;
@@ -46,9 +47,10 @@ describe('logoutRoute', () => {
     cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', {
       '../cache/cache-config': { userInfoCache }
     });
+    clientAuth = {
+      getBasicAuthHeader: sinon.stub().returns('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
+    };
 
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
     config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_END_POINT);
 
     request = sinonExpressMock.mockReq({
@@ -63,7 +65,8 @@ describe('logoutRoute', () => {
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
-      'node-fetch': fetch
+      'node-fetch': fetch,
+      './client-auth': clientAuth
     }).logoutRoute;
   });
 
@@ -80,6 +83,7 @@ describe('logoutRoute', () => {
       try {
         expect(fetch.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
         expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+        expect(clientAuth.getBasicAuthHeader).to.have.been.calledOnce;
         expect(next).not.to.be.called;
         expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
 
@@ -102,8 +106,6 @@ describe('logoutRoute', () => {
 
     logoutRoute(request, response, next);
 
-    expect(config.get).to.be.calledWith('idam.oauth2.client_id');
-    expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
     expect(config.get).to.be.calledWith('idam.oauth2.logout_endpoint');
   });
 
