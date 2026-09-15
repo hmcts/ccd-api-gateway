@@ -95,6 +95,7 @@
     "braces": "^3.0.3",
     "brace-expansion": "^5.0.5",
     "path-to-regexp@npm:^8.0.0": "npm:path-to-regexp@8.4.2",
+    "@opentelemetry/propagator-jaeger": "2.9.0",
     "picomatch": "2.3.2",
     "protobufjs": "^7.6.1"
   },
