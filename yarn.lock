@@ -725,9 +725,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hmcts/playwright-common@npm:1.1.4":
-  version: 1.1.4
-  resolution: "@hmcts/playwright-common@npm:1.1.4"
+"@hmcts/playwright-common@npm:1.1.5":
+  version: 1.1.5
+  resolution: "@hmcts/playwright-common@npm:1.1.5"
   dependencies:
     "@axe-core/playwright": "npm:^4.11.0"
     "@eslint/js": "npm:^9.11.1"
@@ -750,7 +750,7 @@ __metadata:
   bin:
     delete-nightly-dev-branch: dist/scripts/delete-nightly-dev-branch.js
     get-secrets: dist/scripts/get-secrets.js
-  checksum: 10/670cf824c7110cd0558ff42e088eefc80dec1469155d562010beb0c8cdf22d4c7f86e6d29c6a43956513df1dbab76a9e0810d04c7479b9271c27c8706eb7cadf
+  checksum: 10/5263e4df26000ebffbf3d7fec461884566508319e9e19131b189bf2962daa43dfdcc4f0161f72e6041f895ec53509194f54263ed51f78fd6399738f47e024b82
   languageName: node
   linkType: hard
 
@@ -2813,11 +2813,11 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^5.0.5":
-  version: 5.0.9
-  resolution: "brace-expansion@npm:5.0.9"
+  version: 5.0.12
+  resolution: "brace-expansion@npm:5.0.12"
   dependencies:
     balanced-match: "npm:^4.0.2"
-  checksum: 10/d8683d612919212c7cf298861acd1c15101e7e2ad186e7ae9747390e5b3fc9e9b55ce71107570d32985784d9d88fbbe438d725863aed7b0f3d08d5f080535eec
+  checksum: 10/65b550f1836e3b43f512f12afbc3be96616eee5c353e16d70181b7dffec8c08beabffb51d69a3bbdb27d675840725cbab025fda9d10716b5cda7dd864dc7bc4a
   languageName: node
   linkType: hard
 
@@ -2951,7 +2951,7 @@ __metadata:
   dependencies:
     "@hmcts/nodejs-healthcheck": "npm:^1.8.0"
     "@hmcts/nodejs-logging": "npm:^4.0.4"
-    "@hmcts/playwright-common": "npm:1.1.4"
+    "@hmcts/playwright-common": "npm:1.1.5"
     "@hmcts/properties-volume": "npm:^0.0.14"
     "@playwright/test": "npm:^1.61.0"
     applicationinsights: "npm:3.16.0"
@@ -2976,7 +2976,7 @@ __metadata:
     http-proxy-middleware: "npm:^3.0.5"
     https-proxy-agent: "npm:^2.2.3"
     istanbul: "npm:^0.4.5"
-    js-yaml: "npm:4.3.2"
+    js-yaml: "npm:5.4.2"
     jsonwebtoken: "npm:^9.0.0"
     jwt-decode: "npm:^4.0.0"
     lodash: "npm:^4.18.1"
@@ -5335,14 +5335,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:4.3.2":
-  version: 4.3.2
-  resolution: "js-yaml@npm:4.3.2"
+"js-yaml@npm:5.4.2":
+  version: 5.4.2
+  resolution: "js-yaml@npm:5.4.2"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
-    js-yaml: bin/js-yaml.js
-  checksum: 10/05c44b9c73e4901d92703b155e76518df64bf01ac62e4c036b47de4b391e19b72e32656e8954d51b436307f08cc9d0c0d4ec617d061cf2f65fffee9f3114bee7
+    js-yaml: bin/js-yaml.mjs
+  checksum: 10/f2461abd1d6268fb226733f0a0e0aa48004bb824116e3dfa75f1a1279001936343b672066dfecdb852ac3ca883452706c383a760aa90430cb68ba395aa2cbc84
   languageName: node
   linkType: hard
 
