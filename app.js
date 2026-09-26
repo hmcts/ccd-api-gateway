@@ -32,15 +32,34 @@ const poweredByHeader = 'x-powered-by';
 app.disable(poweredByHeader);
 appHealth.disable(poweredByHeader);
 
+const BLOCKED_RESPONSE_HEADERS = [
+  'set-cookie',
+  'access-control-allow-origin',
+  'access-control-allow-credentials',
+  'access-control-allow-methods',
+  'access-control-allow-headers',
+  'strict-transport-security',
+  'x-powered-by'
+];
+
+const onError = function(err, req, res) {
+  console.error(err);
+  mapFetchErrors(err, res);
+};
+
+const onProxyRes = function(proxyRes) {
+  BLOCKED_RESPONSE_HEADERS.forEach(header => {
+    delete proxyRes.headers[header];
+  });
+};
+
 const applyProxy = (app, config) => {
   let options = {
     target: config.target,
     changeOrigin: true,
-    onError: function onError(err, req, res) {
-      console.error(err);
-      mapFetchErrors(err, res);
-    },
-    logLevel: 'warn'
+    onError,
+    logLevel: 'warn',
+    onProxyRes
   };
 
   if (false !== config.rewrite) {
