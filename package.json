@@ -17,7 +17,7 @@
     "test:smoke": "PLAYWRIGHT_OUTPUT_DIR=smoke-output playwright test --grep @smoke",
     "test:functional": "PLAYWRIGHT_OUTPUT_DIR=functional-output playwright test --grep @functional --pass-with-no-tests",
     "test:a11y": "NODE_PATH=.",
-    "sonar-scan": "NODE_PATH=. sonar-scanner -X"
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X -Dsonar.javascript.lcov.reportPaths=$PWD/coverage/lcov.info"
   },
   "dependencies": {
     "@hmcts/nodejs-healthcheck": "^1.8.0",
