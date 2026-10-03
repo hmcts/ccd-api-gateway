@@ -32,6 +32,7 @@ COPY --chown=hmcts:hmcts package.json yarn.lock ./
 # ---- Runtime Image ----
 FROM hmctsprod.azurecr.io/base/node${PLATFORM}:18-alpine AS runtime
 COPY --from=build $WORKDIR .
+USER hmcts
 
 ENV PORT=3453
 EXPOSE 3453
