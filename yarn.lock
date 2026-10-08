@@ -6876,10 +6876,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexparam@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "regexparam@npm:3.0.0"
-  checksum: 10/80574803cb9f31d1ec7b10ce1db5be629868794ce331c7098fd9725c4c0891347c2fedc18b17de17bda2441da6ef30218b1ad2d481a4081e33ef773de04f9082
 "readdirp@npm:^5.0.0":
   version: 5.1.1
   resolution: "readdirp@npm:5.1.1"
@@ -6887,10 +6883,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.11.0":
-  version: 0.11.1
-  resolution: "regenerator-runtime@npm:0.11.1"
-  checksum: 10/64e62d78594c227e7d5269811bca9e4aa6451332adaae8c79a30cab0fa98733b1ad90bdb9d038095c340c6fad3b414a49a8d9e0b6b424ab7ff8f94f35704f8a2
+"regexparam@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "regexparam@npm:3.0.0"
+  checksum: 10/80574803cb9f31d1ec7b10ce1db5be629868794ce331c7098fd9725c4c0891347c2fedc18b17de17bda2441da6ef30218b1ad2d481a4081e33ef773de04f9082
   languageName: node
   linkType: hard
 
