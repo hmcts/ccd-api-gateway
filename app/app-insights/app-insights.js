@@ -15,7 +15,7 @@ function fineGrainedSampling(envelope) {
 
 const enableAppInsights = () => {
   if (enabled) {
-    const appInsightsConnectionString = config.get("secrets.ccd.app-insights-connection-string");
+    const appInsightsConnectionString = config.get('secrets.ccd.app-insights-connection-string');
     const appInsightsRoleName = config.get('appInsights.roleName');
     process.env.OTEL_SERVICE_NAME = appInsightsRoleName;
     appInsights.setup(appInsightsConnectionString)
