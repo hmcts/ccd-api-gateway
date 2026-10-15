@@ -91,7 +91,7 @@
     "minimatch": "^3.1.4",
     "json5": "^2.2.2",
     "cookiejar": "^2.1.4",
-    "qs": "^6.14.1",
+    "qs": "^6.16.0",
     "@babel/traverse": "8.0.4",
     "@babel/core": "^8.0.0",
     "micromatch": "^4.0.8",
@@ -101,7 +101,9 @@
     "path-to-regexp@npm:^8.0.0": "npm:path-to-regexp@8.4.2",
     "@opentelemetry/propagator-jaeger": "2.9.0",
     "picomatch": "2.3.2",
-    "protobufjs": "^7.6.1"
+    "protobufjs": "^7.6.1",
+    "baseline-browser-mapping": "^2.11.0",
+    "browserslist": "^4.28.7"
   },
   "overrides": {
     "picomatch": "2.3.2",
