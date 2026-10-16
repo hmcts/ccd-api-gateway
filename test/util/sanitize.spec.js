@@ -4,62 +4,39 @@ const expect = chai.expect;
 const sanitize = require('../../app/util/sanitize');
 
 describe('sanitizeData', () => {
+  it('removes all CRLF characters from header values', () => {
+    const value = 'X-One\r\nX-Two\r\nX-Three';
 
-  describe('falsy input', () => {
-    it('should return empty string for null input', () => {
-      expect(sanitize.sanitizeData(null)).to.equal('');
-    });
-
-    it('should return empty string for undefined input', () => {
-      expect(sanitize.sanitizeData(undefined)).to.equal('');
-    });
+    expect(sanitize.sanitizeData(value)).to.equal('X-OneX-TwoX-Three');
   });
 
-  describe('clean input', () => {
-    it('should return clean string unchanged', () => {
-      let data = 'https://example.com';
-      let response = sanitize.sanitizeData(data);
+  it('removes ASCII and C1 control characters', () => {
+    const value = 'A\x00B\x1fC\x7fD\x9fE';
 
-      expect(response).to.equal(data);
-    });
+    expect(sanitize.sanitizeData(value)).to.equal('ABCDE');
   });
 
-  describe('newline sanitization', () => {
-    it('should remove a single \\n character', () => {
-      let response = sanitize.sanitizeData('foo\nbar');
+  it('keeps characters adjacent to control ranges', () => {
+    const value = 'A B~C\xa0D';
 
-      expect(response).to.equal('foobar');
-    });
+    expect(sanitize.sanitizeData(value)).to.equal('A B~C\xa0D');
+  });
 
-    it('should remove a single \\r character', () => {
-      let response = sanitize.sanitizeData('foo\rbar');
+  it('removes control characters at range boundaries', () => {
+    const value = '\x00\x1fA\x7f\x9fB';
 
-      expect(response).to.equal('foobar');
-    });
+    expect(sanitize.sanitizeData(value)).to.equal('AB');
+  });
 
-    it('should remove multiple \\n characters', () => {
-      let response = sanitize.sanitizeData('foo\nbar\nbaz');
+  it('returns an empty string for missing values', () => {
+    expect(sanitize.sanitizeData()).to.equal('');
+  });
 
-      expect(response).to.equal('foobarbaz');
-    });
+  it('returns an empty string for null input', () => {
+    expect(sanitize.sanitizeData(null)).to.equal('');
+  });
 
-    it('should remove multiple \\r characters', () => {
-      let response = sanitize.sanitizeData('foo\rbar\rbaz');
-
-      expect(response).to.equal('foobarbaz');
-    });
-
-    it('should remove all \\r\\n pairs from a header injection payload', () => {
-      let malicious = 'http://evil.com\r\nX-Injected: true\r\nAnother: header';
-      let response = sanitize.sanitizeData(malicious);
-
-      expect(response).to.equal('http://evil.comX-Injected: trueAnother: header');
-    });
-
-    it('should remove interleaved \\r and \\n characters', () => {
-      let response = sanitize.sanitizeData('a\rb\nc\rd\ne');
-
-      expect(response).to.equal('abcde');
-    });
+  it('returns an empty string for empty input', () => {
+    expect(sanitize.sanitizeData('')).to.equal('');
   });
 });
