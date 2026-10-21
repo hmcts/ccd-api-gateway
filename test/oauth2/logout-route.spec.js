@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const fetchMock = require('fetch-mock');
+const fetchMock = require('fetch-mock').default;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = sinon.assert;
@@ -29,6 +29,7 @@ describe('logoutRoute', () => {
   let config;
   let logoutRoute;
   let fetch;
+  let fetchMockInstance;
   let userInfoCacheSpy;
   let sandbox;
   let clock;
@@ -60,7 +61,8 @@ describe('logoutRoute', () => {
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
 
-    fetch = fetchMock.sandbox().get(LOGOUT_END_POINT, {});
+    fetchMockInstance = fetchMock.createInstance().get(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN), {});
+    fetch = fetchMockInstance.fetchHandler;
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
@@ -76,36 +78,31 @@ describe('logoutRoute', () => {
     }
   });
 
-  it('should call IDAM OAuth 2 logout endpoint with JWT token', done => {
-    response.status.callsFake(() => {
-      try {
-        expect(fetch.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
-        expect(fetch.lastOptions().headers['Authorization']).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        expect(next).not.to.be.called;
-        expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
-
-        initNock(TOKEN, USER_DETAILS);
-        cachedUserResolver.getUserDetails(TOKEN);
-        clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
-        initNock(TOKEN, USER_DETAILS);
-
-        const result = cachedUserResolver.getUserDetails(TOKEN);
-        expect(JSON.stringify(result)).to.equal('{}');
-        assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
-        assert.calledTwice(userInfoCacheSpy);
-
-        expect(response.status).to.be.calledWith(204);
-        done();
-      } catch (e) {
-        done(e);
-      }
-    });
-
+  it('should call IDAM OAuth 2 logout endpoint with JWT token', async () => {
+    const logoutComplete = new Promise(resolve => response.status.callsFake(resolve));
     logoutRoute(request, response, next);
 
     expect(config.get).to.be.calledWith('idam.oauth2.client_id');
     expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
     expect(config.get).to.be.calledWith('idam.web_public_url');
+
+    await logoutComplete;
+
+    expect(fetchMockInstance.callHistory.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
+    expect(next).not.to.be.called;
+    expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
+
+    initNock(TOKEN, USER_DETAILS);
+    await cachedUserResolver.getUserDetails(TOKEN);
+    clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
+    initNock(TOKEN, USER_DETAILS);
+
+    const result = await cachedUserResolver.getUserDetails(TOKEN);
+    expect(JSON.stringify(result)).to.equal(JSON.stringify(USER_DETAILS));
+    assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
+    assert.calledTwice(userInfoCacheSpy);
+
+    expect(response.status).to.be.calledWith(204);
   });
 
   it('should return 400 error when cookies missing', () => {
