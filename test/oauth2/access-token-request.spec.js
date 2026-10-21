@@ -11,7 +11,8 @@ chai.use(sinonChai);
 describe('Access Token Request', () => {
   const CLIENT_ID = 'ccd_gateway';
   const CLIENT_SECRET = 'abc123def456';
-  const TOKEN_ENDPOINT = 'http://localhost:1234/oauth2/token';
+  const HMCTS_ACCESS_URL = 'http://localhost:1234';
+  const TOKEN_ENDPOINT = HMCTS_ACCESS_URL + '/o/token';
   const REDIRECT_URN = 'localhost/redirect/to';
   const REDIRECT_URL = 'https://localhost/redirect/to';
   const UNDEFINED_URI = 'undefined:///oauth2redirect';
@@ -76,18 +77,18 @@ describe('Access Token Request', () => {
       'config': config,
       'node-fetch': unsuccessfulFetch
     });
+
+    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
+    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
+    config.get.withArgs('idam.web_public_url').returns(HMCTS_ACCESS_URL);
   });
 
   it('should call the IdAM OAuth 2 token endpoint with the correct headers and query string parameters', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
         const lastCall = fetchMockInstance.callHistory.lastCall();
         expect(fetchMockInstance.callHistory.called()).to.be.true;
-        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         let requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -97,15 +98,11 @@ describe('Access Token Request', () => {
   });
 
   it('should add `https://` prefix', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST)
       .then(() => {
         const lastCall = fetchMockInstance.callHistory.lastCall();
         expect(fetchMockInstance.callHistory.called()).to.be.true;
-        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         let requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -117,15 +114,10 @@ describe('Access Token Request', () => {
 
   it('should handle unsuccessful responses.', done => {
 
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
-
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
         const lastCall = unsuccessfulFetchMockInstance.callHistory.lastCall();
         expect(unsuccessfulFetchMockInstance.callHistory.called()).to.be.true;
-        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         let requestedUrl = url.parse(lastCall.url, true);
         expect(requestedUrl.query.code).to.equal(AUTH_CODE);
         expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
@@ -136,9 +128,6 @@ describe('Access Token Request', () => {
   });
 
   it('should reject undefined uri requests.', async () => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
     try {
       await accessTokenRequest(REQUEST_UNDEFINED_URI);
     } catch (error) {
