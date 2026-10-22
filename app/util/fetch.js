@@ -8,7 +8,12 @@ const fetch = (...args) => {
           return res;
       }
 
-      return Promise.reject(res);
+      // A Response has no useful stack; preserve bounded upstream diagnostics privately.
+      return res.text().then((body) => {
+        const error = new Error(`Upstream HTTP ${res.status} ${res.statusText}: ${body.slice(0, 4096)}`);
+        error.status = res.status;
+        throw error;
+      });
     });
 };
 
