@@ -16,7 +16,10 @@ const handleTiming = require('./app/security/timing');
 const hstsHandler = require('./app/security/hsts');
 const healthcheck = require('@hmcts/nodejs-healthcheck');
 const routes = require('@hmcts/nodejs-healthcheck/healthcheck/routes');
-const oauth2Route = require('./app/oauth2/oauth2-route').oauth2Route;
+const {
+  oauth2Route,
+  oauth2StateRoute
+} = require('./app/oauth2/oauth2-route');
 const logoutRoute = require('./app/oauth2/logout-route').logoutRoute;
 const noCache = require('nocache');
 const noSniff = require('dont-sniff-mimetype');
@@ -69,6 +72,7 @@ app.use(hstsHandler);
 app.use(corsHandler);
 app.use(handleTiming);
 
+app.get('/oauth2/state', oauth2StateRoute);
 app.get('/oauth2', oauth2Route);
 
 app.use(authCheckerUserOnlyFilter);

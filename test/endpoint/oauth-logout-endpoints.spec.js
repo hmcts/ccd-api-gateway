@@ -47,17 +47,21 @@ describe('OAuth and logout endpoint integration', () => {
         expires_in: 3600
       });
 
+    const stateResponse = await request(server).get('/oauth2/state').expect(200);
     const response = await request(server)
       .get('/oauth2')
+      .set('Cookie', stateResponse.headers['set-cookie'].map(cookie => cookie.split(';')[0]))
       .query({
         code: AUTH_CODE,
-        redirect_uri: REDIRECT_URI
+        redirect_uri: REDIRECT_URI,
+        state: stateResponse.body.state
       })
       .expect(204);
 
-    expect(response.headers['set-cookie']).to.have.length(1);
-    expect(response.headers['set-cookie'][0]).to.include(`accessToken=${ACCESS_TOKEN}`);
-    expect(response.headers['set-cookie'][0]).to.include('HttpOnly');
+    expect(response.headers['set-cookie']).to.have.length(2);
+    expect(response.headers['set-cookie'][0]).to.include('oauth2State=;');
+    expect(response.headers['set-cookie'][1]).to.include(`accessToken=${ACCESS_TOKEN}`);
+    expect(response.headers['set-cookie'][1]).to.include('HttpOnly');
   });
 
   it('should return 502 when IdAM rejects the token exchange', async () => {
@@ -72,17 +76,21 @@ describe('OAuth and logout endpoint integration', () => {
         error: 'invalid_grant'
       });
 
+    const stateResponse = await request(server).get('/oauth2/state').expect(200);
     const response = await request(server)
       .get('/oauth2')
+      .set('Cookie', stateResponse.headers['set-cookie'].map(cookie => cookie.split(';')[0]))
       .query({
         code: AUTH_CODE,
-        redirect_uri: REDIRECT_URI
+        redirect_uri: REDIRECT_URI,
+        state: stateResponse.body.state
       })
       .expect(502);
 
     expect(response.body.status).to.equal(502);
     expect(response.body.message).to.equal('Internal Server Error');
-    expect(response.headers['set-cookie']).to.be.undefined;
+    expect(response.headers['set-cookie']).to.have.length(1);
+    expect(response.headers['set-cookie'][0]).to.include('oauth2State=;');
   });
 
   it('should log out through GET /logout and clear the access-token cookie', async () => {

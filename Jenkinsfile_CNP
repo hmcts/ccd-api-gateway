@@ -98,6 +98,15 @@ withPipeline("nodejs", product, component) {
         sh "yarn --check-cache"
     }
 
+    before('sonarscan') {
+        sh '''
+            echo "Coverage files before Sonar:"
+            find coverage -maxdepth 2 -type f -print || true
+            echo "OAuth2 route coverage before Sonar:"
+            grep -A55 '^SF:app/oauth2/oauth2-route.js' coverage/lcov.info || true
+        '''
+    }
+
     afterAlways('smoketest:preview') {
         publishPlaywrightReport('smoke-output', 'PREVIEW Playwright Smoke Tests')
     }
