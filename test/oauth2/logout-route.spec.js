@@ -81,6 +81,7 @@ describe('logoutRoute', () => {
     response.status.callsFake(() => {
       try {
         assert.calledWith(fetchStub, LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN));
+        expect(fetchStub.firstCall.args[1].headers.Authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         assert.notCalled(next);
         assert.calledWith(response.clearCookie, ACCESS_TOKEN_COOKIE_NAME);
 

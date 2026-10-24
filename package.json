@@ -14,11 +14,12 @@
     "test:specific": "NODE_ENV=test LOG_LEVEL=DEBUG NODE_PATH=. mocha --recursive ",
     "test:coverage": "NODE_ENV=test NODE_PATH=. nyc mocha 'test/**/*.spec.js' --recursive",
     "fortifyScan": "./test/java/gradlew -p test/java fortifyScan",
-    "test:smoke": "echo SMOKE TESTS NOT CONFIGURED",
-    "test:functional": "echo 'TODO - FUNCTIONAL TEST'",
+    "test:smoke": "PLAYWRIGHT_OUTPUT_DIR=smoke-output playwright test --grep @smoke",
+    "test:functional": "PLAYWRIGHT_OUTPUT_DIR=functional-output playwright test --grep @functional --pass-with-no-tests",
     "test:a11y": "NODE_PATH=.",
     "suppress-cve": "yarn npm audit --recursive --environment production --json > yarn-audit-known-issues",
-    "sonar-scan": "NODE_PATH=. sonar-scanner -X"
+    "sonar-scan": "NODE_PATH=. sonar-scanner -X",
+    "test:deployed": "PLAYWRIGHT_OUTPUT_DIR=functional-output playwright test"
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.7",
@@ -54,6 +55,8 @@
     "otp": "^0.1.3"
   },
   "devDependencies": {
+    "@hmcts/playwright-common": "1.1.5",
+    "@playwright/test": "^1.61.0",
     "chai": "^6.2.2",
     "chai-http": "^5.1.2",
     "eslint": "^10.9.1",
@@ -67,6 +70,7 @@
     "moment": "^2.30.1",
     "nock": "^14.0.17",
     "pa11y": "^9.1.1",
+    "playwright-core": "^1.61.0",
     "proxyquire": "^2.1.3",
     "should": "^13.2.3",
     "should-http": "^0.1.1",
@@ -90,5 +94,40 @@
     "report-dir": "coverage",
     "all": true
   },
-  "packageManager": "yarn@4.18.0"
+  "packageManager": "yarn@4.18.1",
+  "resolutions": {
+    "form-data": "^4.0.4",
+    "js-yaml": "5.4.3",
+    "lodash": "^4.18.1",
+    "handlebars": "^4.7.10",
+    "memoize": "^10.0.0",
+    "minimist": "^1.2.6",
+    "ini": "^7.0.0",
+    "glob-parent": "^6.0.0",
+    "ws": "^6.2.2",
+    "ansi-regex": "^5.0.1",
+    "follow-redirects": "^1.15.6",
+    "moment": "^2.29.4",
+    "async": "^3.0.0",
+    "minimatch": "^3.1.4",
+    "json5": "^2.2.2",
+    "cookiejar": "^2.1.4",
+    "qs": "^6.16.0",
+    "@babel/traverse": "8.0.7",
+    "@babel/core": "^8.0.0",
+    "micromatch": "^4.0.8",
+    "cross-spawn": "^7.0.6",
+    "braces": "^3.0.3",
+    "brace-expansion": "^5.0.9",
+    "path-to-regexp@npm:^8.0.0": "npm:path-to-regexp@8.4.2",
+    "@opentelemetry/propagator-jaeger": "2.9.0",
+    "picomatch": "2.3.2",
+    "protobufjs": "^7.6.1",
+    "baseline-browser-mapping": "^2.11.0",
+    "browserslist": "^4.28.7"
+  },
+  "overrides": {
+    "picomatch": "2.3.2",
+    "protobufjs": "^7.6.1"
+  }
 }

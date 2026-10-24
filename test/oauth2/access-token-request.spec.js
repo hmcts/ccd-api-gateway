@@ -100,6 +100,7 @@ describe('Access Token Request', () => {
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
         assert.called(successStub);
+        expect(successStub.firstCall.args[1].headers.Authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         done();
       })
       .catch(error => done(new Error(error)));
@@ -113,6 +114,7 @@ describe('Access Token Request', () => {
     accessTokenRequest(REQUEST)
       .then(() => {
         assert.called(successStub);
+        expect(successStub.firstCall.args[1].headers.Authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         done();
       })
       .catch(error => done(new Error(error)));
@@ -128,6 +130,7 @@ describe('Access Token Request', () => {
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
         assert.called(unsuccessfulStub);
+        expect(unsuccessfulStub.firstCall.args[1].headers.Authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
         expect(response).to.have.property('status', 401);
         done();
       })
