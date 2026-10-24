@@ -1,3 +1,4 @@
+const { safeError, diagnosticError } = require('../safe-errors');
 const userRequestAuthorizer = require('./user-request-authorizer');
 const { Logger } = require('@hmcts/nodejs-logging');
 
@@ -16,10 +17,11 @@ const authCheckerUserOnlyFilter = (req, res, next) => {
     .then(() => next())
     .catch(error => {
       if (error.name === 'FetchError') {
-        logger.error(error);
+
+
         mapFetchErrors(error, res, next);
       } else {
-        logger.warn('Unsuccessful user authentication', error);
+
         error.status = error.status || 401;
         next(error);
       }
@@ -36,38 +38,13 @@ const isBadGatewayError = (error) => {
 };
 
 const mapFetchErrors = (error, res, next) => {
-  if (next !== undefined){
-    if (isBadGatewayError(error)){
-      next({
-      error: 'Bad Gateway',
-      status: 502,
-      message: error.message
-      });
-    }
-    else {
-      next({
-      error: 'Internal Server Error',
-      status: 500,
-      message: error.message
-      });
-    }
+  const body = safeError(isBadGatewayError(error) ? 502 : 500, error);
+  if (next !== undefined) {
+    next(body);
   } else {
-    if (isBadGatewayError(error)) {
-      res.status(502);
-      res.json({
-        error: 'Bad Gateway',
-        status: 502,
-        message: error.message
-      });
-    }
-    else {
-      res.status(500);
-      res.json({
-        error: 'Error when connecting to remote server',
-        status: 504,
-        message: error.message
-      });
-    }
+    logger.error(`Proxy request failed: code=${body.code} status=${body.status}`, { error: diagnosticError(error) });
+    res.status(body.status);
+    res.json(body);
   }
 };
 

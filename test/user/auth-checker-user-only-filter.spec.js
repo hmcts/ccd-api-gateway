@@ -102,7 +102,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal('some message');
+        expect(error.message).to.equal('Internal Server Error');
         done();
       });
     });
@@ -117,7 +117,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
-        expect(error.message).to.equal('blah getaddrinfo ENOTFOUND blah');
+        expect(error.message).to.equal('Bad Gateway');
         done();
       });
     });
@@ -132,7 +132,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
-        expect(error.message).to.equal('blah socket hang up blah');
+        expect(error.message).to.equal('Bad Gateway');
         done();
       });
     });
@@ -148,7 +148,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
-        expect(error.message).to.equal('blah socket hang up blah');
+        expect(error.message).to.equal('Bad Gateway');
         done();
       });
     });
@@ -163,7 +163,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
-        expect(error.message).to.equal('blah getaddrinfo EAI_AGAIN blah');
+        expect(error.message).to.equal('Bad Gateway');
         done();
       });
     });
@@ -178,7 +178,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
-        expect(error.message).to.equal('blah connect ETIMEOUT blah');
+        expect(error.message).to.equal('Bad Gateway');
         done();
       });
     });
@@ -193,7 +193,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
-        expect(error.message).to.equal('blah ECONNRESET blah');
+        expect(error.message).to.equal('Bad Gateway');
         done();
       });
     });
@@ -208,7 +208,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(502);
         expect(error.error).to.equal('Bad Gateway');
-        expect(error.message).to.equal('blah ECONNREFUSED blah');
+        expect(error.message).to.equal('Bad Gateway');
         done();
       });
     });
@@ -223,7 +223,7 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.authCheckerUserOnlyFilter(req, res, error => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal(undefined);
+        expect(error.message).to.equal('Internal Server Error');
         done();
       });
     });
@@ -262,7 +262,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
-      expect(res.json.message).to.equal('blah getaddrinfo ENOTFOUND blah');
+      expect(res.json.message).to.equal('Bad Gateway');
       done();
     });
 
@@ -277,7 +277,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
-      expect(res.json.message).to.equal('blah socket hang up blah');
+      expect(res.json.message).to.equal('Bad Gateway');
       done();
     });
 
@@ -292,7 +292,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
-      expect(res.json.message).to.equal('blah getaddrinfo EAI_AGAIN blah');
+      expect(res.json.message).to.equal('Bad Gateway');
       done();
       });
 
@@ -307,7 +307,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
-      expect(res.json.message).to.equal('blah connect ETIMEOUT blah');
+      expect(res.json.message).to.equal('Bad Gateway');
       done();
     });
 
@@ -322,7 +322,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
-      expect(res.json.message).to.equal('blah ECONNRESET blah');
+      expect(res.json.message).to.equal('Bad Gateway');
       done();
     });
 
@@ -337,7 +337,7 @@ describe('authCheckerUserOnlyFilter', () => {
 
       expect(res.status).to.equal(502);
       expect(res.json.error).to.equal('Bad Gateway');
-      expect(res.json.message).to.equal('blah ECONNREFUSED blah');
+      expect(res.json.message).to.equal('Bad Gateway');
       done();
 
     });
@@ -354,9 +354,9 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.mapFetchErrors(error , res);
 
       expect(res.status).to.equal(500);
-      expect(res.json.error).to.equal('Error when connecting to remote server');
-      expect(res.json.status).to.equal(504);
-      expect(res.json.message).to.equal('some message');
+      expect(res.json.error).to.equal('Internal Server Error');
+      expect(res.json.status).to.equal(500);
+      expect(res.json.message).to.equal('Internal Server Error');
       done();
     });
 
@@ -370,9 +370,9 @@ describe('authCheckerUserOnlyFilter', () => {
       filter.mapFetchErrors(error , res);
 
       expect(res.status).to.equal(500);
-      expect(res.json.error).to.equal('Error when connecting to remote server');
-      expect(res.json.status).to.equal(504);
-      expect(res.json.message).to.equal(undefined);
+      expect(res.json.error).to.equal('Internal Server Error');
+      expect(res.json.status).to.equal(500);
+      expect(res.json.message).to.equal('Internal Server Error');
       done();
     });
 

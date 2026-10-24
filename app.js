@@ -6,7 +6,7 @@ let express = require('express');
 let cookieParser = require('cookie-parser');
 const { legacyCreateProxyMiddleware: proxy } = require('http-proxy-middleware');
 const config = require('config');
-const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
+const { Express: ExpressLogger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
 const {mapFetchErrors} = require('./app/user/auth-checker-user-only-filter');
 const addressLookup = require('./app/address/address-lookup');
@@ -23,7 +23,6 @@ const noSniff = require('dont-sniff-mimetype');
 
 let app = express();
 const appHealth = express();
-const logger = Logger.getLogger('app');
 
 app.use(ExpressLogger.accessLogger());
 app.use(cookieParser());
@@ -37,7 +36,6 @@ const applyProxy = (app, config) => {
     target: config.target,
     changeOrigin: true,
     onError: function onError(err, req, res) {
-      console.error(err);
       mapFetchErrors(err, res);
     },
     logLevel: 'warn'
@@ -154,22 +152,7 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-// error handler
-app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
-  logger.error(err);
-
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  let status = isNaN(err.status) ? 500 : err.status;
-  res.status(status);
-  res.json({
-    error: err.error || 'Unauthorized',
-    status: status,
-    message: err.message || 'You are not authorised to access that resource'
-  });
-});
+// Fixed public errors in every environment, including development.
+app.use(require('./app/safe-errors').errorHandler);
 
 module.exports = app;

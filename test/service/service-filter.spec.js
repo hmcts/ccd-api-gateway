@@ -1,4 +1,4 @@
-const proxyquire = require('proxyquire');
+const proxyquire = require('proxyquire').noCallThru();
 const chai = require('chai');
 const expect = chai.expect;
 
@@ -23,7 +23,7 @@ describe('service filter', () => {
       serviceFilter(request, reply, (error) => {
         expect(error.status).to.equal(500);
         expect(error.error).to.equal('Internal Server Error');
-        expect(error.message).to.equal('some error');
+        expect(error.message).to.equal('Internal Server Error');
         done();
       });
   });
