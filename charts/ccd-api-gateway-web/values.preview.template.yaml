@@ -2,6 +2,7 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
+    IDAM_OAUTH2_REDIRECT_URI_ALLOWLIST: "${SERVICE_FQDN}"
     IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
     IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
     IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
