@@ -1,5 +1,5 @@
 const config = require('config');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch').default;
 const { URL } = require('url');
 const { Logger } = require('@hmcts/nodejs-logging');
 
