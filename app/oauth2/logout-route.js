@@ -1,5 +1,5 @@
 const config = require('config');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch').default;
 const COOKIE_ACCESS_TOKEN = require('./oauth2-route').COOKIE_ACCESS_TOKEN;
 const TOKEN_PLACEHOLDER = ':token';
 const { userInfoCache } = require('../cache/cache-config');

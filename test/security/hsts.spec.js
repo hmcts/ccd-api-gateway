@@ -1,8 +1,8 @@
 const chai = require('chai');
-const expect = chai.expect;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+const assert = sinon.assert;
+const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 chai.use(sinonChai);
 
@@ -24,14 +24,14 @@ describe('HSTS', () => {
     req.method = 'GET';
     handleHSTS(req, res, next);
 
-    expect(res.set).to.have.been.calledWith('Strict-Transport-Security', MAX_AGE_WITH_SUBDOMAINS);
+    assert.calledWith(res.set, 'Strict-Transport-Security', MAX_AGE_WITH_SUBDOMAINS);
   });
 
   it('should add STS header to response for communication options request', () => {
     req.method = 'OPTIONS';
     handleHSTS(req, res, next);
 
-    expect(res.set).to.have.been.calledWith('Strict-Transport-Security', MAX_AGE_WITH_SUBDOMAINS);
+    assert.calledWith(res.set, 'Strict-Transport-Security', MAX_AGE_WITH_SUBDOMAINS);
   });
 
 });
