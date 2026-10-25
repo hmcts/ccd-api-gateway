@@ -2,4 +2,5 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
+    IDAM_OAUTH2_REDIRECT_URI_ALLOWLIST: "${SERVICE_FQDN}"
     CORS_ORIGIN_WHITELIST: "*"
