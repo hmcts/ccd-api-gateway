@@ -4,7 +4,7 @@ enableAppInsights();
 
 let express = require('express');
 let cookieParser = require('cookie-parser');
-const { legacyCreateProxyMiddleware: proxy } = require('http-proxy-middleware');
+const { createProxyMiddleware: proxy } = require('http-proxy-middleware');
 const config = require('config');
 const { Express: ExpressLogger, Logger } = require('@hmcts/nodejs-logging');
 const {authCheckerUserOnlyFilter} = require('./app/user/auth-checker-user-only-filter');
@@ -35,12 +35,16 @@ appHealth.disable(poweredByHeader);
 const applyProxy = (app, config) => {
   let options = {
     target: config.target,
+    pathFilter: config.filter || (pathname =>
+      pathname.toLowerCase() === config.source || pathname.toLowerCase().startsWith(`${config.source}/`)),
     changeOrigin: true,
-    onError: function onError(err, req, res) {
-      logger.error(err);
-      mapFetchErrors(err, res);
+    on: {
+      error: function onError(err, req, res) {
+        logger.error(err);
+        mapFetchErrors(err, res);
+      }
     },
-    logLevel: 'warn'
+    logger: { info: () => {}, warn: logger.warn.bind(logger), error: logger.error.bind(logger) }
   };
 
   if (false !== config.rewrite) {
@@ -49,11 +53,8 @@ const applyProxy = (app, config) => {
     };
   }
 
-  if (config.filter) {
-    app.use(proxy(config.filter, options));
-  } else {
-    app.use(config.source, proxy(options));
-  }
+  // Filter at the root so rewrites see the full path, as the legacy proxy did.
+  app.use(proxy(options));
 };
 
 let healthConfig = {
