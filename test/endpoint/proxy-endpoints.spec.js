@@ -87,6 +87,17 @@ describe('Proxy endpoint integration', () => {
         url: req.url
       });
 
+      if (req.url === '/redirect') {
+        res.writeHead(302, { Location: '/redirect-target' });
+        res.end();
+        return;
+      }
+
+      if (req.url === '/disconnect') {
+        req.socket.destroy();
+        return;
+      }
+
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({
         downstreamPath: req.url,
@@ -186,6 +197,46 @@ describe('Proxy endpoint integration', () => {
       });
       expect(downstreamRequests).to.be.empty;
     });
+  });
+
+  it('should preserve the query string when rewriting a proxy path', async () => {
+    const userToken = 'Bearer endpoint-test-query';
+    nockUserDetails(userToken);
+    const response = await request(appUrl)
+      .get('/data/search?name=test%20case')
+      .set('Authorization', userToken)
+      .expect(200);
+    expect(response.body.downstreamPath).to.equal('/search?name=test%20case');
+  });
+
+  ['/database/resource', '/payments/not-allowed', '/pay-bulkscan/not-allowed'].forEach(path => {
+    it(`should not proxy an unmatched path ${path}`, async () => {
+      const userToken = `Bearer endpoint-test-unmatched-${path}`;
+      nockUserDetails(userToken);
+      await request(appUrl).get(path).set('Authorization', userToken).expect(404);
+      expect(downstreamRequests).to.be.empty;
+    });
+  });
+
+  it('should return redirects to the client without following them with credentials', async () => {
+    const userToken = 'Bearer endpoint-test-redirect';
+    nockUserDetails(userToken);
+    const response = await request(appUrl)
+      .get('/data/redirect')
+      .set('Authorization', userToken)
+      .expect(302);
+    expect(response.headers.location).to.equal('/redirect-target');
+    expect(downstreamRequests).to.have.length(1);
+  });
+
+  it('should map a downstream connection failure to Bad Gateway', async () => {
+    const userToken = 'Bearer endpoint-test-disconnect';
+    nockUserDetails(userToken);
+    const response = await request(appUrl)
+      .get('/data/disconnect')
+      .set('Authorization', userToken)
+      .expect(502);
+    expect(response.body).to.include({ error: 'Bad Gateway', status: 502 });
   });
 
   it('should return an address lookup response through /addresses', async () => {
