@@ -1,15 +1,15 @@
 const chai = require('chai');
-const expect = chai.expect;
-const fetchMock = require('fetch-mock').default;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai');
+const expect = chai.expect;
+const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 chai.use(sinonChai);
 const nock = require('nock');
 const CacheService = require('../../app/cache/cache-service');
+const fetchMock = require('fetch-mock').default;
 
 describe('logoutRoute', () => {
   const CLIENT_ID = 'ccd_gateway';
@@ -20,16 +20,14 @@ describe('logoutRoute', () => {
   const CACHE_TTL_SECONDS = 1800;
   const TOKEN = 'TOKEN';
   const USER_DETAILS = { user: 'Details' };
-  const DETAILS_PATH = '/o/userinfo';
-  const URL = 'http://test-idam:1234';
 
   let request;
   let response;
   let next;
   let config;
   let logoutRoute;
-  let fetch;
   let fetchMockInstance;
+  let fetch;
   let userInfoCacheSpy;
   let sandbox;
   let clock;
@@ -41,12 +39,15 @@ describe('logoutRoute', () => {
     config = {
       get: sinon.stub()
     };
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     clock = sandbox.useFakeTimers();
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
     cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', {
-      '../cache/cache-config': { userInfoCache }
+      '../cache/cache-config': { userInfoCache },
+      './user-resolver': {
+        getUserDetails: sandbox.stub().withArgs(TOKEN).resolves(USER_DETAILS)
+      }
     });
 
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
@@ -66,7 +67,7 @@ describe('logoutRoute', () => {
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
-      'node-fetch': fetch
+      'node-fetch': { default: fetch }
     }).logoutRoute;
   });
 
@@ -74,7 +75,7 @@ describe('logoutRoute', () => {
     sandbox.restore();
     clock.restore();
     if (!nock.isDone()) {
-      chai.assert.fail('Not all nock interceptors have completed');
+      assert.fail('Not all nock interceptors have completed');
     }
   });
 
@@ -92,10 +93,8 @@ describe('logoutRoute', () => {
     expect(next).not.to.be.called;
     expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
 
-    initNock(TOKEN, USER_DETAILS);
     await cachedUserResolver.getUserDetails(TOKEN);
     clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
-    initNock(TOKEN, USER_DETAILS);
 
     const result = await cachedUserResolver.getUserDetails(TOKEN);
     expect(JSON.stringify(result)).to.equal(JSON.stringify(USER_DETAILS));
@@ -110,8 +109,8 @@ describe('logoutRoute', () => {
 
     logoutRoute(request, response, next);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
+    assert.notCalled(response.redirect);
+    assert.calledWith(next, {
       error: 'No auth token',
       status: 400,
       message: 'No auth token to log out'
@@ -125,21 +124,11 @@ describe('logoutRoute', () => {
 
     logoutRoute(request, response, next);
 
-    expect(response.redirect).not.to.be.called;
-    expect(next).to.be.calledWith({
+    assert.notCalled(response.redirect);
+    assert.calledWith(next, {
       error: 'No auth token',
       status: 400,
       message: 'No auth token to log out'
     });
   });
-
-  const initNock = (token, details) => {
-    nock(URL, {
-      reqheaders: {
-        Authorization: `Bearer ${token}`
-      }
-    }).get(DETAILS_PATH)
-      .times(1)
-      .reply(200, details);
-  };
 });

@@ -11,13 +11,15 @@ let http = require('http');
 let https = require('https');
 let path = require('path');
 let fs = require('fs');
+let log = require('@hmcts/nodejs-logging');
 
+const logger = log.Logger.getLogger('server');
 /**
  * Get port from environment and store in Express.
  */
 
 let port = normalizePort(process.env.PORT || '3453');
-console.log('Starting on port ' + port);
+logger.info('Starting on port ' + port);
 app.set('port', port);
 
 /**
@@ -85,11 +87,11 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      logger.error(bind + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      logger.error(bind + ' is already in use');
       process.exit(1);
       break;
     default:
