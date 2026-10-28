@@ -27,7 +27,7 @@
     "@hmcts/nodejs-healthcheck": "^1.8.6",
     "@hmcts/nodejs-logging": "^4.0.4",
     "@hmcts/properties-volume": "^1.4.1",
-    "applicationinsights": "3.16.0",
+    "applicationinsights": "3.17.0",
     "body-parser": "^2.3.0",
     "brace-expansion": "^5.0.9",
     "config": "^4.4.2",
