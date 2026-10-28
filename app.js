@@ -36,6 +36,7 @@ const applyProxy = (app, config) => {
     target: config.target,
     changeOrigin: true,
     onError: function onError(err, req, res) {
+      logger.error(err);
       mapFetchErrors(err, res);
     },
     logLevel: 'warn'
@@ -48,7 +49,7 @@ const applyProxy = (app, config) => {
   }
 
   if (config.filter) {
-    app.use(config.source, proxy(config.filter, options));
+    app.use(proxy(config.filter, options));
   } else {
     app.use(config.source, proxy(options));
   }
