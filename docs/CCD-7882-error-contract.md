@@ -8,62 +8,57 @@ additional troubleshooting. Dependency and health diagnostics retain their origi
 and respect the source logger threshold. Support must not need to enable DEBUG and reproduce
 an incident to obtain its original failure details.
 
-This policy supersedes the DEBUG-only descriptions and test expectations in earlier verification
-entries below. Those entries describe historical checks. Deployment acceptance still requires
-administrator-only log access, suitable retention and verification of logging/Application Insights
-collection. Local tests do not establish those infrastructure controls.
-
-
 Branch `CCD-7882_Verbose_Error_Messages` was created from local `master` on 20 October 2026.
 
-The final middleware always returns a generic status/error/message/code body, including in development. Fetch/S2S diagnostic text is removed from public errors; original fetch details are available through the existing DEBUG namespace. Proxy fetch failures use the same safe body. The existing direct-fetch fallback had HTTP 500 with body status 504; the body now correctly reports 500.
+The final middleware always returns a generic status/error/message/code body, including in development. Fetch/S2S diagnostic text is removed from public errors; original fetch details are retained in server logs at WARN/ERROR levels. Proxy fetch failures use the same safe body. The existing direct-fetch fallback had HTTP 500 with body status 504; the body now correctly reports 500.
 
 Error categories: INVALID_REQUEST (400/422), AUTHENTICATION_REQUIRED (401), ACCESS_DENIED (403), RESOURCE_NOT_FOUND (404), METHOD_NOT_ALLOWED (405), REQUEST_TOO_LARGE (413), UNSUPPORTED_MEDIA_TYPE (415), TOO_MANY_REQUESTS (429), INTERNAL_ERROR (5xx), otherwise REQUEST_FAILED. Codes describe categories, not individual incidents. Boot fallback and empty security responses do not promise a category code.
 
+## Remediation requirement
+
+The supplied finding concerns unauthenticated disclosure of implementation details through HTTP
+error responses. It requires generic public responses and detailed server diagnostics accessible
+only to administrators. An event reference is optional. The support logging policy above retains
+those diagnostics without requiring DEBUG or incident reproduction.
+
 ## Local verification
 
-39 focused Mocha tests passed; ESLint passed for the changed files. Tests cover public middleware in development, malformed JSON, fetch failures, S2S failures and committed responses.
+51 focused Mocha tests passed; changed-file ESLint and diff checks passed. Coverage includes
+public middleware in development, malformed JSON, fetch/S2S failures, committed responses,
+application proxy wiring, nested/cyclic causes and single authentication diagnostics. Error-body
+reads stop at 4,096 bytes or five seconds, close the stream and preserve the upstream HTTP status
+if reading fails. These tests use stubbed dependencies and do not validate real IDAM/S2S credentials.
+The full suite could not start because the local S2S secret was missing.
 
 ## Deployment handoff
 
-These are local source/test results. Deployed BEFTA/ITHC, ingress/upstream error pages and actual dependency failures still require retesting. Do not infer restricted log access, Application Insights collection or production deployment from these checks. Existing internal diagnostics may contain sensitive information; use the existing restricted access controls. Authentication validation, endpoint permissions and successful responses were not deliberately changed.
+Verify production images, ingress/upstream error pages, deployed BEFTA/ITHC, real dependency
+failures, administrator-only log access, retention and Application Insights collection before
+release. Local tests do not establish these controls. Internal diagnostics may contain sensitive
+information. Preserve useful validation responses and existing protocol behaviour.
 
-## Review fixes
+## Paired application-container verification — 22 October 2026
 
-42 focused tests passed; ESLint passed for the new application-wiring suite. The added tests load app.js with dependency/authentication boundaries stubbed, use a real refused local upstream connection through the proxy callback, and exercise authentication-error and address-route failures through the final middleware. They do not validate real IDAM/S2S credentials or deployed ingress.
+The bounded diagnostic formatter retains nested Error.cause chains and terminates cycles. Rejected upstream HTTP responses now become private Errors with status and bounded body diagnostics, rather than logging [object Response]. Public statuses and generic bodies remain unchanged. At that verification point, 48 focused tests passed and changed-file ESLint passed.
 
-## Authoritative remediation and support requirement
+Both INFO (DEBUG off) and DEBUG runs passed all six checks: anonymous JSON/HTML,
+invalid user bearer or invalid service credentials as appropriate, authenticated dependency failure,
+health-detail redaction and retained original server diagnostics. This is 12 checks for this service.
+Different services retain their existing HTTP status and validation contracts; diagnostic redaction
+is consistent. Support logging is the policy; authentication logging is one covered failure category.
+Neither requires enabling DEBUG to retain original failures.
 
-The supplied CCD-7882 finding concerns unauthenticated disclosure of implementation details
-through HTTP error responses. This note covers the remediation and verification for this service.
+The shared local driver is review-reports/CCD-7882/verify_docker.py in the parent workspace.
+Run from the workspace root with --repo ccd-api-gateway (both modes are the default).
+Fresh Java bootJars or the current Node application source/dependencies were used, with synthetic
+OIDC/S2S/services and PostgreSQL where applicable. Some database fixtures deliberately omit tables
+for controlled infrastructure errors; definition-store uses its migrations for startup.
+Java used the cached HMCTS Java 21 runtime; Node used public node:22-alpine as non-root node.
+These are substitute runtimes, not builds of each exact production Dockerfile.
+Artifact hashes and per-check results are in review-reports/CCD-7882/docker-results.json.
+Scripts allow repeat runs and results identify what was checked; retaining them is evidence,
+not an extra production runtime dependency. Synthetic raw logs are local diagnostics.
 
-The remediation requires generic public error pages/responses and states: "The server should
-still log the detailed information, but access to the log will be restricted to administrators."
-An event reference is optional. It does not prescribe DEBUG-only logging or require support
-to restart a service to obtain diagnostics.
-
-Response sanitisation and administrator diagnostics are separate requirements. DEBUG-only
-implementation details described elsewhere in this note record the implementation, not an
-acceptance criterion from the finding. If production DEBUG is disabled and no other approved
-mechanism records the detailed failure, that is a support/acceptance gap: enabling DEBUG after
-an incident cannot recover its missing diagnostics. A safe category/status summary alone does
-not satisfy the detailed-log requirement.
-
-Before release, verify that detailed failures are recorded and accessible only to administrators,
-including the deployed logging/Application Insights configuration, while public responses stay
-generic. Preserve useful validation responses and existing protocol behaviour. Select and test
-the logging policy against these requirements; do not assume that moving every diagnostic to
-ERROR, or enabling DEBUG globally, is the required solution. Existing local test results do not
-establish this deployed acceptance. This requirement also applies to the current support logging policy above.
-
-## Support logging verification — 21 October 2026
-
-44 focused tests passed, zero failures/errors/skips. Checks cover the applicable request/error
-paths and confirm that public responses remain sanitised while original exception diagnostics
-are retained without enabling DEBUG. ESLint for the changed files passed.
-Direct proxy callbacks also retain the original failure details in server logs.
-Administrator-only log access, retention and deployed collection remain environment acceptance checks.
-
-## Logging uniqueness review — 21 October 2026
-
-46 focused tests passed with DEBUG disabled and again with DEBUG enabled. The final middleware owns authentication diagnostics, preserving the original cause without serialising it. Direct proxy responses retain their own diagnostic. Expected client failures use WARN; server failures use ERROR.
+Production image/ingress verification, deployed BEFTA/ITHC, actual Azure ingestion, retention
+and administrator-only access remain release gates. The local telemetry collector proves the
+specific agent/SDK path tested, not production collection settings.

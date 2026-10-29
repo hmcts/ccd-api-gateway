@@ -149,14 +149,52 @@ describe('CCD-7882 nested diagnostics', () => {
 describe('CCD-7882 upstream HTTP diagnostics', () => {
   it('retains the upstream status and body in a private Error', async () => {
     const fetch = proxyquire('../app/util/fetch', {
-      'node-fetch': () => Promise.resolve({
+      'node-fetch': () => Promise.resolve(new (require('node-fetch').Response)(require('stream').Readable.from(['PRIVATE_UPSTREAM_DIAGNOSTIC']), {
         status: 500,
-        statusText: 'Internal Server Error',
-        text: () => Promise.resolve('PRIVATE_UPSTREAM_DIAGNOSTIC')
-      })
+        statusText: 'Internal Server Error'
+      }))
     });
     await assert.rejects(fetch('http://synthetic.invalid'), (error) => (
       error.status === 500 && error.message.includes('PRIVATE_UPSTREAM_DIAGNOSTIC')
     ));
+  });
+
+  const withStream = (stream) => proxyquire('../app/util/fetch', {
+    'node-fetch': () => Promise.resolve(new (require('node-fetch').Response)(stream, { status: 401 }))
+  });
+
+  it('stops after 4096 bytes even when the upstream body stays open', async () => {
+    const stream = new (require('stream').PassThrough)();
+    const pending = withStream(stream)('http://synthetic.invalid');
+    stream.write(Buffer.alloc(8192, 'x'));
+    await assert.rejects(pending, (error) => (
+      error.status === 401 && error.message.split(': ')[1].length === 4096
+    ));
+    assert(stream.destroyed);
+  });
+
+  it('preserves HTTP status and the cause when reading fails', async () => {
+    const stream = new (require('stream').PassThrough)();
+    const pending = withStream(stream)('http://synthetic.invalid');
+    await Promise.resolve();
+    const cause = new Error('interrupted');
+    stream.destroy(cause);
+    await assert.rejects(pending, (error) => error.status === 401 && error.cause === cause);
+  });
+
+  it('closes stalled error bodies after five seconds and preserves status', async () => {
+    const clock = require('sinon').useFakeTimers();
+    const stream = new (require('stream').PassThrough)();
+    try {
+      const pending = withStream(stream)('http://synthetic.invalid');
+      await Promise.resolve();
+      clock.tick(5000);
+      await assert.rejects(pending, (error) => (
+        error.status === 401 && error.cause.message.includes('timed out')
+      ));
+      assert(stream.destroyed);
+    } finally {
+      clock.restore();
+    }
   });
 });
