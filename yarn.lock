@@ -4721,7 +4721,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handlebars@npm:4.7.10, handlebars@npm:^4.0.1":
+"handlebars@npm:^4.0.1, handlebars@npm:^4.7.10":
   version: 4.7.10
   resolution: "handlebars@npm:4.7.10"
   dependencies:
