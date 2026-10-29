@@ -55,8 +55,17 @@ const applyProxy = (app, config) => {
   }
 };
 
+
+process.env.PACKAGES_ENVIRONMENT = process.env.NODE_ENV || 'development';
+process.env.PACKAGES_PROJECT = 'ccd-api-gateway';
+process.env.PACKAGES_NAME = 'gateway';
+
 let healthConfig = {
-  checks: {}
+  checks: {
+    'idam-hmcts-access': basicHealthCheck('idam.hmcts_access_url'),
+    'idam-web-public': basicHealthCheck('idam.web_public_url'),
+    's2s': basicHealthCheck('idam.s2s_url')
+  }
 };
 healthcheck.addTo(appHealth, healthConfig);
 appHealth.get('/', routes.configure(healthConfig));
@@ -155,5 +164,17 @@ app.use(function (req, res, next) {
 
 // Fixed public errors in every environment, including development.
 app.use(require('./app/safe-errors').errorHandler);
+
+function basicHealthCheck(serviceName) {
+  const options = {
+    deadline: 15000,
+    timeout: 5000
+  };
+  return healthcheck.web(url(serviceName) + '/health', options);
+}
+
+function url(serviceUrlConfigKey) {
+    return config.get(serviceUrlConfigKey);
+}
 
 module.exports = app;
