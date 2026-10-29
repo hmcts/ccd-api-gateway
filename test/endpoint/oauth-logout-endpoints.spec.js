@@ -84,8 +84,12 @@ describe('OAuth and logout endpoint integration', () => {
       })
       .expect(502);
 
-    expect(response.body.status).to.equal(502);
-    expect(response.body.message).to.equal('Internal Server Error');
+    expect(response.body).to.eql({
+      status: 502,
+      error: 'Bad Gateway',
+      message: 'Bad Gateway',
+      code: 'INTERNAL_ERROR'
+    });
     expect(response.headers['set-cookie']).to.be.undefined;
   });
 
@@ -109,10 +113,11 @@ describe('OAuth and logout endpoint integration', () => {
       .get('/logout')
       .expect(400);
 
-    expect(response.body).to.include({
-      error: 'No auth token',
+    expect(response.body).to.eql({
+      error: 'Bad Request',
       status: 400,
-      message: 'No auth token to log out'
+      message: 'Bad Request',
+      code: 'INVALID_REQUEST'
     });
   });
 });

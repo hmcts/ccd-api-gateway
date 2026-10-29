@@ -1,5 +1,19 @@
 # CCD-7882: controlled error responses
 
+## MSAL advisory assessment — 29 October 2026
+
+CVE-2026-109461 affects the MSAL authorization-code flow. The current dependency chain is
+Application Insights 3.17.0 → Azure Identity 4.14.0 → MSAL Node 6.0.1. Azure Identity declares
+MSAL `^6.0.0`; forcing patched MSAL 7.1.0 is outside that range and was removed.
+Microsoft's Azure Identity changelog places MSAL `^7.1.0` in unreleased 4.15.0-beta.2.
+The gateway exchanges OAuth codes with node-fetch; its telemetry setup uses an instrumentation
+key and does not configure MSAL authorization-code or interactive-browser credentials.
+This source assessment supports review of the existing advisory-specific audit exception;
+it does not remove the vulnerable package or establish deployed applicability. The existing
+exception remains unchanged. Adopt a stable upstream release with patched MSAL when available.
+Sources: [MSAL advisory](https://github.com/AzureAD/microsoft-authentication-library-for-js/security/advisories/GHSA-xcx6-jx8p-x3h5),
+[Azure Identity changelog](https://github.com/Azure/azure-sdk-for-js/blob/main/sdk/identity/identity/CHANGELOG.md).
+
 ## Current support logging policy
 
 Public error responses remain generic. Detailed request failures, including exception causes
