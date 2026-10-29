@@ -17,7 +17,7 @@ const createApp = (authFailure) => proxyquire('../app', {
   './app/address/address-lookup': () => Promise.reject(new Error('SECRET internal-host')),
   './app/security/cors': pass,
   './app/security/timing': pass,
-  '@hmcts/nodejs-healthcheck': { addTo: () => {} },
+  '@hmcts/nodejs-healthcheck': { addTo: () => {}, web: () => () => {} },
   '@hmcts/nodejs-healthcheck/healthcheck/routes': { configure: () => pass },
   './app/oauth2/oauth2-route': { oauth2Route: pass },
   './app/oauth2/logout-route': { logoutRoute: pass }

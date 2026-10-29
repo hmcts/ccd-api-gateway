@@ -149,10 +149,13 @@ describe('CCD-7882 nested diagnostics', () => {
 describe('CCD-7882 upstream HTTP diagnostics', () => {
   it('retains the upstream status and body in a private Error', async () => {
     const fetch = proxyquire('../app/util/fetch', {
-      'node-fetch': () => Promise.resolve(new (require('node-fetch').Response)(require('stream').Readable.from(['PRIVATE_UPSTREAM_DIAGNOSTIC']), {
+      'node-fetch': {
+        default: () => Promise.resolve(new (require('node-fetch').Response)(require('stream').Readable.from(['PRIVATE_UPSTREAM_DIAGNOSTIC']), {
         status: 500,
         statusText: 'Internal Server Error'
-      }))
+        })),
+        '@noCallThru': true
+      }
     });
     await assert.rejects(fetch('http://synthetic.invalid'), (error) => (
       error.status === 500 && error.message.includes('PRIVATE_UPSTREAM_DIAGNOSTIC')
@@ -160,7 +163,10 @@ describe('CCD-7882 upstream HTTP diagnostics', () => {
   });
 
   const withStream = (stream) => proxyquire('../app/util/fetch', {
-    'node-fetch': () => Promise.resolve(new (require('node-fetch').Response)(stream, { status: 401 }))
+    'node-fetch': {
+      default: () => Promise.resolve(new (require('node-fetch').Response)(stream, { status: 401 })),
+      '@noCallThru': true
+    }
   });
 
   it('stops after 4096 bytes even when the upstream body stays open', async () => {
