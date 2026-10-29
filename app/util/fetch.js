@@ -1,4 +1,4 @@
-const _fetch = require('node-fetch');
+let _fetch = require('node-fetch').default;
 
 const readDiagnostic = (response) => new Promise((resolve) => {
   const stream = response.body;

@@ -2,7 +2,7 @@ const proxyquire =  require('proxyquire');
 const chai = require('chai');
 const sinon = require('sinon');
 const expect = chai.expect;
-const sinonChai = require('sinon-chai');
+const sinonChai = require('sinon-chai').default;
 chai.use(sinonChai);
 const userReqAuth = require('../../app/user/user-request-authorizer');
 const COOKIE_ACCESS_TOKEN = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
