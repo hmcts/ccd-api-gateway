@@ -38,4 +38,4 @@ nodejs:
         - ccd-api-gateway-oauth2-client-secret
         - postcode-info-address-lookup-token
         - microservicekey-ccd-gw
-        - AppInsightsInstrumentationKey
+        - name: app-insights-connection-string
