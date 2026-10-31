@@ -1475,14 +1475,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/propagator-jaeger@npm:2.9.0":
-  version: 2.9.0
-  resolution: "@opentelemetry/propagator-jaeger@npm:2.9.0"
+"@opentelemetry/propagator-jaeger@npm:2.12.0":
+  version: 2.12.0
+  resolution: "@opentelemetry/propagator-jaeger@npm:2.12.0"
   dependencies:
-    "@opentelemetry/core": "npm:2.9.0"
+    "@opentelemetry/core": "npm:2.12.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/d2f9e3e56d800de8a34241c4b78a2f32d576b8f008cf900ccd27203120f78532c7f77a2324beb0a39f74e674bc5c89eea44846354586a65cc31e3289c3f2a298
+  checksum: 10/4fe5a0c0191fe83de7a7f3a8edcc99bc1804ea81fede247256362e86cea5a2457a75bc6080ba988bc524b05754a203f8bed183f2efb78b8953d21093211217fa
   languageName: node
   linkType: hard
 
