@@ -9,21 +9,24 @@ const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE
 chai.use(sinonChai);
 const nock = require('nock');
 const CacheService = require('../../app/cache/cache-service');
+const fetchMock = require('fetch-mock').default;
 
 describe('logoutRoute', () => {
   const CLIENT_ID = 'ccd_gateway';
   const CLIENT_SECRET = 'abc123def456';
   const ACCESS_TOKEN = 'eycdjc7hf3478g4f37';
-  const LOGOUT_END_POINT = 'http://localhost/session/:token';
+  const HMCTS_ACCESS_URL = 'http://localhost:4321';
+  const LOGOUT_END_POINT = HMCTS_ACCESS_URL + '/o/endSession?token=' + ACCESS_TOKEN;
   const CACHE_TTL_SECONDS = 1800;
   const TOKEN = 'TOKEN';
+  const USER_DETAILS = { user: 'Details' };
 
   let request;
   let response;
   let next;
   let config;
   let logoutRoute;
-  let fetchStub;
+  let fetchMockInstance;
   let fetch;
   let userInfoCacheSpy;
   let sandbox;
@@ -41,12 +44,15 @@ describe('logoutRoute', () => {
     userInfoCache = new CacheService('UserInfoCache', CACHE_TTL_SECONDS, 120);
     userInfoCacheSpy = sandbox.spy(userInfoCache, 'getOrElseUpdate');
     cachedUserResolver = proxyquire('../../app/user/cached-user-resolver', {
-      '../cache/cache-config': { userInfoCache }
+      '../cache/cache-config': { userInfoCache },
+      './user-resolver': {
+        getUserDetails: sandbox.stub().withArgs(TOKEN).resolves(USER_DETAILS)
+      }
     });
 
     config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
     config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.logout_endpoint').returns(LOGOUT_END_POINT);
+    config.get.withArgs('idam.web_public_url').returns(HMCTS_ACCESS_URL);
 
     request = sinonExpressMock.mockReq({
       cookies: {
@@ -56,16 +62,12 @@ describe('logoutRoute', () => {
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
 
-    fetchStub = sinon.stub();
-    fetch = {
-      default: fetchStub.callsFake(function() {
-        return Promise.resolve({});
-      })
-    };
+    fetchMockInstance = fetchMock.createInstance().get(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN), {});
+    fetch = fetchMockInstance.fetchHandler;
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
-      'node-fetch': fetch
+      'node-fetch': { default: fetch }
     }).logoutRoute;
   });
 
@@ -76,35 +78,30 @@ describe('logoutRoute', () => {
       assert.fail('Not all nock interceptors have completed');
     }
   });
- 
-  it('should call IDAM OAuth 2 logout endpoint with JWT token', done => {
-    response.status.callsFake(() => {
-      try {
-        assert.calledWith(fetchStub, LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN));
-        expect(fetchStub.firstCall.args[1].headers.Authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        assert.notCalled(next);
-        assert.calledWith(response.clearCookie, ACCESS_TOKEN_COOKIE_NAME);
 
-        cachedUserResolver.getUserDetails(TOKEN);
-        clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
-
-        const result = cachedUserResolver.getUserDetails(TOKEN);
-        expect(JSON.stringify(result)).to.equal('{}');
-        assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
-        assert.calledTwice(userInfoCacheSpy);
-
-        assert.calledWith(response.status, 204);
-        done();
-      } catch (e) {
-        done(e);
-      }
-    });
-
+  it('should call IDAM OAuth 2 logout endpoint with JWT token', async () => {
+    const logoutComplete = new Promise(resolve => response.status.callsFake(resolve));
     logoutRoute(request, response, next);
 
-    assert.calledWith(config.get, 'idam.oauth2.client_id');
-    assert.calledWith(config.get, 'secrets.ccd.ccd-api-gateway-oauth2-client-secret');
-    assert.calledWith(config.get, 'idam.oauth2.logout_endpoint');
+    expect(config.get).to.be.calledWith('idam.oauth2.client_id');
+    expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
+    expect(config.get).to.be.calledWith('idam.web_public_url');
+
+    await logoutComplete;
+
+    expect(fetchMockInstance.callHistory.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
+    expect(next).not.to.be.called;
+    expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
+
+    await cachedUserResolver.getUserDetails(TOKEN);
+    clock.tick(CACHE_TTL_SECONDS * 1000 + 1);
+
+    const result = await cachedUserResolver.getUserDetails(TOKEN);
+    expect(JSON.stringify(result)).to.equal(JSON.stringify(USER_DETAILS));
+    assert.calledWith(userInfoCacheSpy, TOKEN, sinon.match.func);
+    assert.calledTwice(userInfoCacheSpy);
+
+    expect(response.status).to.be.calledWith(204);
   });
 
   it('should return 400 error when cookies missing', () => {
