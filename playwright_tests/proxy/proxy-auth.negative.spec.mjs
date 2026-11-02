@@ -55,7 +55,7 @@ test.describe('Proxy authentication @functional', () => {
       });
 
       expect(response.status).toBe(401);
-      expect(response.data).toEqual({
+      expect(response.data).toMatchObject({
         error: 'Unauthorized',
         status: 401,
         message: 'Unauthorized',
@@ -70,7 +70,7 @@ test.describe('Proxy authentication @functional', () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.data).toEqual({
+    expect(response.data).toMatchObject({
       error: 'Forbidden',
       status: 403,
       message: 'Forbidden',

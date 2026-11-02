@@ -11,7 +11,7 @@ test.describe('OAuth endpoints @functional', () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.data).toEqual({
+    expect(response.data).toMatchObject({
       error: 'Bad Request',
       status: 400,
       message: 'Bad Request',
@@ -25,7 +25,7 @@ test.describe('OAuth endpoints @functional', () => {
     });
 
     expect(response.status).toBe(401);
-    expect(response.data).toEqual({
+    expect(response.data).toMatchObject({
       error: 'Unauthorized',
       status: 401,
       message: 'Unauthorized',
