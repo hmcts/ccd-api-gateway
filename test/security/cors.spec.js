@@ -1,8 +1,8 @@
 const chai = require('chai');
-const expect = chai.expect;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+const assert = sinon.assert;
+const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 chai.use(sinonChai);
 
@@ -38,10 +38,10 @@ describe('CORS', () => {
   it('should add CORS headers to response', () => {
     handleCors(req, res, next);
 
-    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Origin', ORIGIN);
-    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Credentials', true);
-    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Methods', METHODS);
-    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Headers', HEADERS);
+    assert.calledWith(res.set, 'Access-Control-Allow-Origin', ORIGIN);
+    assert.calledWith(res.set, 'Access-Control-Allow-Credentials', true);
+    assert.calledWith(res.set, 'Access-Control-Allow-Methods', METHODS);
+    assert.calledWith(res.set, 'Access-Control-Allow-Headers', HEADERS);
   });
 
   it('should support multiple whitelisted origins', () => {
@@ -50,7 +50,7 @@ describe('CORS', () => {
 
     handleCors(req, res, next);
 
-    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Origin', ORIGIN_2);
+    assert.calledWith(res.set, 'Access-Control-Allow-Origin', ORIGIN_2);
   });
 
   it('should not allow non-whitelisted origins', () => {
@@ -58,7 +58,7 @@ describe('CORS', () => {
 
     handleCors(req, res, next);
 
-    expect(res.set).not.to.have.been.calledWith('Access-Control-Allow-Origin', ORIGIN_2);
+    assert.neverCalledWith(res.set, 'Access-Control-Allow-Origin', ORIGIN_2);
   });
 
   it('should allow any origin when whitelist contains wildcard *', () => {
@@ -67,6 +67,6 @@ describe('CORS', () => {
 
     handleCors(req, res, next);
 
-    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Origin', ORIGIN_2);
+    assert.calledWith(res.set, 'Access-Control-Allow-Origin', ORIGIN_2);
   });
 });
