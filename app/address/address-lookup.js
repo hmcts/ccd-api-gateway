@@ -1,6 +1,6 @@
 const config = require('config');
-const fetch = require('node-fetch');
-const HttpsProxyAgent = require('https-proxy-agent');
+const fetch = require('node-fetch').default;
+const { HttpsProxyAgent } = require('https-proxy-agent');
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('addressLookup');
 const crypto = require('crypto');
