@@ -5,7 +5,7 @@ const nock = require('nock');
 const proxyquire = require('proxyquire');
 const request = require('supertest');
 
-const IDAM_URL = 'http://localhost:5000';
+const IDAM_URL = 'http://test-idam:1234';
 const ACCESS_TOKEN = 'endpoint-test-access-token';
 const AUTH_CODE = 'endpoint-test-code';
 const REDIRECT_URI = 'https://gateway.test/oauth2redirect';
@@ -36,9 +36,11 @@ describe('OAuth and logout endpoint integration', () => {
 
   it('should exchange an authorization code through GET /oauth2', async () => {
     nock(IDAM_URL)
-      .post('/oauth2/token')
+      .post('/o/token')
       .query({
         code: AUTH_CODE,
+        client_id: 'ccd_gateway',
+        client_secret: 'ccd_gateway_secret',
         redirect_uri: REDIRECT_URI,
         grant_type: 'authorization_code'
       })
@@ -62,9 +64,11 @@ describe('OAuth and logout endpoint integration', () => {
 
   it('should return 502 when IdAM rejects the token exchange', async () => {
     nock(IDAM_URL)
-      .post('/oauth2/token')
+      .post('/o/token')
       .query({
         code: AUTH_CODE,
+        client_id: 'ccd_gateway',
+        client_secret: 'ccd_gateway_secret',
         redirect_uri: REDIRECT_URI,
         grant_type: 'authorization_code'
       })
@@ -87,7 +91,8 @@ describe('OAuth and logout endpoint integration', () => {
 
   it('should log out through GET /logout and clear the access-token cookie', async () => {
     nock(IDAM_URL)
-      .delete(`/session/${ACCESS_TOKEN}`)
+      .get('/o/endSession')
+      .query({ token: ACCESS_TOKEN })
       .reply(204);
 
     const response = await request(server)
