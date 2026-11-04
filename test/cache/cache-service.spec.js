@@ -3,7 +3,7 @@ const expect = chai.expect;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const assert = sinon.assert;
-const sinonChai = require('sinon-chai');
+const sinonChai = require('sinon-chai').default;
 chai.use(sinonChai);
 const CacheService = require('../../app/cache/cache-service');
 const NodeCache = require('node-cache');
@@ -90,7 +90,7 @@ describe('CacheService', () => {
         let cache;
 
         beforeEach(() => {
-            sandbox = sinon.sandbox.create();
+            sandbox = sinon.createSandbox();
             clock = sandbox.useFakeTimers();
             getSpy = sandbox.spy(NodeCache.prototype, 'get');
             setSpy = sandbox.spy(NodeCache.prototype, 'set');
