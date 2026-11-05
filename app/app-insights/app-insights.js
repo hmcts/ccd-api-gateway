@@ -15,9 +15,10 @@ function fineGrainedSampling(envelope) {
 
 const enableAppInsights = () => {
   if (enabled) {
-    const appInsightsKey = config.get('secrets.ccd.AppInsightsInstrumentationKey');
+    const appInsightsConnectionString = config.get('secrets.ccd.app-insights-connection-string');
     const appInsightsRoleName = config.get('appInsights.roleName');
-    appInsights.setup(appInsightsKey)
+    process.env.OTEL_SERVICE_NAME = appInsightsRoleName;
+    appInsights.setup(appInsightsConnectionString)
       .setAutoDependencyCorrelation(true)
       .setAutoCollectConsole(true, true);
     appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = appInsightsRoleName;
