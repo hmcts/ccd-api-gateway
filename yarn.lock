@@ -4796,7 +4796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handlebars@npm:^4.0.1, handlebars@npm:^4.7.10":
+"handlebars@npm:^4.7.10":
   version: 4.7.10
   resolution: "handlebars@npm:4.7.10"
   dependencies:
@@ -5382,30 +5382,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"istanbul@npm:^0.4.5":
-  version: 0.4.5
-  resolution: "istanbul@npm:0.4.5"
-  dependencies:
-    abbrev: "npm:1.0.x"
-    async: "npm:1.x"
-    escodegen: "npm:1.8.x"
-    esprima: "npm:2.7.x"
-    glob: "npm:^5.0.15"
-    handlebars: "npm:^4.0.1"
-    js-yaml: "npm:3.x"
-    mkdirp: "npm:0.5.x"
-    nopt: "npm:3.x"
-    once: "npm:1.x"
-    resolve: "npm:1.1.x"
-    supports-color: "npm:^3.1.0"
-    which: "npm:^1.1.1"
-    wordwrap: "npm:^1.0.0"
-  bin:
-    istanbul: ./lib/cli.js
-  checksum: 10/ef2ef4eef99492e945fdad556c35fcdfc82f1c8235aa123c4ca50a6ca7e8ce992d8a8ed134505f6766dbe2bf5f13420bdfa5c63715148fcabd4d2e80e6fad54a
-  languageName: node
-  linkType: hard
-
 "jpeg-js@npm:^0.4.1":
   version: 0.4.4
   resolution: "jpeg-js@npm:0.4.4"
@@ -5968,13 +5944,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.0.1, minimatch@npm:^10.2.2, minimatch@npm:^10.2.4, minimatch@npm:^10.2.5, minimatch@npm:^3.1.5":
+"minimatch@npm:^10.0.1, minimatch@npm:^10.2.2, minimatch@npm:^10.2.4, minimatch@npm:^3.1.5":
   version: 11.0.4
   resolution: "minimatch@npm:11.0.4"
   dependencies:
     "@isaacs/nonrecursive-glob-match": "npm:^1.0.3"
     brace-expansion: "npm:^5.0.12"
   checksum: 10/a6f56790748cfa06e20ce0fd718fc311cb862415d5ece7b7e09f9e83c9d594e070570eee1d32b3e0dbf9656b7def66d9aba3ab1567f5fe091377132ba813e39a
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^10.2.6":
+  version: 10.2.6
+  resolution: "minimatch@npm:10.2.6"
+  dependencies:
+    brace-expansion: "npm:^5.0.8"
+  checksum: 10/a5e43f7c57d6061a77da320b42aa35ffff826030cf67c83c0eee47a26ede4d66486935881492b968c609bf27a7d48cc4b9f54b2806643cd8fb792fcf9240cc1b
   languageName: node
   linkType: hard
 
