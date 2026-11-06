@@ -56,9 +56,10 @@ test.describe('Proxy authentication @functional', () => {
 
       expect(response.status).toBe(401);
       expect(response.data).toMatchObject({
-        error: 'Bearer token missing',
+        error: 'Unauthorized',
         status: 401,
-        message: 'You are not authorized to access this resource'
+        message: 'Unauthorized',
+        code: 'AUTHENTICATION_REQUIRED'
       });
     });
   });
@@ -70,9 +71,10 @@ test.describe('Proxy authentication @functional', () => {
 
     expect(response.status).toBe(403);
     expect(response.data).toMatchObject({
-      error: 'Unauthorised role',
+      error: 'Forbidden',
       status: 403,
-      message: 'You are not authorized to access this resource'
+      message: 'Forbidden',
+      code: 'ACCESS_DENIED'
     });
   });
 });

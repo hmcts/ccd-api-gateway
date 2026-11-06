@@ -179,10 +179,11 @@ describe('Proxy endpoint integration', () => {
         .get(proxyScenario.path)
         .expect(401);
 
-      expect(response.body).to.include({
-        error: 'Bearer token missing',
+      expect(response.body).to.eql({
+        error: 'Unauthorized',
         status: 401,
-        message: 'You are not authorized to access this resource'
+        message: 'Unauthorized',
+        code: 'AUTHENTICATION_REQUIRED'
       });
       expect(downstreamRequests).to.be.empty;
     });
@@ -226,10 +227,11 @@ describe('Proxy endpoint integration', () => {
       .set('Authorization', userToken)
       .expect(502);
 
-    expect(response.body).to.include({
-      error: 'Address lookup failed',
+    expect(response.body).to.eql({
+      error: 'Bad Gateway',
       status: 502,
-      message: 'The address service is unavailable'
+      message: 'Bad Gateway',
+      code: 'INTERNAL_ERROR'
     });
     expect(downstreamRequests).to.be.empty;
   });

@@ -14,7 +14,8 @@ test.describe('OAuth endpoints @functional', () => {
     expect(response.data).toMatchObject({
       error: 'Bad Request',
       status: 400,
-      message: 'Redirect URI cannot start with undefined'
+      message: 'Bad Request',
+      code: 'INVALID_REQUEST'
     });
   });
 
@@ -25,9 +26,10 @@ test.describe('OAuth endpoints @functional', () => {
 
     expect(response.status).toBe(401);
     expect(response.data).toMatchObject({
-      error: 'Bearer token missing',
+      error: 'Unauthorized',
       status: 401,
-      message: 'You are not authorized to access this resource'
+      message: 'Unauthorized',
+      code: 'AUTHENTICATION_REQUIRED'
     });
   });
 });
