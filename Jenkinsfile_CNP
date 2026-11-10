@@ -107,6 +107,30 @@ withPipeline("nodejs", product, component) {
         '''
     }
 
+    afterAlways('test') {
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "mochawesome-report",
+        reportFiles          : "unit.html",
+        reportName           : "Unit Test Report"
+      ]
+    }
+
+    afterAlways('test:coverage') {
+
+      publishHTML target: [
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : "coverage/lcov-report",
+        reportFiles          : "index.html",
+        reportName           : "Code Coverage Report"
+      ]
+    }
+
     afterAlways('smoketest:preview') {
         publishPlaywrightReport('smoke-output', 'PREVIEW Playwright Smoke Tests')
     }

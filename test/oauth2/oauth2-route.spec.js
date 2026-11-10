@@ -1,11 +1,12 @@
 const chai = require('chai');
-const expect = chai.expect;
 const proxyquire = require('proxyquire');
+const expect = chai.expect;
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 const OAUTH2_STATE_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_OAUTH2_STATE;
+const assert = sinon.assert;
 chai.use(sinonChai);
 
 describe('oauth2Route', () => {
@@ -68,10 +69,10 @@ describe('oauth2Route', () => {
 
     oauth2StateRoute(request, response);
 
-    expect(response.cookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME, STATE,
+    assert.calledWith(response.cookie, OAUTH2_STATE_COOKIE_NAME, STATE,
       { maxAge: 5 * 60 * 1000, httpOnly: true, sameSite: 'lax', secure: true });
-    expect(response.status).to.be.calledWith(200);
-    expect(response.json).to.be.calledWith({ state: STATE });
+    assert.calledWith(response.status, 200);
+    assert.calledWith(response.json, { state: STATE });
   });
 
   it('should issue an oauth2 state cookie with the "secure" flag disabled', () => {
@@ -80,10 +81,10 @@ describe('oauth2Route', () => {
 
     oauth2StateRoute(request, response);
 
-    expect(response.cookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME, STATE,
+    assert.calledWith(response.cookie, OAUTH2_STATE_COOKIE_NAME, STATE,
       { maxAge: 5 * 60 * 1000, httpOnly: true, sameSite: 'lax', secure: false });
-    expect(response.status).to.be.calledWith(200);
-    expect(response.json).to.be.calledWith({ state: STATE });
+    assert.calledWith(response.status, 200);
+    assert.calledWith(response.json, { state: STATE });
   });
 
   it('should set an accessToken cookie with the "secure" flag enabled', done => {
@@ -94,12 +95,12 @@ describe('oauth2Route', () => {
     response.send.callsFake( () => {
       try {
 
-        expect(accessTokenRequest).to.be.calledWith(request);
-        expect(response.clearCookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME);
-        expect(config.get).to.be.calledWith('security.secure_auth_cookie_enabled');
-        expect(response.cookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
+        assert.calledWith(accessTokenRequest, request);
+        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
+        assert.calledWith(config.get, 'security.secure_auth_cookie_enabled');
+        assert.calledWith(response.cookie, ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
           { maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: true });
-        expect(response.status).to.be.calledWith(204);
+        assert.calledWith(response.status, 204);
         done();
       } catch (e) {
         done(e);
@@ -116,12 +117,12 @@ describe('oauth2Route', () => {
 
     response.send.callsFake(() => {
       try {
-        expect(accessTokenRequest).to.be.calledWith(request);
-        expect(response.clearCookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME);
-        expect(config.get).to.be.calledWith('security.secure_auth_cookie_enabled');
-        expect(response.cookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
+        assert.calledWith(accessTokenRequest, request);
+        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
+        assert.calledWith(config.get, 'security.secure_auth_cookie_enabled');
+        assert.calledWith(response.cookie, ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
           { maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: false });
-        expect(response.status).to.be.calledWith(204);
+        assert.calledWith(response.status, 204);
         done();
       } catch (e) {
         done(e);
@@ -149,9 +150,9 @@ describe('oauth2Route', () => {
     next.callsFake((result) => {
       try {
 
-        expect(unauthorizedAccessTokenRequest).to.be.calledWith(request);
-        expect(response.clearCookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME);
-        expect(result).to.eql(expectedError);
+        assert.calledWith(unauthorizedAccessTokenRequest, request);
+        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
+        expect(result).to.deep.equal(expectedError);
         done();
       } catch (e) {
         done(e);
@@ -168,8 +169,8 @@ describe('oauth2Route', () => {
 
     next.callsFake((result) => {
       try {
-        expect(accessTokenRequest).to.be.calledWith(request);
-        expect(response.clearCookie).to.be.calledWith(OAUTH2_STATE_COOKIE_NAME);
+        assert.calledWith(accessTokenRequest, request);
+        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
         expect(result).to.equal(expectedError);
         done();
       } catch (e) {
@@ -186,9 +187,9 @@ describe('oauth2Route', () => {
 
     oauth2Route(request, response, next);
 
-    expect(accessTokenRequest).not.to.have.been.called;
-    expect(response.clearCookie).not.to.have.been.called;
-    expect(next).to.have.been.calledWith({
+    assert.notCalled(accessTokenRequest);
+    assert.notCalled(response.clearCookie);
+    assert.calledWith(next, {
       error: 'Invalid OAuth2 state',
       status: 400,
       message: 'Invalid OAuth2 state parameter'
@@ -201,9 +202,9 @@ describe('oauth2Route', () => {
 
     oauth2Route(request, response, next);
 
-    expect(accessTokenRequest).not.to.have.been.called;
-    expect(response.clearCookie).not.to.have.been.called;
-    expect(next).to.have.been.calledWith({
+    assert.notCalled(accessTokenRequest);
+    assert.notCalled(response.clearCookie);
+    assert.calledWith(next, {
       error: 'Invalid OAuth2 state',
       status: 400,
       message: 'Invalid OAuth2 state parameter'
@@ -216,9 +217,9 @@ describe('oauth2Route', () => {
 
     oauth2Route(request, response, next);
 
-    expect(accessTokenRequest).not.to.have.been.called;
-    expect(response.clearCookie).not.to.have.been.called;
-    expect(next).to.have.been.calledWith({
+    assert.notCalled(accessTokenRequest);
+    assert.notCalled(response.clearCookie);
+    assert.calledWith(next, {
       error: 'Invalid OAuth2 state',
       status: 400,
       message: 'Invalid OAuth2 state parameter'
@@ -231,9 +232,9 @@ describe('oauth2Route', () => {
 
     oauth2Route(request, response, next);
 
-    expect(accessTokenRequest).not.to.have.been.called;
-    expect(response.clearCookie).not.to.have.been.called;
-    expect(next).to.have.been.calledWith({
+    assert.notCalled(accessTokenRequest);
+    assert.notCalled(response.clearCookie);
+    assert.calledWith(next, {
       error: 'Invalid OAuth2 state',
       status: 400,
       message: 'Invalid OAuth2 state parameter'
@@ -246,9 +247,9 @@ describe('oauth2Route', () => {
 
     oauth2Route(request, response, next);
 
-    expect(accessTokenRequest).not.to.have.been.called;
-    expect(response.clearCookie).not.to.have.been.called;
-    expect(next).to.have.been.calledWith({
+    assert.notCalled(accessTokenRequest);
+    assert.notCalled(response.clearCookie);
+    assert.calledWith(next, {
       error: 'Invalid OAuth2 state',
       status: 400,
       message: 'Invalid OAuth2 state parameter'
