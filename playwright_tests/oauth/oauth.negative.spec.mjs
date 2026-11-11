@@ -11,11 +11,10 @@ test.describe('OAuth endpoints @functional', () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.data).toMatchObject({
+    expect(response.data).toEqual({
       error: 'Bad Request',
       status: 400,
-      message: 'Bad Request',
-      code: 'INVALID_REQUEST'
+      message: 'Bad Request'
     });
   });
 
@@ -25,11 +24,10 @@ test.describe('OAuth endpoints @functional', () => {
     });
 
     expect(response.status).toBe(401);
-    expect(response.data).toMatchObject({
+    expect(response.data).toEqual({
       error: 'Unauthorized',
       status: 401,
-      message: 'Unauthorized',
-      code: 'AUTHENTICATION_REQUIRED'
+      message: 'Unauthorized'
     });
   });
 });

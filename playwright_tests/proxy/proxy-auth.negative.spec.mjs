@@ -55,11 +55,10 @@ test.describe('Proxy authentication @functional', () => {
       });
 
       expect(response.status).toBe(401);
-      expect(response.data).toMatchObject({
+      expect(response.data).toEqual({
         error: 'Unauthorized',
         status: 401,
-        message: 'Unauthorized',
-        code: 'AUTHENTICATION_REQUIRED'
+        message: 'Unauthorized'
       });
     });
   });
@@ -70,11 +69,10 @@ test.describe('Proxy authentication @functional', () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.data).toMatchObject({
+    expect(response.data).toEqual({
       error: 'Forbidden',
       status: 403,
-      message: 'Forbidden',
-      code: 'ACCESS_DENIED'
+      message: 'Forbidden'
     });
   });
 });
