@@ -182,8 +182,7 @@ describe('Proxy endpoint integration', () => {
       expect(response.body).to.eql({
         error: 'Unauthorized',
         status: 401,
-        message: 'Unauthorized',
-        code: 'AUTHENTICATION_REQUIRED'
+        message: 'Unauthorized'
       });
       expect(downstreamRequests).to.be.empty;
     });
@@ -230,8 +229,7 @@ describe('Proxy endpoint integration', () => {
     expect(response.body).to.eql({
       error: 'Bad Gateway',
       status: 502,
-      message: 'Bad Gateway',
-      code: 'INTERNAL_ERROR'
+      message: 'Bad Gateway'
     });
     expect(downstreamRequests).to.be.empty;
   });

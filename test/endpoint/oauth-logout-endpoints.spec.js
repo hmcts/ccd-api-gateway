@@ -87,8 +87,7 @@ describe('OAuth and logout endpoint integration', () => {
     expect(response.body).to.eql({
       status: 502,
       error: 'Bad Gateway',
-      message: 'Bad Gateway',
-      code: 'INTERNAL_ERROR'
+      message: 'Bad Gateway'
     });
     expect(response.headers['set-cookie']).to.be.undefined;
   });
@@ -116,8 +115,7 @@ describe('OAuth and logout endpoint integration', () => {
     expect(response.body).to.eql({
       error: 'Bad Request',
       status: 400,
-      message: 'Bad Request',
-      code: 'INVALID_REQUEST'
+      message: 'Bad Request'
     });
   });
 });
