@@ -1,3 +1,4 @@
+const { withFailureDiagnostics } = require('./failure-diagnostics');
 const { STATUS_CODES } = require('http');
 const { Logger } = require('@hmcts/nodejs-logging');
 
@@ -50,13 +51,15 @@ const diagnosticError = (error) => {
 const errorHandler = (err, req, res, next) => {
   const body = safeError(err && (err.status || err.statusCode));
   const original = err instanceof Error ? err : (err && err.cause) || err;
-  logger[body.status >= 500 ? 'error' : 'warn'](
-    `Request failed: code=${body.code} status=${body.status}`, { error: diagnosticError(original) }
-  );
+  withFailureDiagnostics(body.status, original, (fields) => {
+    logger[body.status >= 500 ? 'error' : 'warn'](
+      `Request failed: code=${body.code} status=${body.status}`, { error: diagnosticError(original), ...fields }
+    );
+  });
   if (res.headersSent) {
     return next(err);
   }
-  return res.status(body.status).json(body);
+  return res.status(body.status).json({ error: body.error, status: body.status, message: body.message });
 };
 
 module.exports = { safeError, errorHandler, diagnosticError };

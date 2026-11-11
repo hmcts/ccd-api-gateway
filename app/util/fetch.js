@@ -47,6 +47,7 @@ const fetch = (...args) => {
       // A Response has no useful stack; preserve bounded upstream diagnostics privately.
       return readDiagnostic(res).then(({ body, cause }) => {
         const error = new Error(`Upstream HTTP ${res.status} ${res.statusText}: ${body}`);
+        error.name = 'UpstreamResponseError';
         error.status = res.status;
         if (cause) {
           error.cause = cause;

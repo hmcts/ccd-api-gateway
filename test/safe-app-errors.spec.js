@@ -28,7 +28,7 @@ describe('CCD-7882 application error wiring', () => {
     const response = await request(createApp()).get('/data/cases');
     assert.strictEqual(response.status, 502);
     assert.strictEqual(response.body.status, 502);
-    assert.strictEqual(response.body.code, 'INTERNAL_ERROR');
+    assert.strictEqual(response.body.code, undefined);
     assert(!JSON.stringify(response.body).includes('ECONNREFUSED'));
     assert(!JSON.stringify(response.body).includes('127.0.0.1'));
   });
@@ -38,14 +38,14 @@ describe('CCD-7882 application error wiring', () => {
     failure.status = 401;
     const response = await request(createApp(failure)).get('/data/cases');
     assert.strictEqual(response.status, 401);
-    assert.strictEqual(response.body.code, 'AUTHENTICATION_REQUIRED');
+    assert.strictEqual(response.body.code, undefined);
     assert(!JSON.stringify(response.body).includes('SECRET'));
   });
 
   it('redacts a route dependency failure through the real application middleware', async () => {
     const response = await request(createApp()).get('/addresses?postcode=test');
     assert.strictEqual(response.status, 500);
-    assert.strictEqual(response.body.code, 'INTERNAL_ERROR');
+    assert.strictEqual(response.body.code, undefined);
     assert(!JSON.stringify(response.body).includes('SECRET'));
   });
 });

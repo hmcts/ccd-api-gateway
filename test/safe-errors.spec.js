@@ -18,7 +18,7 @@ describe('CCD-7882 controlled errors', () => {
       app.use(errorHandler);
       const response = await request(app).get('/private-path?trace=true');
       assert.strictEqual(response.status, status);
-      assert.deepStrictEqual(response.body, safeError(status));
+      assert.deepStrictEqual(response.body, (({ error, status, message }) => ({ error, status, message }))(safeError(status)));
       assert(!JSON.stringify(response.body).includes('SECRET'));
       assert(!JSON.stringify(response.body).includes('private-path'));
     });
@@ -44,7 +44,8 @@ describe('CCD-7882 controlled errors', () => {
     const response = await request(app).post('/').set('Content-Type', 'application/json')
       .send('{"SECRET":');
     assert.strictEqual(response.status, 400);
-    assert.strictEqual(response.body.code, 'INVALID_REQUEST');
+    assert.strictEqual(response.body.message, 'Bad Request');
+    assert.strictEqual(response.body.code, undefined);
     assert(!JSON.stringify(response.body).includes('SECRET'));
   });
 
@@ -67,7 +68,7 @@ describe('CCD-7882 support diagnostics without DEBUG', () => {
     handler(original, {}, response, () => {});
     assert.strictEqual(events.length, 1);
     assert.strictEqual(events[0].metadata.error, original.stack);
-    assert.deepStrictEqual(body, safeError(500));
+    assert.deepStrictEqual(body, (({ error, status, message }) => ({ error, status, message }))(safeError(500)));
     assert(!JSON.stringify(body).includes('PRIVATE'));
   });
 });
@@ -90,7 +91,7 @@ describe('CCD-7882 direct proxy diagnostics', () => {
     assert.strictEqual(events.length, 1);
     assert.strictEqual(events[0].metadata.error, original.stack);
     assert.strictEqual(status, 502);
-    assert.deepStrictEqual(body, safeError(502));
+    assert.deepStrictEqual(body, (({ error, status, message }) => ({ error, status, message }))(safeError(502)));
   });
 });
 
@@ -128,7 +129,7 @@ describe('CCD-7882 single authentication diagnostic', () => {
       assert.strictEqual(events.length, 1);
       assert.strictEqual(events[0].level, upstreamFailure ? 'error' : 'warn');
       assert.strictEqual(events[0].metadata.error, original.stack);
-      assert.deepStrictEqual(body, safeError(upstreamFailure ? 502 : 401));
+      assert.deepStrictEqual(body, (({ error, status, message }) => ({ error, status, message }))(safeError(upstreamFailure ? 502 : 401)));
       assert(!JSON.stringify(body).includes('PRIVATE'));
     });
   });

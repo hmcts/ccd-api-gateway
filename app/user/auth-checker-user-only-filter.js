@@ -1,3 +1,4 @@
+const { withFailureDiagnostics } = require('../failure-diagnostics');
 const { safeError, diagnosticError } = require('../safe-errors');
 const userRequestAuthorizer = require('./user-request-authorizer');
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -39,9 +40,12 @@ const mapFetchErrors = (error, res, next) => {
   if (next !== undefined) {
     next(body);
   } else {
-    logger.error(`Proxy request failed: code=${body.code} status=${body.status}`, { error: diagnosticError(error) });
+    withFailureDiagnostics(body.status, error, (fields) => {
+      logger.error(`Proxy request failed: code=${body.code} status=${body.status}`,
+        { error: diagnosticError(error), ...fields });
+    });
     res.status(body.status);
-    res.json(body);
+    res.json({ error: body.error, status: body.status, message: body.message });
   }
 };
 
