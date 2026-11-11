@@ -17,6 +17,9 @@ and public `message` fields where present, while retaining useful private diagno
 
 ## Diagnostics
 
+Internal category codes and structured `failureCode` values stay in diagnostics, not public
+error bodies.
+
 Log original causes once at WARN for 4xx or ERROR for 5xx, with private `failureCode` and
 `httpStatus` dimensions. Export one explicit SDK exception because the Winston integration does not
 export ordinary logger records. Correlation context and nested causes are retained; SDK export
