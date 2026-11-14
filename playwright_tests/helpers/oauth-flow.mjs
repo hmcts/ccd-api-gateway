@@ -46,7 +46,7 @@ async function obtainAuthorizationCode(request) {
 }
 
 function accessTokenCookie(setCookieHeader) {
-  const match = setCookieHeader && setCookieHeader.match(/(?:^|,\s*)accessToken=([^;]+)/);
+  const match = setCookieHeader && setCookieHeader.match(/(?:^|[,\r\n]\s*)accessToken=([^;\r\n]+)/);
   return match ? match[1] : undefined;
 }
 
