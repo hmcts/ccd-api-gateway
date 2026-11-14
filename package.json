@@ -53,7 +53,6 @@
     "otp": "^0.1.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "^10.0.1",
     "@hmcts/playwright-common": "1.1.7",
     "@playwright/test": "^1.64.1",
@@ -63,7 +62,6 @@
     "eslint-plugin-mocha": "^12.0.2",
     "fetch-mock": "^12.6.0",
     "git-message": "^2.0.2",
-    "istanbul": "^0.4.5",
     "jsonwebtoken": "^9.0.3",
     "mocha": "^12.0.3",
     "mochawesome": "^8.1.1",
