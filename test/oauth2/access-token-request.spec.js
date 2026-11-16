@@ -1,9 +1,9 @@
 const chai = require('chai');
 const expect = chai.expect;
-const fetchMock = require('fetch-mock').default;
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+const assert = sinon.assert;
+const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 const url = require('url');
 chai.use(sinonChai);
@@ -11,7 +11,7 @@ chai.use(sinonChai);
 describe('Access Token Request', () => {
   const CLIENT_ID = 'ccd_gateway';
   const CLIENT_SECRET = 'abc123def456';
-  const TOKEN_ENDPOINT = 'http://localhost:1234/oauth2/token';
+  const HMCTS_ACCESS_URL = 'http://localhost:1234';
   const REDIRECT_URN = 'localhost/redirect/to';
   const REDIRECT_URL = 'https://localhost/redirect/to';
   const UNDEFINED_URI = 'undefined:///oauth2redirect';
@@ -51,10 +51,10 @@ describe('Access Token Request', () => {
   };
 
   let config;
+  let successStub;
   let fetch;
-  let fetchMockInstance;
+  let unsuccessfulStub;
   let unsuccessfulFetch;
-  let unsuccessfulFetchMockInstance;
   let accessTokenRequest;
   let unsuccessfulAccessTokenRequest;
 
@@ -63,52 +63,60 @@ describe('Access Token Request', () => {
       get: sinon.stub()
     };
 
-    fetchMockInstance = fetchMock.createInstance().post(`begin:${TOKEN_ENDPOINT}`, SUCCESSFUL_RESPONSE);
-    fetch = fetchMockInstance.fetchHandler;
+    successStub = sinon.stub();
+    fetch = {
+      default: successStub.callsFake(function(...args) {
+        let requestedUrl = url.parse(args[0], true);
+        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
+        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        return Promise.resolve(SUCCESSFUL_RESPONSE);
+      })
+    };
     accessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': fetch
     });
 
-    unsuccessfulFetchMockInstance = fetchMock.createInstance().post(`begin:${TOKEN_ENDPOINT}`, UNSUCCESSFUL_RESPONSE);
-    unsuccessfulFetch = unsuccessfulFetchMockInstance.fetchHandler;
+    unsuccessfulStub = sinon.stub();
+    unsuccessfulFetch = {
+      default: unsuccessfulStub.callsFake(function(...args) {
+        let requestedUrl = url.parse(args[0], true);
+        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
+        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        return Promise.resolve(UNSUCCESSFUL_RESPONSE);
+      })
+    };
     unsuccessfulAccessTokenRequest = proxyquire('../../app/oauth2/access-token-request', {
       'config': config,
       'node-fetch': unsuccessfulFetch
     });
+
+    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
+    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
+    config.get.withArgs('idam.web_public_url').returns(HMCTS_ACCESS_URL);
   });
 
   it('should call the IdAM OAuth 2 token endpoint with the correct headers and query string parameters', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
-        const lastCall = fetchMockInstance.callHistory.lastCall();
-        expect(fetchMockInstance.callHistory.called()).to.be.true;
-        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(lastCall.url, true);
-        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
-        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        assert.called(successStub);
+        const requestedUrl = new URL(successStub.firstCall.args[0]);
+        expect(requestedUrl.searchParams.get('code')).to.equal(AUTH_CODE);
+        expect(requestedUrl.searchParams.get('redirect_uri')).to.equal(REDIRECT_URL);
         done();
       })
       .catch(error => done(new Error(error)));
   });
 
   it('should add `https://` prefix', done => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
 
     accessTokenRequest(REQUEST)
       .then(() => {
-        const lastCall = fetchMockInstance.callHistory.lastCall();
-        expect(fetchMockInstance.callHistory.called()).to.be.true;
-        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(lastCall.url, true);
-        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
-        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        assert.called(successStub);
+        const requestedUrl = new URL(successStub.firstCall.args[0]);
+        expect(requestedUrl.searchParams.get('code')).to.equal(AUTH_CODE);
+        expect(requestedUrl.searchParams.get('redirect_uri')).to.equal(REDIRECT_URL);
         done();
       })
       .catch(error => done(new Error(error)));
@@ -117,18 +125,12 @@ describe('Access Token Request', () => {
 
   it('should handle unsuccessful responses.', done => {
 
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
-
     unsuccessfulAccessTokenRequest(REQUEST)
       .then((response) => {
-        const lastCall = unsuccessfulFetchMockInstance.callHistory.lastCall();
-        expect(unsuccessfulFetchMockInstance.callHistory.called()).to.be.true;
-        expect(lastCall.options.headers.authorization).to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
-        let requestedUrl = url.parse(lastCall.url, true);
-        expect(requestedUrl.query.code).to.equal(AUTH_CODE);
-        expect(requestedUrl.query.redirect_uri).to.equal(REDIRECT_URL);
+        assert.called(unsuccessfulStub);
+        const requestedUrl = new URL(unsuccessfulStub.firstCall.args[0]);
+        expect(requestedUrl.searchParams.get('code')).to.equal(AUTH_CODE);
+        expect(requestedUrl.searchParams.get('redirect_uri')).to.equal(REDIRECT_URL);
         expect(response).to.have.property('status', 401);
         done();
       })
@@ -136,9 +138,6 @@ describe('Access Token Request', () => {
   });
 
   it('should reject undefined uri requests.', async () => {
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
-    config.get.withArgs('idam.oauth2.token_endpoint').returns(TOKEN_ENDPOINT);
     try {
       await accessTokenRequest(REQUEST_UNDEFINED_URI);
     } catch (error) {
