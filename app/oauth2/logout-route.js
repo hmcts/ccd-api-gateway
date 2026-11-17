@@ -1,8 +1,7 @@
 const config = require('config');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch').default;
 const { Logger } = require('@hmcts/nodejs-logging');
 const COOKIE_ACCESS_TOKEN = require('./oauth2-route').COOKIE_ACCESS_TOKEN;
-const TOKEN_PLACEHOLDER = ':token';
 const { userInfoCache } = require('../cache/cache-config');
 const { getBasicAuthHeader, redactAuthorizationHeader } = require('./client-auth');
 
@@ -13,13 +12,13 @@ const logoutRoute = (req, res, next) => {
 
   if (accessToken) {
     const options = {
-      method: 'DELETE',
+      method: 'GET',
       headers: {
         'Authorization': getBasicAuthHeader(),
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     };
-    fetch(config.get('idam.oauth2.logout_endpoint').replace(TOKEN_PLACEHOLDER, accessToken), options)
+    fetch(config.get('idam.web_public_url') + '/o/endSession?token=' + accessToken, options)
       .then(() => {
         res.clearCookie(COOKIE_ACCESS_TOKEN);
         userInfoCache.del(accessToken);
