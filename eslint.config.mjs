@@ -1,18 +1,7 @@
 import { defineConfig } from "eslint/config";
 import mocha from "eslint-plugin-mocha";
 import globals from "globals";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
 
 export default defineConfig([
   {
@@ -27,7 +16,7 @@ export default defineConfig([
   },
   {
     files: ["**/*.js", "**/*.spec.js"],
-    extends: compat.extends("eslint:recommended"),
+    extends: [js.configs.recommended],
 
     plugins: {
       mocha,
