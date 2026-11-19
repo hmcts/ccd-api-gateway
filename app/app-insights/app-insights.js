@@ -1,3 +1,4 @@
+const { configureFailureTelemetry } = require('../failure-diagnostics');
 const config = require('config');
 const appInsights = require('applicationinsights');
 
@@ -24,6 +25,7 @@ const enableAppInsights = () => {
     appInsights.defaultClient.config.samplingPercentage = 1;
     appInsights.defaultClient.addTelemetryProcessor(fineGrainedSampling);
     appInsights.start();
+    configureFailureTelemetry(appInsights.defaultClient);
   }
 };
 
