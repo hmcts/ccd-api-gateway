@@ -2,9 +2,16 @@ import { expect, test } from '../fixtures.mjs';
 
 test.describe('OAuth endpoints @functional', () => {
   test('GET /oauth2 rejects an invalid redirect URI', async ({ apiClient }) => {
+    const stateResponse = await apiClient.get('/oauth2/state');
+    expect(stateResponse.status).toBe(200);
+    const state = stateResponse.data.state;
+    expect(state).toMatch(/^[a-f0-9]{64}$/);
+
     const response = await apiClient.get('/oauth2', {
+      headers: { cookie: `oauth2State=${state}` },
       query: {
         code: 'playwright-invalid-code',
+        state,
         redirect_uri: 'undefined:///oauth2redirect'
       },
       throwOnError: false

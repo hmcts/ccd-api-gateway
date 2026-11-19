@@ -3,13 +3,19 @@ import { accessTokenCookie, obtainAuthorizationCode } from '../helpers/oauth-flo
 
 test.describe('OAuth authorization code @functional', () => {
   test('GET /oauth2 sets a cookie that authenticates a proxy request', async ({ apiClient, request }) => {
+    const stateResponse = await apiClient.get('/oauth2/state');
+    expect(stateResponse.status).toBe(200);
+    const state = stateResponse.data.state;
+    expect(state).toMatch(/^[a-f0-9]{64}$/);
     const authorizationCode = await obtainAuthorizationCode(request);
     let accessToken;
 
     try {
       const response = await apiClient.get('/oauth2', {
+        headers: { cookie: `oauth2State=${state}` },
         query: {
           code: authorizationCode,
+          state,
           redirect_uri: process.env.IDAM_OAUTH2_REDIRECT_URI
         }
       });
