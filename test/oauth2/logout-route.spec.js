@@ -31,6 +31,7 @@ describe('logoutRoute', () => {
   let userInfoCacheSpy;
   let sandbox;
   let clock;
+  let clientAuth;
 
   let cachedUserResolver;
   let userInfoCache;
@@ -50,8 +51,9 @@ describe('logoutRoute', () => {
       }
     });
 
-    config.get.withArgs('idam.oauth2.client_id').returns(CLIENT_ID);
-    config.get.withArgs('secrets.ccd.ccd-api-gateway-oauth2-client-secret').returns(CLIENT_SECRET);
+    clientAuth = {
+      getBasicAuthHeader: sinon.stub().returns('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
+    };
     config.get.withArgs('idam.web_public_url').returns(HMCTS_ACCESS_URL);
 
     request = sinonExpressMock.mockReq({
@@ -67,7 +69,8 @@ describe('logoutRoute', () => {
 
     logoutRoute = proxyquire('../../app/oauth2/logout-route', {
       'config': config,
-      'node-fetch': { default: fetch }
+      'node-fetch': { default: fetch },
+      './client-auth': clientAuth
     }).logoutRoute;
   });
 
@@ -80,16 +83,18 @@ describe('logoutRoute', () => {
   });
 
   it('should call IDAM OAuth 2 logout endpoint with JWT token', async () => {
-    const logoutComplete = new Promise(resolve => response.status.callsFake(resolve));
+    const logoutComplete = new Promise(resolve => response.send.callsFake(resolve));
     logoutRoute(request, response, next);
 
-    expect(config.get).to.be.calledWith('idam.oauth2.client_id');
-    expect(config.get).to.be.calledWith('secrets.ccd.ccd-api-gateway-oauth2-client-secret');
     expect(config.get).to.be.calledWith('idam.web_public_url');
 
     await logoutComplete;
 
     expect(fetchMockInstance.callHistory.called(LOGOUT_END_POINT.replace(':token', ACCESS_TOKEN))).to.be.true;
+    const logoutCall = fetchMockInstance.callHistory.lastCall();
+    expect(logoutCall.options.headers.authorization)
+      .to.equal('Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'));
+    expect(clientAuth.getBasicAuthHeader).to.have.been.calledOnce;
     expect(next).not.to.be.called;
     expect(response.clearCookie).to.be.calledWith(ACCESS_TOKEN_COOKIE_NAME);
 

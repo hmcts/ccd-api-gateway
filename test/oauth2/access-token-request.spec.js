@@ -101,7 +101,12 @@ describe('Access Token Request', () => {
     accessTokenRequest(REQUEST_WITH_HTTPS)
       .then(() => {
         assert.called(successStub);
+        expect(successStub.firstCall.args[1].headers).not.to.have.property('Authorization');
         const requestedUrl = new URL(successStub.firstCall.args[0]);
+        expect(requestedUrl.origin + requestedUrl.pathname).to.equal(HMCTS_ACCESS_URL + '/o/token');
+        expect(requestedUrl.searchParams.get('client_id')).to.equal(CLIENT_ID);
+        expect(requestedUrl.searchParams.get('client_secret')).to.equal(CLIENT_SECRET);
+        expect(requestedUrl.searchParams.get('grant_type')).to.equal('authorization_code');
         expect(requestedUrl.searchParams.get('code')).to.equal(AUTH_CODE);
         expect(requestedUrl.searchParams.get('redirect_uri')).to.equal(REDIRECT_URL);
         done();
@@ -114,7 +119,12 @@ describe('Access Token Request', () => {
     accessTokenRequest(REQUEST)
       .then(() => {
         assert.called(successStub);
+        expect(successStub.firstCall.args[1].headers).not.to.have.property('Authorization');
         const requestedUrl = new URL(successStub.firstCall.args[0]);
+        expect(requestedUrl.origin + requestedUrl.pathname).to.equal(HMCTS_ACCESS_URL + '/o/token');
+        expect(requestedUrl.searchParams.get('client_id')).to.equal(CLIENT_ID);
+        expect(requestedUrl.searchParams.get('client_secret')).to.equal(CLIENT_SECRET);
+        expect(requestedUrl.searchParams.get('grant_type')).to.equal('authorization_code');
         expect(requestedUrl.searchParams.get('code')).to.equal(AUTH_CODE);
         expect(requestedUrl.searchParams.get('redirect_uri')).to.equal(REDIRECT_URL);
         done();
@@ -129,6 +139,10 @@ describe('Access Token Request', () => {
       .then((response) => {
         assert.called(unsuccessfulStub);
         const requestedUrl = new URL(unsuccessfulStub.firstCall.args[0]);
+        expect(requestedUrl.origin + requestedUrl.pathname).to.equal(HMCTS_ACCESS_URL + '/o/token');
+        expect(requestedUrl.searchParams.get('client_id')).to.equal(CLIENT_ID);
+        expect(requestedUrl.searchParams.get('client_secret')).to.equal(CLIENT_SECRET);
+        expect(requestedUrl.searchParams.get('grant_type')).to.equal('authorization_code');
         expect(requestedUrl.searchParams.get('code')).to.equal(AUTH_CODE);
         expect(requestedUrl.searchParams.get('redirect_uri')).to.equal(REDIRECT_URL);
         expect(response).to.have.property('status', 401);

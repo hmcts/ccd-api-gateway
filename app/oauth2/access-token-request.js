@@ -2,6 +2,7 @@ const config = require('config');
 const fetch = require('node-fetch').default;
 const { URL } = require('url');
 const { Logger } = require('@hmcts/nodejs-logging');
+const { redactAuthorizationHeader } = require('./client-auth');
 
 const logger = Logger.getLogger('accessTokenRequest');
 
@@ -46,6 +47,7 @@ function accessTokenRequest(request) {
     })
     .catch(error => {
       logger.error('Failed to obtain access token due to an error:', error);
+      logger.error('Request headers:', redactAuthorizationHeader(options.headers));
       throw error;
     });
 }
