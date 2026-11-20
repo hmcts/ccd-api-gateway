@@ -16,6 +16,7 @@ idam:
   service_name: IDAM_SERVICE_NAME
   oauth2:
     client_id: IDAM_OAUTH2_CLIENT_ID
+    redirect_uri_allowlist: IDAM_OAUTH2_REDIRECT_URI_ALLOWLIST
 address_lookup:
   detect_proxy: ADDRESS_LOOKUP_DETECT_PROXY
   url: ADDRESS_LOOKUP_URL
