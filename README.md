@@ -20,7 +20,7 @@ cd ccd-api-gateway
 
 ### Prerequisites
 
-* [Node.js](https://nodejs.org/) >= v18.17.0
+* [Node.js](https://nodejs.org/) >= v24.15.0
 * [yarn](https://yarnpkg.com/)
 * [Docker](https://www.docker.com)
 
@@ -38,11 +38,10 @@ The following environment variables are required:
 | PROXY_DOCUMENT_MANAGEMENT | Base URL of the remote Document Management API gateway. |
 | PROXY_PRINT_SERVICE | Base URL of the CCD Case Data Print Service. `http://localhost:3100` for the dockerised local instance. |
 | PROXY_CASE_ACTIVITY | Base URL of the CCD Case Activity API. `http://localhost:3460` for the non-dockerised local instance. |
-| IDAM_USER_URL | Base URL for IdAM's User API service (idam-app). `http://localhost:4501` for the dockerised local instance or tunnelled `dev` instance. |
+| IDAM_HMCTS_ACCESS_URL | http://localhost:9002 Base URL for IdAM's HMCTS Acccess service (idam-hmcts-access). default for the dockerised local instance or tunnelled `dev` instance.              |
+| IDAM_PUBLIC_WEB_URL  | http://localhost:9002 Base URL for IdAM's public web service (idam-public-web). default for the dockerised local instance or tunnelled `dev` instance.                   |
 | IDAM_S2S_URL | Base URL for IdAM's S2S API service (service-auth-provider). `http://localhost:4502` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_SERVICE_KEY | API Gateway's IDAM S2S micro-service secret key. This must match the IDAM instance it's being run against. |
-| IDAM_OAUTH2_LOGOUT_ENDPOINT | URL of the IdAM OAuth2 API `logout` endpoint. `http://localhost:4501/session/:token` for the dockerised local instance. |
-| IDAM_OAUTH2_TOKEN_ENDPOINT | URL of the IdAM OAuth2 API endpoint for obtaining an OAuth2 token. `http://localhost:4501/oauth2/token` for the dockerised local instance or tunnelled `dev` instance. |
 | IDAM_OAUTH2_CLIENT_SECRET | Secret to be passed to IdAM when obtaining an OAuth2 token. This must match the IdAM instance it's being run against. |
 | ADDRESS_LOOKUP_TOKEN | Token for use with the MoJ Address Lookup service. |
 | CORS_ORIGIN_WHITELIST | Comma-separated list of authorised origins for Cross-Origin requests. `http://localhost:3451,http://localhost:3452` for the local instances of CCD |
@@ -59,6 +58,18 @@ To install dependencies please execute the following command:
 
 ```bash
 yarn install
+```
+
+### Managing dependencies:
+To update the versions in package.json use:
+```bash
+$ yarn upgrade-interactive
+```
+and choose the appropriate version for each dependency.
+
+The jenkins pipeline will check dependency versions for vulnerabilities. If you wish to suppress the issues that the pipeline is looking for you can populate the "yarn-audit-known-issues" file by running:
+```bash
+$ yarn suppress-cve
 ```
 
 ### Running
@@ -87,10 +98,33 @@ docker-compose up
 
 As a result, the API gateway will be started and made available on port `3453`.
 
-## Integration tests
+## Endpoint tests
 
-The integration tests are mavenized and can be run using:
+The endpoint scenarios run as part of the existing unit-test suite. They exercise the assembled Express application over
+HTTP with controlled IdAM and downstream services, covering OAuth, logout, health checks and representative proxy groups.
 
 ```bash
-yarn integration
+yarn test:unit
 ```
+
+### Endpoint coverage
+
+| Measure | Route groups covered | Coverage |
+|---|---:|---:|
+| Baseline | 4 of 17 | 23.5% |
+| Current | 17 of 17 | 100.0% |
+| Movement | +13 route groups | +76.5 percentage points |
+
+Endpoint coverage measures routes or proxy groups exercised over HTTP. It is separate from NYC source-code coverage.
+
+## Deployed API tests
+
+Deployed-instance API tests use Playwright's API request client. Set `TEST_URL` to the base URL of a running gateway before executing them:
+
+```bash
+TEST_URL=https://ccd-api-gateway-web.example.test yarn test:deployed
+```
+
+The CNP pipeline supplies `TEST_URL` after deploying the Helm release. `yarn test:smoke` runs tests tagged `@smoke` and writes JUnit and HTML evidence under `smoke-output`. `yarn test:functional` runs tests tagged `@functional` and writes its evidence under `functional-output`. These locations match the HMCTS Jenkins pipeline's standard result and artifact collection paths. Jenkins publishes the JUnit results and adds separate Playwright HTML report links for Preview and AAT smoke and functional stages.
+
+The deployed scenarios use Playwright's API request client and do not launch a browser. The positive OAuth scenario obtains a real one-time authorization code directly from IDAM before exchanging it through the deployed gateway.
