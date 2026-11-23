@@ -1,15 +1,21 @@
 const accessTokenRequest = require('./access-token-request');
 const config = require('config');
-const { randomBytes } = require('crypto');
+const {
+  OAUTH_STATE_COOKIE_PREFIX,
+  OAUTH_STATE_TTL_MS,
+  getOAuthStateCookieName,
+  setOAuthState,
+  consumeOAuthState
+} = require('./oauth-state');
 const COOKIE_ACCESS_TOKEN = 'accessToken';
-const COOKIE_OAUTH2_STATE = 'oauth2State';
-const STATE_COOKIE_MAX_AGE_MS = 5 * 60 * 1000;
+const COOKIE_OAUTH2_STATE = OAUTH_STATE_COOKIE_PREFIX;
 
 const oauth2StateRoute = (req, res) => {
-  const state = randomBytes(32).toString('hex');
+  const state = setOAuthState(req);
+  const cookieName = getOAuthStateCookieName(state);
 
-  res.cookie(COOKIE_OAUTH2_STATE, state, {
-    maxAge: STATE_COOKIE_MAX_AGE_MS,
+  res.cookie(cookieName, req.cookies[cookieName], {
+    maxAge: OAUTH_STATE_TTL_MS,
     httpOnly: true,
     sameSite: 'lax',
     secure: config.get('security.secure_auth_cookie_enabled')
@@ -18,30 +24,17 @@ const oauth2StateRoute = (req, res) => {
   res.status(200).json({ state });
 };
 
-const getStateValidationError = (req) => {
-  const requestState = req.query ? req.query.state : undefined;
-  const cookieState = req.cookies ? req.cookies[COOKIE_OAUTH2_STATE] : undefined;
-
-  if (!requestState || !cookieState || requestState !== cookieState) {
-    return {
+const oauth2Route = (req, res, next) => {
+  if (!consumeOAuthState(req, req.query && req.query.state)) {
+    next({
       error: 'Invalid OAuth2 state',
       status: 400,
       message: 'Invalid OAuth2 state parameter'
-    };
-  }
-
-  return null;
-};
-
-const oauth2Route = (req, res, next) => {
-  const stateValidationError = getStateValidationError(req);
-
-  if (stateValidationError) {
-    next(stateValidationError);
+    });
     return;
   }
 
-  res.clearCookie(COOKIE_OAUTH2_STATE);
+  res.clearCookie(getOAuthStateCookieName(req.query.state));
 
   accessTokenRequest(req)
     .then(result => {

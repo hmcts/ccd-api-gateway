@@ -140,10 +140,12 @@ withPipeline("nodejs", product, component) {
     }
 
     before('functionalTest:preview') {
+        sh 'yarn playwright install --with-deps chromium'
         configureAatIdamForPlaywright()
     }
 
     before('functionalTest:aat') {
+        sh 'yarn playwright install --with-deps chromium'
         configureAatIdamForPlaywright()
     }
 

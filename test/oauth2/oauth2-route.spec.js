@@ -6,6 +6,7 @@ const sinonChai = require('sinon-chai').default;
 const sinonExpressMock = require('sinon-express-mock');
 const ACCESS_TOKEN_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_ACCESS_TOKEN;
 const OAUTH2_STATE_COOKIE_NAME = require('../../app/oauth2/oauth2-route').COOKIE_OAUTH2_STATE;
+const { getOAuthStateCookieName, OAUTH_STATE_TTL_MS } = require('../../app/oauth2/oauth-state');
 const assert = sinon.assert;
 chai.use(sinonChai);
 
@@ -15,6 +16,8 @@ describe('oauth2Route', () => {
     expires_in: 3600
   };
   const STATE = 'generated-state';
+  const BINDING = 'browser-binding';
+  const STATE_COOKIE = `${OAUTH2_STATE_COOKIE_NAME}_${STATE}`;
 
   let request;
   let response;
@@ -24,16 +27,23 @@ describe('oauth2Route', () => {
   let oauth2Route;
   let oauth2StateRoute;
   let responseFromPromiseMock;
-  let randomBytes;
+  let oauthState;
 
   beforeEach(() => {
 
     config = {
       get: sinon.stub()
     };
-    randomBytes = sinon.stub().returns({
-      toString: sinon.stub().withArgs('hex').returns(STATE)
-    });
+    oauthState = {
+      getOAuthStateCookieName,
+      OAUTH_STATE_TTL_MS,
+      setOAuthState: sinon.stub().callsFake(req => {
+        req.cookies[STATE_COOKIE] = BINDING;
+        return STATE;
+      }),
+      consumeOAuthState: sinon.stub().callsFake((req, state) =>
+        state === STATE && req.cookies && req.cookies[STATE_COOKIE] === BINDING)
+    };
     responseFromPromiseMock = {
       status: 200,
       json: sinon.stub()
@@ -44,7 +54,7 @@ describe('oauth2Route', () => {
       state: STATE
     };
     request.cookies = {
-      [OAUTH2_STATE_COOKIE_NAME]: STATE
+      [STATE_COOKIE]: BINDING
     };
     response = sinonExpressMock.mockRes();
     next = sinon.stub();
@@ -53,10 +63,8 @@ describe('oauth2Route', () => {
 
     const oauth2Module = proxyquire('../../app/oauth2/oauth2-route', {
       './access-token-request': accessTokenRequest,
-      'config': config,
-      'crypto': {
-        randomBytes
-      }
+      './oauth-state': oauthState,
+      'config': config
     });
 
     oauth2Route = oauth2Module.oauth2Route;
@@ -69,8 +77,8 @@ describe('oauth2Route', () => {
 
     oauth2StateRoute(request, response);
 
-    assert.calledWith(response.cookie, OAUTH2_STATE_COOKIE_NAME, STATE,
-      { maxAge: 5 * 60 * 1000, httpOnly: true, sameSite: 'lax', secure: true });
+    assert.calledWith(response.cookie, STATE_COOKIE, BINDING,
+      { maxAge: OAUTH_STATE_TTL_MS, httpOnly: true, sameSite: 'lax', secure: true });
     assert.calledWith(response.status, 200);
     assert.calledWith(response.json, { state: STATE });
   });
@@ -81,8 +89,8 @@ describe('oauth2Route', () => {
 
     oauth2StateRoute(request, response);
 
-    assert.calledWith(response.cookie, OAUTH2_STATE_COOKIE_NAME, STATE,
-      { maxAge: 5 * 60 * 1000, httpOnly: true, sameSite: 'lax', secure: false });
+    assert.calledWith(response.cookie, STATE_COOKIE, BINDING,
+      { maxAge: OAUTH_STATE_TTL_MS, httpOnly: true, sameSite: 'lax', secure: false });
     assert.calledWith(response.status, 200);
     assert.calledWith(response.json, { state: STATE });
   });
@@ -96,7 +104,7 @@ describe('oauth2Route', () => {
       try {
 
         assert.calledWith(accessTokenRequest, request);
-        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
+        assert.calledWith(response.clearCookie, STATE_COOKIE);
         assert.calledWith(config.get, 'security.secure_auth_cookie_enabled');
         assert.calledWith(response.cookie, ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
           { maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: true });
@@ -118,7 +126,7 @@ describe('oauth2Route', () => {
     response.send.callsFake(() => {
       try {
         assert.calledWith(accessTokenRequest, request);
-        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
+        assert.calledWith(response.clearCookie, STATE_COOKIE);
         assert.calledWith(config.get, 'security.secure_auth_cookie_enabled');
         assert.calledWith(response.cookie, ACCESS_TOKEN_COOKIE_NAME, TOKEN.access_token,
           { maxAge: TOKEN.expires_in * 1000, httpOnly: true, secure: false });
@@ -144,6 +152,7 @@ describe('oauth2Route', () => {
 
     let unauthorizedOauth2Route = proxyquire('../../app/oauth2/oauth2-route', {
       './access-token-request': unauthorizedAccessTokenRequest,
+      './oauth-state': oauthState,
       'config': config
     }).oauth2Route;
 
@@ -151,7 +160,7 @@ describe('oauth2Route', () => {
       try {
 
         assert.calledWith(unauthorizedAccessTokenRequest, request);
-        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
+        assert.calledWith(response.clearCookie, STATE_COOKIE);
         expect(result).to.deep.equal(expectedError);
         done();
       } catch (e) {
@@ -170,7 +179,7 @@ describe('oauth2Route', () => {
     next.callsFake((result) => {
       try {
         assert.calledWith(accessTokenRequest, request);
-        assert.calledWith(response.clearCookie, OAUTH2_STATE_COOKIE_NAME);
+        assert.calledWith(response.clearCookie, STATE_COOKIE);
         expect(result).to.equal(expectedError);
         done();
       } catch (e) {
@@ -254,5 +263,14 @@ describe('oauth2Route', () => {
       status: 400,
       message: 'Invalid OAuth2 state parameter'
     });
+  });
+
+  it('should reject expired, consumed or unknown transactions before token exchange', () => {
+    oauthState.consumeOAuthState.returns(false);
+    oauth2Route(request, response, next);
+    assert.calledWithExactly(oauthState.consumeOAuthState, request, STATE);
+    assert.calledWithMatch(next, { status: 400, error: 'Invalid OAuth2 state' });
+    assert.notCalled(accessTokenRequest);
+    assert.notCalled(response.clearCookie);
   });
 });

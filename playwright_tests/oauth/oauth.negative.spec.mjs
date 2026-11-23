@@ -8,7 +8,7 @@ test.describe('OAuth endpoints @functional', () => {
     expect(state).toMatch(/^[a-f0-9]{64}$/);
 
     const response = await apiClient.get('/oauth2', {
-      headers: { cookie: `oauth2State=${state}` },
+      headers: { cookie: stateResponse.headers['set-cookie'].split(';')[0] },
       query: {
         code: 'playwright-invalid-code',
         state,
