@@ -2729,9 +2729,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"applicationinsights@npm:3.17.0":
-  version: 3.17.0
-  resolution: "applicationinsights@npm:3.17.0"
+"applicationinsights@npm:3.17.1":
+  version: 3.17.1
+  resolution: "applicationinsights@npm:3.17.1"
   dependencies:
     "@azure/core-auth": "npm:^1.9.0"
     "@azure/functions": "npm:^4.11.2"
@@ -2753,7 +2753,7 @@ __metadata:
     "@opentelemetry/sdk-trace-base": "npm:^2.10.0"
     "@opentelemetry/sdk-trace-node": "npm:^2.10.0"
     "@opentelemetry/semantic-conventions": "npm:^1.43.0"
-  checksum: 10/58dc0a508c3d4779dafb499085d1c77ab3567d0968b596035c1122ce8db7457eef5ecc92675c77183260c6d832a16cb37ab42d05deae1a84c1325cfaa437ce4a
+  checksum: 10/c64a10e282cb65ce40924b28168b8d0de7a8958b1033a5b47d58568eb6d13110993207d83bb1423181ef39a5caa40656442f1a53e46366016d075cae54b0e944
   languageName: node
   linkType: hard
 
@@ -3135,7 +3135,7 @@ __metadata:
     "@hmcts/playwright-common": "npm:1.1.7"
     "@hmcts/properties-volume": "npm:^1.4.1"
     "@playwright/test": "npm:^1.64.1"
-    applicationinsights: "npm:3.17.0"
+    applicationinsights: "npm:3.17.1"
     body-parser: "npm:^2.4.0"
     brace-expansion: "npm:^5.0.12"
     chai: "npm:^6.3.0"
