@@ -1,16 +1,12 @@
-const isControlCharacter = (character) => {
-  const code = character.codePointAt(0);
-
-  return (code >= 0 && code <= 31) || (code >= 127 && code <= 159);
-};
+// These control ranges are intentional: strip C0, DEL and C1 from header values.
+// eslint-disable-next-line no-control-regex
+const CONTROL_CHARACTERS = /[\x00-\x1f\x7f-\x9f]/g;
 
 const sanitizeData = (data) => {
   let sanitizedData = '';
 
   if (data) {
-    sanitizedData = Array.from(data)
-      .filter((character) => !isControlCharacter(character))
-      .join('');
+    sanitizedData = data.replace(CONTROL_CHARACTERS, '');
   }
 
   return sanitizedData;

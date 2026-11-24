@@ -69,4 +69,20 @@ describe('CORS', () => {
 
     expect(res.set).to.have.been.calledWith('Access-Control-Allow-Origin', ORIGIN_2);
   });
+
+  it('should strip control characters from reflected CORS headers on a preflight request', () => {
+    config.get.withArgs('security.cors_origin_whitelist').returns('*');
+    req.method = 'OPTIONS';
+    req.get.withArgs('origin').returns(`${ORIGIN}\r\nX-Injected: true\x00\x1f\x7f\x85\x9f`);
+    req.get.withArgs('Access-Control-Request-Headers')
+      .returns(`${HEADERS}\r\nX-Injected: true\x00\x1f\x7f\x85\x9f`);
+
+    handleCors(req, res, next);
+
+    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Origin', `${ORIGIN}X-Injected: true`);
+    expect(res.set).to.have.been.calledWith('Access-Control-Allow-Headers', `${HEADERS}X-Injected: true`);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.end).to.have.been.calledOnce;
+    expect(next).not.to.have.been.called;
+  });
 });

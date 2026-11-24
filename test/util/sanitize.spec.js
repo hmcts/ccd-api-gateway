@@ -10,16 +10,31 @@ describe('sanitizeData', () => {
     expect(sanitize.sanitizeData(value)).to.equal('X-OneX-TwoX-Three');
   });
 
-  it('removes ASCII and C1 control characters', () => {
-    const value = 'A\x00B\x1fC\x7fD\x9fE';
+  it('removes every C0, DEL and C1 control character', () => {
+    let controls = '';
+    for (let code = 0; code <= 0x9f; code++) {
+      if (code <= 0x1f || code >= 0x7f) {
+        const control = String.fromCharCode(code);
+        expect(sanitize.sanitizeData(`A${control}B${control}C`), `control code ${code}`)
+          .to.equal('ABC');
+        controls += control;
+      }
+    }
 
-    expect(sanitize.sanitizeData(value)).to.equal('ABCDE');
+    expect(sanitize.sanitizeData(controls)).to.equal('');
+    expect(sanitize.sanitizeData(`A${controls}B${controls}C`)).to.equal('ABC');
   });
 
   it('keeps characters adjacent to control ranges', () => {
     const value = 'A B~C\xa0D';
 
     expect(sanitize.sanitizeData(value)).to.equal('A B~C\xa0D');
+  });
+
+  it('preserves printable ASCII and Unicode characters', () => {
+    const value = 'https://example.com/\u00e9\u4e2d\ud83d\ude00';
+
+    expect(sanitize.sanitizeData(value)).to.equal(value);
   });
 
   it('removes control characters at range boundaries', () => {
