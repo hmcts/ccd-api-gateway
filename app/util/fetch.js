@@ -1,4 +1,4 @@
-const _fetch = require('node-fetch');
+let _fetch = require('node-fetch').default;
 
 const fetch = (...args) => {
   return _fetch(...args)
