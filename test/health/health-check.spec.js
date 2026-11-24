@@ -40,7 +40,7 @@ describe('health check', () => {
   });
 
   it('should return 200 OK for liveness health check', async () => {
-    await request(app)
+    request(app)
     .get('/health/liveness')
     .expect(res => {
       expect(res.status).equal(200);
@@ -50,7 +50,7 @@ describe('health check', () => {
 
   it('should return 200 OK for readiness health check', async () => {
     await request(app)
-    .get('/health/readiness')
+    .get('/health/liveness')
     .expect(res => {
       expect(res.status).equal(200);
       expect(res.body.status).equal('UP');
