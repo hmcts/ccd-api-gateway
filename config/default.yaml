@@ -16,6 +16,7 @@ idam:
   service_name: ccd_gw
   oauth2:
     client_id: ccd_gateway
+    redirect_uri_allowlist: "localhost,127.0.0.1"
 address_lookup:
   detect_proxy: false
   url:  https://api.os.uk/search/places/v1/postcode?postcode=${postcode}&key=${key}
