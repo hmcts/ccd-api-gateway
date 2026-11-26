@@ -120,7 +120,6 @@
     "micromatch": "^4.0.8",
     "cross-spawn": "^7.0.6",
     "braces": "^3.0.3",
-    "brace-expansion": "^5.0.9",
     "path-to-regexp@npm:^8.0.0": "npm:path-to-regexp@8.4.2",
     "@opentelemetry/propagator-jaeger": "2.12.0",
     "@opentelemetry/instrumentation-http": "^0.222.0",
