@@ -128,3 +128,9 @@ TEST_URL=https://ccd-api-gateway-web.example.test yarn test:deployed
 The CNP pipeline supplies `TEST_URL` after deploying the Helm release. `yarn test:smoke` runs tests tagged `@smoke` and writes JUnit and HTML evidence under `smoke-output`. `yarn test:functional` runs tests tagged `@functional` and writes its evidence under `functional-output`. These locations match the HMCTS Jenkins pipeline's standard result and artifact collection paths. Jenkins publishes the JUnit results and adds separate Playwright HTML report links for Preview and AAT smoke and functional stages.
 
 The deployed scenarios use Playwright's API request client and do not launch a browser. The positive OAuth scenario obtains a real one-time authorization code directly from IDAM before exchanging it through the deployed gateway.
+
+## Support investigation
+
+For failure investigation, see the
+[support investigation guide](docs/CCD-7882-error-contract.md#support) for Application Insights
+Logs, KQL examples, correlation and local/production verification limits.
